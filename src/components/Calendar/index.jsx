@@ -1,23 +1,19 @@
 import { connect } from "react-redux";
-import CalendarWeekdays from "./CalendarWeekdays";
-import CalendarDays from "./CalendarDays";
+import CalendarTable from "./CalendarTable";
+import CalendarTop from "./CalendarTop";
 
-const Calendar = ({ dateObject }) => {
+const Calendar = ({ currentDate }) => {
   return (
-    <table>
-      <thead>
-        <CalendarWeekdays />
-      </thead>
-      <tbody>
-        <CalendarDays />
-      </tbody>
-    </table>
+    <div>
+      <CalendarTop currentDate={currentDate} />
+      <CalendarTable />
+    </div>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    dateObject: state.calendar.dateObject,
+    currentDate: state.currentDate,
   };
 };
 

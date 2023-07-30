@@ -2,15 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { combineReducers, createStore } from "redux";
+import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
-import calendarReducer from "./store/reducers/index.js";
+import { createLogger } from "redux-logger";
+import currentDateReducer from "./store/reducers/index.js";
 
 const rootReducer = combineReducers({
-  calendar: calendarReducer,
+  currentDate: currentDateReducer,
 });
 
-const store = createStore(rootReducer);
+const logger = createLogger();
+
+const store = createStore(rootReducer, undefined, applyMiddleware(logger));
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

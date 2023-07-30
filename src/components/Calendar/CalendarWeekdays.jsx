@@ -2,7 +2,7 @@ import moment from "moment";
 import { useState } from "react";
 
 const CalendarWeekdays = () => {
-  const [weekdaysShort, setWeekdaysShort] = useState(moment.weekdaysMin());
+  const [weekdaysShort] = useState(moment.weekdaysMin());
   return (
     <tr>
       {weekdaysShort.map((weekday, index) => {

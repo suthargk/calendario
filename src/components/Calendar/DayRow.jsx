@@ -1,25 +1,16 @@
-const DayRow = ({ index, firstDayOfMonth, daysInMonth }) => {
-  let arr = new Array(7).fill(0);
-  const dayColumns = 7;
+import getRowDays from "../../utils";
 
-  if (index === 0) {
-    arr = arr.map((a, i) =>
-      i < firstDayOfMonth ? 0 : i + 1 - firstDayOfMonth
-    );
-  } else {
-    const rowDayStartsWith =
-      dayColumns - firstDayOfMonth + 1 + dayColumns * (index - 1);
-
-    arr = arr.map((a, i) => {
-      if (i + rowDayStartsWith > daysInMonth) return 0;
-      return i + rowDayStartsWith;
-    });
-  }
+const DayRow = ({ rowIndex, firstDayOfMonth, daysInMonth, year }) => {
+  const days = getRowDays(rowIndex, firstDayOfMonth, daysInMonth);
 
   return (
     <tr className="border border-gray-700">
-      {arr?.map((a, index) => {
-        return <td key={index}>{a}</td>;
+      {days?.map((a, index) => {
+        return (
+          <td className="text-center" key={index}>
+            {a}
+          </td>
+        );
       })}
     </tr>
   );
