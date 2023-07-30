@@ -1,8 +1,14 @@
 import { connect } from "react-redux";
-import { NEXT_MONTH, PREV_MONTH } from "../../store/reducers/actions";
+import {
+  NEXT_MONTH,
+  PREV_MONTH,
+  RESET_CURRENT_TIME,
+} from "../../store/reducers/actions";
+import dayjs from "dayjs";
 
 const CalendarTop = ({ currentDate, dispatch }) => {
   const { month, year } = currentDate;
+  const format = dayjs(`${year}-${month + 1}-01`).format("MMMM, YYYY");
   const handlePrevMonth = () => {
     dispatch({
       type: PREV_MONTH,
@@ -21,9 +27,14 @@ const CalendarTop = ({ currentDate, dispatch }) => {
     });
   };
 
+  const handleToday = () => {
+    dispatch({ type: RESET_CURRENT_TIME });
+  };
+
   return (
     <div>
-      {month}, {year}
+      {format}
+      <button onClick={handleToday}>Today</button>
       <button onClick={handlePrevMonth}>prev</button>
       <button onClick={handleNextMonth}>Next</button>
     </div>
