@@ -3,7 +3,7 @@ import {
   NEXT_MONTH,
   PREV_MONTH,
   RESET_CURRENT_TIME,
-} from "../../store/reducers/actions";
+} from "../../store/actions";
 import dayjs from "dayjs";
 
 const CalendarTop = ({ currentDate, dispatch }) => {

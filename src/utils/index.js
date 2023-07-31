@@ -3,14 +3,14 @@ const getRowDays = (rowIndex, firstDayOfMonth, daysInMonth) => {
   const dayColumns = 7;
 
   if (rowIndex === 0) {
-    arr = arr.map((a, i) =>
+    arr = arr.map((_, i) =>
       i < firstDayOfMonth ? 0 : i + 1 - firstDayOfMonth
     );
   } else {
     const rowDayStartsWith =
       dayColumns - firstDayOfMonth + 1 + dayColumns * (rowIndex - 1);
 
-    arr = arr.map((a, i) => {
+    arr = arr.map((_, i) => {
       if (i + rowDayStartsWith > daysInMonth) return 0;
       return i + rowDayStartsWith;
     });

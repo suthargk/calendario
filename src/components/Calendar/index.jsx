@@ -13,7 +13,7 @@ const Calendar = ({ currentDate }) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentDate: state.currentDate,
+    currentDate: state.calendar,
   };
 };
 

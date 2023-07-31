@@ -5,10 +5,12 @@ import "./index.css";
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { Provider } from "react-redux";
 import { createLogger } from "redux-logger";
-import currentDateReducer from "./store/reducers/index.js";
+import calendarReducer from "./store/reducers/calendar.js";
+import userReducer from "./store/reducers/user.js";
 
 const rootReducer = combineReducers({
-  currentDate: currentDateReducer,
+  calendar: calendarReducer,
+  user: userReducer,
 });
 
 const logger = createLogger();

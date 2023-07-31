@@ -12,6 +12,8 @@ const CalendarDays = ({ currentDate }) => {
             firstDayOfMonth={currentDate.firstDayOfMonth}
             daysInMonth={currentDate.daysInMonth}
             year={currentDate.year}
+            date={currentDate.date}
+            month={currentDate.month}
           />
         );
       })}
@@ -21,7 +23,7 @@ const CalendarDays = ({ currentDate }) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentDate: state.currentDate,
+    currentDate: state.calendar,
   };
 };
 
