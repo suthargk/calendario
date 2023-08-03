@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import DayRow from "./DayRow";
 
-const CalendarDays = ({ currentDate }) => {
+const CalendarDays = ({ currentDate, date }) => {
   return (
     <>
       {new Array(6).fill(null).map((_, index) => {
@@ -14,6 +14,7 @@ const CalendarDays = ({ currentDate }) => {
             year={currentDate.year}
             date={currentDate.date}
             month={currentDate.month}
+            currentDate={date}
           />
         );
       })}
@@ -24,6 +25,7 @@ const CalendarDays = ({ currentDate }) => {
 const mapStateToProps = (state) => {
   return {
     currentDate: state.calendar,
+    date: state.calendar.currentDate,
   };
 };
 
