@@ -1,7 +1,11 @@
 import dayjs from "dayjs";
 import getRowDays from "../../utils";
 import { connect } from "react-redux";
-import { USER_SELECTED_DATE } from "../../store/actions";
+import {
+  NEXT_MONTH,
+  PREV_MONTH,
+  USER_SELECTED_DATE,
+} from "../../store/actions";
 import { fetchEvents } from "../../store/services";
 
 const DayRow = ({
@@ -12,10 +16,33 @@ const DayRow = ({
   month,
   dispatch,
   eventList,
+  daysInPreviousMonth,
 }) => {
   const todayDate = dayjs();
-  const days = getRowDays(rowIndex, firstDayOfMonth, daysInMonth);
+  const days = getRowDays(
+    rowIndex,
+    firstDayOfMonth,
+    daysInMonth,
+    daysInPreviousMonth
+  );
   const handleDaySelect = (dateValue) => {
+    if (dateValue < daysInMonth && rowIndex > 3) {
+      dispatch({
+        type: NEXT_MONTH,
+        payload: {
+          nextMonth: month + 1,
+        },
+      });
+    }
+
+    if (dateValue > 1 && rowIndex === 0) {
+      dispatch({
+        type: PREV_MONTH,
+        payload: {
+          prevMonth: month - 1,
+        },
+      });
+    }
     const selectedDate = dayjs(`${month + 1}-${dateValue}-${year}`);
 
     dispatch({

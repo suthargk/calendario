@@ -15,6 +15,7 @@ const CalendarDays = ({ currentDate, date }) => {
             date={currentDate.date}
             month={currentDate.month}
             currentDate={date}
+            daysInPreviousMonth={currentDate.daysInPreviousMonth}
           />
         );
       })}

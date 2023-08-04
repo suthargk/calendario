@@ -1,10 +1,16 @@
 import { connect } from "react-redux";
 
-const CalendarEvents = ({ userSelectedDateEventList }) => {
+const CalendarEvents = ({ selectedDateEventList }) => {
   return (
     <div>
-      {userSelectedDateEventList.map((event) => {
-        return <div key={event.id}>{event.summary}</div>;
+      {selectedDateEventList.map((event) => {
+        return (
+          <div key={event.id}>
+            <a href={event.hangoutLink} target="_blank">
+              {event.summary}
+            </a>
+          </div>
+        );
       })}
     </div>
   );
@@ -12,7 +18,7 @@ const CalendarEvents = ({ userSelectedDateEventList }) => {
 
 const mapStateToProps = (state) => {
   return {
-    userSelectedDateEventList: state.events.userSelectedDateEventList,
+    selectedDateEventList: state.events.selectedDateEventList,
   };
 };
 

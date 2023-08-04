@@ -34,10 +34,16 @@ const CalendarTop = ({ currentDate, dispatch }) => {
 
   return (
     <div>
-      {format}
-      <button onClick={handleToday}>Today</button>
-      <button onClick={handlePrevMonth}>prev</button>
-      <button onClick={handleNextMonth}>Next</button>
+      <div>{format}</div>
+      <button className="p-2 border border-gray-400" onClick={handleToday}>
+        Today
+      </button>
+      <button className="p-2 border border-gray-400" onClick={handlePrevMonth}>
+        prev
+      </button>
+      <button className="p-2 border border-gray-400" onClick={handleNextMonth}>
+        Next
+      </button>
     </div>
   );
 };
