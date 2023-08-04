@@ -3,12 +3,11 @@ import { ADD_EVENTS, USER_SELECTED_DATE } from "../actions";
 
 const INITIAL_EVENTS = {
   eventList: [],
-  userSelectedDateEventList: [],
+  selectedDateEventList: [],
 };
 
 const applySelectedDate = (state, action) => {
   const userSelectedDate = action.payload;
-
   const userSelectedDateEvents = state.eventList.filter((event) => {
     const eventDate = dayjs(event.start.dateTime);
     return (
@@ -18,7 +17,7 @@ const applySelectedDate = (state, action) => {
     );
   });
 
-  return { ...state, userSelectedDateEventList: userSelectedDateEvents };
+  return { ...state, selectedDateEventList: userSelectedDateEvents };
 };
 
 const eventsReducer = (state = INITIAL_EVENTS, action) => {

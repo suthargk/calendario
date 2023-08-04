@@ -1,18 +1,18 @@
 import dayjs from "dayjs";
-import * as utc from "dayjs/plugin/utc";
+import utc from "dayjs/plugin/utc";
 import { NEXT_MONTH, PREV_MONTH, RESET_CURRENT_TIME } from "../actions";
 
 dayjs.extend(utc);
 
 let currentDateObj = dayjs();
-let newCurrentDateObj = dayjs();
 
 const INITIAL_STATE = {
-  firstDayOfMonth: Number(newCurrentDateObj.startOf("month").format("d")),
-  date: newCurrentDateObj.date(),
-  month: newCurrentDateObj.month(),
-  daysInMonth: newCurrentDateObj.daysInMonth(),
-  year: newCurrentDateObj.year(),
+  firstDayOfMonth: Number(currentDateObj.startOf("month").format("d")),
+  date: currentDateObj.date(),
+  month: currentDateObj.month(),
+  daysInMonth: currentDateObj.daysInMonth(),
+  year: currentDateObj.year(),
+  daysInPreviousMonth: currentDateObj.subtract(1, "month").daysInMonth(),
 };
 
 const applyPrevMonth = (state, action) => {
@@ -26,6 +26,7 @@ const applyPrevMonth = (state, action) => {
     year: prevMonth < 0 ? state.year - 1 : state.year,
     firstDayOfMonth: Number(firstDayOfMonth),
     daysInMonth: currentDateObj.daysInMonth(),
+    daysInPreviousMonth: currentDateObj.subtract(1, "month").daysInMonth(),
   };
 };
 
@@ -40,6 +41,7 @@ const applyNextMonth = (state, action) => {
     year: nextMonth > 11 ? state.year + 1 : state.year,
     firstDayOfMonth: Number(firstDayOfMonth),
     daysInMonth: currentDateObj.daysInMonth(),
+    daysInPreviousMonth: currentDateObj.subtract(1, "month").daysInMonth(),
   };
 };
 
@@ -52,7 +54,7 @@ const calendarReducer = (state = INITIAL_STATE, action) => {
       return applyNextMonth(state, action);
     }
     case RESET_CURRENT_TIME: {
-      console.log("RESET", state, INITIAL_STATE);
+      currentDateObj = dayjs(); // RESET current time
       return INITIAL_STATE;
     }
 

@@ -27,7 +27,9 @@ function App({ dispatch, isUserSignedIn }) {
 
   useEffect(() => {
     getAuth();
-    fetchEvents({});
+    if (isUserSignedIn) {
+      fetchEvents({});
+    }
   }, []);
 
   return (
