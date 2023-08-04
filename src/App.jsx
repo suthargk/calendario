@@ -1,14 +1,13 @@
 import Calendar from "./components/Calendar";
-
 import { gapi, loadAuth2 } from "gapi-script";
 import { connect } from "react-redux";
 import { fetchEvents } from "./store/services";
 import { useEffect, useState } from "react";
-import { store } from "./main";
 import { SET_USER_AUTH } from "./store/actions";
+import store from "./store/reducers";
 
 function App({ dispatch, isUserSignedIn }) {
-  const [isAppLoading, setIsAppLoading] = useState(true);
+  const [isAppLoading, setIsAppLoading] = useState(false);
   const getAuth = async () => {
     let auth2 = await loadAuth2(
       gapi,
@@ -16,14 +15,12 @@ function App({ dispatch, isUserSignedIn }) {
       "https://www.googleapis.com/auth/calendar"
     );
 
-    console.log(
-      store.dispatch({
-        type: SET_USER_AUTH,
-        payload: {
-          auth2,
-        },
-      })
-    );
+    store.dispatch({
+      type: SET_USER_AUTH,
+      payload: {
+        auth2,
+      },
+    });
 
     setIsAppLoading(false);
   };

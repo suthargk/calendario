@@ -1,13 +1,18 @@
 import { connect } from "react-redux";
 
-const CalendarEvents = ({ eventList }) => {
-  console.log(eventList);
-  return <div></div>;
+const CalendarEvents = ({ userSelectedDateEventList }) => {
+  return (
+    <div>
+      {userSelectedDateEventList.map((event) => {
+        return <div key={event.id}>{event.summary}</div>;
+      })}
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => {
   return {
-    eventList: state.events.eventList,
+    userSelectedDateEventList: state.events.userSelectedDateEventList,
   };
 };
 

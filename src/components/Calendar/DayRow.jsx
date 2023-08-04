@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import getRowDays from "../../utils";
 import { connect } from "react-redux";
-import { SELECTED_DATE } from "../../store/actions";
+import { USER_SELECTED_DATE } from "../../store/actions";
 import { fetchEvents } from "../../store/services";
 
 const DayRow = ({
@@ -11,15 +11,22 @@ const DayRow = ({
   year,
   month,
   dispatch,
+  eventList,
 }) => {
   const todayDate = dayjs();
   const days = getRowDays(rowIndex, firstDayOfMonth, daysInMonth);
   const handleDaySelect = (dateValue) => {
     const selectedDate = dayjs(`${month + 1}-${dateValue}-${year}`);
-    const minTimeUTC = selectedDate.startOf("day").utc().format();
-    const maxTimeUTC = selectedDate.endOf("day").utc().format();
 
-    fetchEvents({ timeMin: minTimeUTC, timeMax: maxTimeUTC });
+    dispatch({
+      type: USER_SELECTED_DATE,
+      payload: selectedDate,
+    });
+
+    // const minTimeUTC = selectedDate.startOf("day").utc().format();
+    // const maxTimeUTC = selectedDate.endOf("day").utc().format();
+
+    // fetchEvents({ timeMin: minTimeUTC, timeMax: maxTimeUTC });
   };
 
   return (
@@ -48,4 +55,10 @@ function mapDispatchToProps(dispatch) {
   return { dispatch };
 }
 
-export default connect(null, mapDispatchToProps)(DayRow);
+function mapStateToProps(state) {
+  return {
+    eventList: state.events.eventList,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DayRow);

@@ -1,8 +1,8 @@
 import axios from "axios";
-import { store } from "../../main";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { ADD_EVENTS } from "../actions";
+import store from "../reducers";
 
 dayjs.extend(utc);
 
