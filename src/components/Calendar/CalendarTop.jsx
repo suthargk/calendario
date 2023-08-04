@@ -7,13 +7,14 @@ import {
 import dayjs from "dayjs";
 
 const CalendarTop = ({ currentDate, dispatch }) => {
-  const { month, year } = currentDate;
-  const format = dayjs(`${year}-${month + 1}-01`).format("MMMM, YYYY");
+  const format = dayjs(
+    `${currentDate.year}-${currentDate.month + 1}-01`
+  ).format("MMMM, YYYY");
   const handlePrevMonth = () => {
     dispatch({
       type: PREV_MONTH,
       payload: {
-        prevMonth: month - 1,
+        prevMonth: currentDate.month - 1,
       },
     });
   };
@@ -22,7 +23,7 @@ const CalendarTop = ({ currentDate, dispatch }) => {
     dispatch({
       type: NEXT_MONTH,
       payload: {
-        nextMonth: month + 1,
+        nextMonth: currentDate.month + 1,
       },
     });
   };
@@ -45,4 +46,10 @@ const mapToDispatch = (dispatch) => {
   return { dispatch };
 };
 
-export default connect(null, mapToDispatch)(CalendarTop);
+const mapStateToProps = (state) => {
+  return {
+    currentDate: state.calendar,
+  };
+};
+
+export default connect(mapStateToProps, mapToDispatch)(CalendarTop);
