@@ -10,8 +10,18 @@ const getRowDays = (
   if (rowIndex === 0) {
     arr = arr.map((_, i) =>
       i < firstDayOfMonth
-        ? daysInPreviousMonth + 1 + i - firstDayOfMonth
-        : i + 1 - firstDayOfMonth
+        ? {
+            day: daysInPreviousMonth + 1 + i - firstDayOfMonth,
+            prevMonthDay: true,
+            nextMonthDay: false,
+            currentMonthDay: false,
+          }
+        : {
+            day: i + 1 - firstDayOfMonth,
+            prevMonthDay: false,
+            nextMonthDay: false,
+            currentMonthDay: true,
+          }
     );
   } else {
     const rowDayStartsWith =
@@ -19,8 +29,18 @@ const getRowDays = (
 
     arr = arr.map((_, i) => {
       if (i + rowDayStartsWith > daysInMonth)
-        return i + rowDayStartsWith - daysInMonth;
-      return i + rowDayStartsWith;
+        return {
+          day: i + rowDayStartsWith - daysInMonth,
+          nextMonthDay: true,
+          prevMonthDay: false,
+          currentMonthDay: false,
+        };
+      return {
+        day: i + rowDayStartsWith,
+        nextMonthDay: false,
+        prevMonthDay: false,
+        currentMonthDay: true,
+      };
     });
   }
 

@@ -25,9 +25,8 @@ const DayRow = ({
     daysInMonth,
     daysInPreviousMonth
   );
-  const handleDaySelect = (dateValue, index) => {
-    console.log(dateValue, index);
-    if (15 > dateValue && rowIndex > 3) {
+  const handleDaySelect = (dateValue) => {
+    if (dateValue.nextMonthDay) {
       dispatch({
         type: NEXT_MONTH,
         payload: {
@@ -35,8 +34,7 @@ const DayRow = ({
         },
       });
     }
-
-    if (index < firstDayOfMonth && rowIndex === 0) {
+    if (dateValue.prevMonthDay) {
       dispatch({
         type: PREV_MONTH,
         payload: {
@@ -44,8 +42,8 @@ const DayRow = ({
         },
       });
     }
-    const selectedDate = dayjs(`${month + 1}-${dateValue}-${year}`);
 
+    const selectedDate = dayjs(`${month + 1}-${dateValue.day}-${year}`);
     dispatch({
       type: USER_SELECTED_DATE,
       payload: selectedDate,
@@ -53,7 +51,6 @@ const DayRow = ({
 
     // const minTimeUTC = selectedDate.startOf("day").utc().format();
     // const maxTimeUTC = selectedDate.endOf("day").utc().format();
-
     // fetchEvents({ timeMin: minTimeUTC, timeMax: maxTimeUTC });
   };
 
@@ -62,21 +59,17 @@ const DayRow = ({
       {days?.map((day, index) => {
         return (
           <td
-            className={`text-center ${
-              day === todayDate.date() &&
+            className={`text-center p-2 ${
+              day.currentMonthDay &&
+              day.day === todayDate.date() &&
               month === todayDate.month() &&
               year === todayDate.year() &&
               "border border-gray-600"
-            }  ${
-              (index < firstDayOfMonth && rowIndex === 0) ||
-              (15 > day && rowIndex > 3)
-                ? "opacity-20"
-                : ""
-            }`}
-            onClick={() => handleDaySelect(day, index)}
+            }  ${day.prevMonthDay || day.nextMonthDay ? "opacity-20" : ""}`}
+            onClick={() => handleDaySelect(day)}
             key={index}
           >
-            {day}
+            {day.day}
           </td>
         );
       })}
