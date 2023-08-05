@@ -25,8 +25,9 @@ const DayRow = ({
     daysInMonth,
     daysInPreviousMonth
   );
-  const handleDaySelect = (dateValue) => {
-    if (dateValue < daysInMonth && rowIndex > 3) {
+  const handleDaySelect = (dateValue, index) => {
+    console.log(dateValue, index);
+    if (15 > dateValue && rowIndex > 3) {
       dispatch({
         type: NEXT_MONTH,
         payload: {
@@ -35,7 +36,7 @@ const DayRow = ({
       });
     }
 
-    if (dateValue > 1 && rowIndex === 0) {
+    if (index < firstDayOfMonth && rowIndex === 0) {
       dispatch({
         type: PREV_MONTH,
         payload: {
@@ -66,8 +67,13 @@ const DayRow = ({
               month === todayDate.month() &&
               year === todayDate.year() &&
               "border border-gray-600"
+            }  ${
+              (index < firstDayOfMonth && rowIndex === 0) ||
+              (15 > day && rowIndex > 3)
+                ? "opacity-20"
+                : ""
             }`}
-            onClick={() => handleDaySelect(day)}
+            onClick={() => handleDaySelect(day, index)}
             key={index}
           >
             {day}
