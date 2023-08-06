@@ -14,12 +14,18 @@ const DayItem = ({ day, month, year, select, handleDaySelect }) => {
         select.year === year
           ? {
               backgroundColor: `${
-                select.day === todayDate.date()
+                select.day === todayDate.date() &&
+                select.month === todayDate.month() &&
+                todayDate.year()
                   ? "rgb(59 130 246)"
                   : "rgba(118,118,128, .12)"
               }`,
               color: `${
-                select.day === todayDate.date() ? "white" : "currentColor"
+                select.day === todayDate.date() &&
+                select.month === todayDate.month() &&
+                todayDate.year()
+                  ? "white"
+                  : "currentColor"
               }`,
             }
           : {}

@@ -12,10 +12,30 @@ const CalendarDays = ({ currentDate, date, dispatch }) => {
   const [select, setSelect] = useState({ day: null, month: null, year: null });
 
   const handleDaySelect = (dateValue) => {
+    console.log(dateValue);
+    let newMonth = currentDate.month;
+    let newYear = currentDate.year;
+
+    if (dateValue.nextMonthDay) {
+      newMonth += 1;
+      if (newMonth > 11) {
+        newMonth = 0;
+        newYear += 1;
+      }
+    }
+
+    if (dateValue.prevMonthDay) {
+      newMonth -= 1;
+      if (newMonth < 0) {
+        newMonth = 11;
+        newYear -= 1;
+      }
+    }
+
     setSelect({
       day: dateValue.day,
-      month: currentDate.month,
-      year: currentDate.year,
+      month: newMonth,
+      year: newYear,
     });
 
     if (dateValue.nextMonthDay) {
@@ -23,6 +43,7 @@ const CalendarDays = ({ currentDate, date, dispatch }) => {
         type: NEXT_MONTH,
         payload: {
           nextMonth: currentDate.month + 1,
+          date: dateValue.day,
         },
       });
     }
@@ -31,6 +52,7 @@ const CalendarDays = ({ currentDate, date, dispatch }) => {
         type: PREV_MONTH,
         payload: {
           prevMonth: currentDate.month - 1,
+          date: dateValue.day,
         },
       });
     }
@@ -38,6 +60,7 @@ const CalendarDays = ({ currentDate, date, dispatch }) => {
     const selectedDate = dayjs(
       `${currentDate.month + 1}-${dateValue.day}-${currentDate.year}`
     );
+    console.log("selectedDate", selectedDate);
     dispatch({
       type: USER_SELECTED_DATE,
       payload: selectedDate,
