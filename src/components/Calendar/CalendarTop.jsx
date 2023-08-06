@@ -8,7 +8,7 @@ import {
 } from "../../store/actions";
 import dayjs from "dayjs";
 
-const CalendarTop = ({ currentDate, dispatch }) => {
+const CalendarTop = ({ currentDate, dispatch, setReset }) => {
   const format = dayjs(
     `${currentDate.year}-${currentDate.month + 1}-01`
   ).format("MMMM YYYY");
@@ -31,6 +31,7 @@ const CalendarTop = ({ currentDate, dispatch }) => {
   };
 
   const handleToday = () => {
+    setReset(Math.random());
     dispatch({ type: RESET_CURRENT_TIME });
   };
 
