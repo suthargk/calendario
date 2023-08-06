@@ -13,7 +13,11 @@ const CalendarWeekdays = () => {
   return (
     <tr>
       {weekdays.map((weekday, index) => {
-        return <th key={index}>{weekday[0]}</th>;
+        return (
+          <th key={index} className="p-2 text-center">
+            {weekday[0]}
+          </th>
+        );
       })}
     </tr>
   );

@@ -33,7 +33,10 @@ function App({ dispatch, isUserSignedIn }) {
   }, []);
 
   return (
-    <div>
+    <div
+      style={{ backgroundColor: "#EBEBEB", width: "350px" }}
+      className="p-4 rounded-xl"
+    >
       {!isAppLoading ? (
         <>
           <Calendar />
@@ -45,7 +48,7 @@ function App({ dispatch, isUserSignedIn }) {
                 : gapi.auth2?.getAuthInstance().signIn
             }
           >
-            {isUserSignedIn ? "Log Out" : "Log In"}
+            {isUserSignedIn ? "Google -> Log Out" : "Google -> Log In"}
           </button>
         </>
       ) : (

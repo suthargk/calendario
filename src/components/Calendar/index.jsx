@@ -4,9 +4,11 @@ import CalendarEvents from "../CalendarEvents";
 
 const Calendar = () => {
   return (
-    <div>
-      <CalendarTop />
-      <CalendarTable />
+    <div className="space-y-3">
+      <div className="bg-white p-4 rounded-xl">
+        <CalendarTop />
+        <CalendarTable />
+      </div>
       <CalendarEvents />
     </div>
   );
