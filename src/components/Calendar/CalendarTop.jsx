@@ -1,4 +1,6 @@
 import { connect } from "react-redux";
+import PrevChevron from "../../assets/icons/PrevChevron";
+import NextChevron from "../../assets/icons/NextChevron";
 import {
   NEXT_MONTH,
   PREV_MONTH,
@@ -9,7 +11,7 @@ import dayjs from "dayjs";
 const CalendarTop = ({ currentDate, dispatch }) => {
   const format = dayjs(
     `${currentDate.year}-${currentDate.month + 1}-01`
-  ).format("MMMM, YYYY");
+  ).format("MMMM YYYY");
   const handlePrevMonth = () => {
     dispatch({
       type: PREV_MONTH,
@@ -32,18 +34,33 @@ const CalendarTop = ({ currentDate, dispatch }) => {
     dispatch({ type: RESET_CURRENT_TIME });
   };
 
+  const todayDate = new Date();
   return (
-    <div>
-      <div>{format}</div>
-      <button className="p-2 border border-gray-400" onClick={handleToday}>
-        Today
-      </button>
-      <button className="p-2 border border-gray-400" onClick={handlePrevMonth}>
-        prev
-      </button>
-      <button className="p-2 border border-gray-400" onClick={handleNextMonth}>
-        Next
-      </button>
+    <div
+      // style={{ margin: "0 5.6px" }}
+      className="flex justify-between items-center p-2"
+    >
+      <div className="text-lg font-semibold">{format}</div>
+      <div className="flex justify-between items-center">
+        <button
+          style={{
+            backgroundColor:
+              currentDate.month === todayDate.getMonth() &&
+              currentDate.year === todayDate.getFullYear() &&
+              "rgba(118,118,128, .12)",
+          }}
+          className="py-1.5 px-3 text-base rounded-md"
+          onClick={handleToday}
+        >
+          Today
+        </button>
+        <button className="p-2" onClick={handlePrevMonth}>
+          <PrevChevron />
+        </button>
+        <button className="p-2" onClick={handleNextMonth}>
+          <NextChevron />
+        </button>
+      </div>
     </div>
   );
 };

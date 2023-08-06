@@ -1,11 +1,9 @@
 import CalendarWeekdays from "./CalendarWeekdays";
 import CalendarDays from "./CalendarDays";
-import { useEffect } from "react";
 
 const CalendarTable = () => {
-  useEffect(() => {}, []);
   return (
-    <table>
+    <table className="mx-auto w-full">
       <thead>
         <CalendarWeekdays />
       </thead>
