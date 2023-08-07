@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import getRowDays from "../../utils";
+import { getRowDays } from "../../utils";
 import DayItem from "./DayItem";
 
 const DayRow = ({

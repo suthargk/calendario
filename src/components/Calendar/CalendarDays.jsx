@@ -7,60 +7,67 @@ import {
   USER_SELECTED_DATE,
 } from "../../store/actions";
 import dayjs from "dayjs";
+import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 
-const CalendarDays = ({ currentDate, date, dispatch }) => {
-  const [select, setSelect] = useState({ day: null, month: null, year: null });
+const CalendarDays = ({ currentDate, dispatch }) => {
+  const [select, setSelect] = useState({ date: null, month: null, year: null });
 
   const handleDaySelect = (dateValue) => {
-    console.log(dateValue);
-    let newMonth = currentDate.month;
-    let newYear = currentDate.year;
+    let currentMonth = currentDate.month;
+    let currentYear = currentDate.year;
 
-    if (dateValue.nextMonthDay) {
-      newMonth += 1;
-      if (newMonth > 11) {
-        newMonth = 0;
-        newYear += 1;
-      }
+    if (dateValue.nextMonthDate) {
+      const { nextMonth, nextYear } = getNextMonthDate(
+        currentMonth + 1,
+        currentYear
+      );
+
+      currentMonth = nextMonth;
+      currentYear = nextYear;
     }
 
-    if (dateValue.prevMonthDay) {
-      newMonth -= 1;
-      if (newMonth < 0) {
-        newMonth = 11;
-        newYear -= 1;
-      }
+    if (dateValue.prevMonthDate) {
+      const { prevMonth, prevYear } = getPrevMonthDate(
+        currentMonth - 1,
+        currentYear
+      );
+
+      currentMonth = prevMonth;
+      currentYear = prevYear;
     }
 
     setSelect({
-      day: dateValue.day,
-      month: newMonth,
-      year: newYear,
+      date: dateValue.date,
+      month: currentMonth,
+      year: currentYear,
     });
 
-    if (dateValue.nextMonthDay) {
+    if (dateValue.nextMonthDate) {
       dispatch({
         type: NEXT_MONTH,
         payload: {
-          nextMonth: currentDate.month + 1,
-          date: dateValue.day,
+          date: dateValue.date,
+          month: currentMonth,
+          year: currentYear,
         },
       });
     }
-    if (dateValue.prevMonthDay) {
+
+    if (dateValue.prevMonthDate) {
       dispatch({
         type: PREV_MONTH,
         payload: {
-          prevMonth: currentDate.month - 1,
-          date: dateValue.day,
+          date: dateValue.date,
+          month: currentMonth,
+          year: currentYear,
         },
       });
     }
 
     const selectedDate = dayjs(
-      `${currentDate.month + 1}-${dateValue.day}-${currentDate.year}`
+      `${currentDate.month + 1}-${dateValue.date}-${currentDate.year}`
     );
-    console.log("selectedDate", selectedDate);
+
     dispatch({
       type: USER_SELECTED_DATE,
       payload: selectedDate,
@@ -80,13 +87,10 @@ const CalendarDays = ({ currentDate, date, dispatch }) => {
             firstDayOfMonth={currentDate.firstDayOfMonth}
             daysInMonth={currentDate.daysInMonth}
             year={currentDate.year}
-            date={currentDate.date}
             month={currentDate.month}
-            currentDate={date}
             daysInPreviousMonth={currentDate.daysInPreviousMonth}
             handleDaySelect={handleDaySelect}
             select={select}
-            dispatch={dispatch}
           />
         );
       })}

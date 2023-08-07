@@ -7,25 +7,41 @@ import {
   RESET_CURRENT_TIME,
 } from "../../store/actions";
 import dayjs from "dayjs";
+import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 
 const CalendarTop = ({ currentDate, dispatch, setReset }) => {
   const format = dayjs(
     `${currentDate.year}-${currentDate.month + 1}-01`
   ).format("MMMM YYYY");
+
   const handlePrevMonth = () => {
+    const { prevMonth, prevYear } = getPrevMonthDate(
+      currentDate.month - 1,
+      currentDate.year
+    );
+
     dispatch({
       type: PREV_MONTH,
       payload: {
-        prevMonth: currentDate.month - 1,
+        month: prevMonth,
+        year: prevYear,
+        date: currentDate.date,
       },
     });
   };
 
   const handleNextMonth = () => {
+    const { nextMonth, nextYear } = getNextMonthDate(
+      currentDate.month + 1,
+      currentDate.year
+    );
+
     dispatch({
       type: NEXT_MONTH,
       payload: {
-        nextMonth: currentDate.month + 1,
+        month: nextMonth,
+        year: nextYear,
+        date: currentDate.date,
       },
     });
   };
@@ -46,6 +62,7 @@ const CalendarTop = ({ currentDate, dispatch, setReset }) => {
         <button
           style={{
             backgroundColor:
+              currentDate.date === todayDate.getDate() &&
               currentDate.month === todayDate.getMonth() &&
               currentDate.year === todayDate.getFullYear() &&
               "rgba(118,118,128, .12)",

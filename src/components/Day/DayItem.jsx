@@ -8,39 +8,41 @@ const DayItem = ({ day, month, year, select, handleDaySelect }) => {
   return (
     <td
       style={
-        day.currentMonthDay &&
-        select.day === day.day &&
+        day.currentMonthDate &&
+        select.date === day.date &&
         select.month === month &&
         select.year === year
           ? {
               backgroundColor: `${
-                select.day === todayDate.date() &&
+                select.date === todayDate.date() &&
                 select.month === todayDate.month() &&
-                todayDate.year()
+                select.year === todayDate.year()
                   ? "rgb(59 130 246)"
                   : "rgba(118,118,128, .12)"
               }`,
               color: `${
-                select.day === todayDate.date() &&
+                select.date === todayDate.date() &&
                 select.month === todayDate.month() &&
-                todayDate.year()
+                select.year === todayDate.year()
                   ? "white"
                   : "currentColor"
               }`,
             }
           : {}
       }
-      className={` text-center p-2  rounded cursor-pointer ${
-        day.currentMonthDay &&
-        day.day === todayDate.date() &&
+      className={` text-center p-2 rounded cursor-pointer ${
+        day.currentMonthDate &&
+        day.date === todayDate.date() &&
         month === todayDate.month() &&
         year === todayDate.year() &&
-        `${select.day ? "bg-white text-blue-500" : "bg-blue-500 text-white"}   `
+        `${
+          select.date ? "bg-white text-blue-500" : "bg-blue-500 text-white"
+        }   `
       } 
-      ${day.prevMonthDay || day.nextMonthDay ? "opacity-20" : ""}`}
+      ${day.prevMonthDate || day.nextMonthDate ? "opacity-20" : ""}`}
       onClick={() => handleDaySelect(day)}
     >
-      {day.day}
+      {day.date}
     </td>
   );
 };
