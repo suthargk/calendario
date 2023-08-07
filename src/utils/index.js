@@ -1,4 +1,4 @@
-const getRowDays = (
+export const getRowDays = (
   rowIndex,
   firstDayOfMonth,
   daysInMonth,
@@ -11,16 +11,16 @@ const getRowDays = (
     arr = arr.map((_, i) =>
       i < firstDayOfMonth
         ? {
-            day: daysInPreviousMonth + 1 + i - firstDayOfMonth,
-            prevMonthDay: true,
-            nextMonthDay: false,
-            currentMonthDay: false,
+            date: daysInPreviousMonth + 1 + i - firstDayOfMonth,
+            prevMonthDate: true,
+            nextMonthDate: false,
+            currentMonthDate: false,
           }
         : {
-            day: i + 1 - firstDayOfMonth,
-            prevMonthDay: false,
-            nextMonthDay: false,
-            currentMonthDay: true,
+            date: i + 1 - firstDayOfMonth,
+            prevMonthDate: false,
+            nextMonthDate: false,
+            currentMonthDate: true,
           }
     );
   } else {
@@ -30,16 +30,16 @@ const getRowDays = (
     arr = arr.map((_, i) => {
       if (i + rowDayStartsWith > daysInMonth)
         return {
-          day: i + rowDayStartsWith - daysInMonth,
-          nextMonthDay: true,
-          prevMonthDay: false,
-          currentMonthDay: false,
+          date: i + rowDayStartsWith - daysInMonth,
+          nextMonthDate: true,
+          prevMonthDate: false,
+          currentMonthDate: false,
         };
       return {
-        day: i + rowDayStartsWith,
-        nextMonthDay: false,
-        prevMonthDay: false,
-        currentMonthDay: true,
+        date: i + rowDayStartsWith,
+        nextMonthDate: false,
+        prevMonthDate: false,
+        currentMonthDate: true,
       };
     });
   }
@@ -47,4 +47,16 @@ const getRowDays = (
   return arr;
 };
 
-export default getRowDays;
+export const getNextMonthDate = (nextMonth, year) => {
+  return {
+    nextMonth: nextMonth > 11 ? 0 : nextMonth,
+    nextYear: nextMonth > 11 ? year + 1 : year,
+  };
+};
+
+export const getPrevMonthDate = (prevMonth, year) => {
+  return {
+    prevMonth: prevMonth < 0 ? 11 : prevMonth,
+    prevYear: prevMonth < 0 ? year - 1 : year,
+  };
+};
