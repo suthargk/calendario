@@ -13,7 +13,7 @@ const CalendarEvents = ({ selectedDateEventList }) => {
         {selectedDateEventList.map((event) => {
           return (
             <div key={event.id}>
-              <a href={event.hangoutLink} target="_blank">
+              <a href={event?.hangoutLink} target="_blank">
                 {event.summary}
               </a>
             </div>

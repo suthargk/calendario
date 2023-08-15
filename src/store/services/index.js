@@ -14,7 +14,7 @@ export const fetchEvents = ({
   return axios
     .get("https://www.googleapis.com/calendar/v3/calendars/primary/events/", {
       headers: { Authorization: `Bearer ${access_token}` },
-      params: { timeMin, timeMax, orderBy: "startTime", singleEvents: true },
+      params: { timeMin, timeMax },
     })
     .then((res) =>
       store.dispatch({

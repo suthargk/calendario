@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { fetchEvents } from "./store/services";
 import { useEffect, useState } from "react";
 import { SET_USER_AUTH } from "./store/actions";
-import store from "./store/reducers";
 
 function App({ dispatch, isUserSignedIn }) {
   const [isAppLoading, setIsAppLoading] = useState(false);
@@ -15,7 +14,7 @@ function App({ dispatch, isUserSignedIn }) {
       "https://www.googleapis.com/auth/calendar"
     );
 
-    store.dispatch({
+    dispatch({
       type: SET_USER_AUTH,
       payload: {
         auth2,

@@ -6,7 +6,6 @@ import {
   PREV_MONTH,
   USER_SELECTED_DATE,
 } from "../../store/actions";
-import dayjs from "dayjs";
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 
 const CalendarDays = ({ currentDate, dispatch }) => {
@@ -64,8 +63,11 @@ const CalendarDays = ({ currentDate, dispatch }) => {
       });
     }
 
-    const selectedDate = dayjs(
-      `${currentDate.month + 1}-${dateValue.date}-${currentDate.year}`
+    const selectedDate = new Date(
+      `${currentDate.year}-${String(currentDate.month + 1).padStart(
+        2,
+        0
+      )}-${String(dateValue.date).padStart(2, 0)}`
     );
 
     dispatch({

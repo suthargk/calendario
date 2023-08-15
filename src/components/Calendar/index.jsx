@@ -3,7 +3,7 @@ import CalendarTop from "./CalendarTop";
 import CalendarEvents from "../CalendarEvents";
 import { useState } from "react";
 
-const Calendar = () => {
+const Calendar = ({ hightLightWeeks }) => {
   const [reset, setReset] = useState(Math.random());
   return (
     <div className="space-y-3" key={reset}>
