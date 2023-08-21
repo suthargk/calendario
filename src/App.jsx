@@ -26,9 +26,6 @@ function App({ dispatch, isUserSignedIn }) {
 
   useEffect(() => {
     getAuth();
-    if (isUserSignedIn) {
-      fetchEvents({});
-    }
   }, []);
 
   return (
@@ -39,7 +36,16 @@ function App({ dispatch, isUserSignedIn }) {
       {!isAppLoading ? (
         <>
           <Calendar />
-
+          <button
+            style={{ border: "1px solid black" }}
+            onClick={() => {
+              if (isUserSignedIn) {
+                fetchEvents({});
+              }
+            }}
+          >
+            Fetch
+          </button>
           <button
             onClick={
               isUserSignedIn
