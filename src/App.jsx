@@ -47,11 +47,11 @@ function App({ dispatch, isUserSignedIn }) {
             Fetch
           </button>
           <button
-            onClick={
+            onClick={() => {
               isUserSignedIn
-                ? gapi.auth2?.getAuthInstance().signOut
-                : gapi.auth2?.getAuthInstance().signIn
-            }
+                ? gapi.auth2?.getAuthInstance().signOut()
+                : gapi.auth2?.getAuthInstance().signIn();
+            }}
           >
             {isUserSignedIn ? "Google -> Log Out" : "Google -> Log In"}
           </button>
