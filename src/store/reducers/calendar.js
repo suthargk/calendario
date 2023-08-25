@@ -61,9 +61,8 @@ const calendarReducer = (state = INITIAL_STATE, action) => {
       return applyNextMonth(state, action);
     }
     case USER_SELECTED_DATE: {
-      console.log(action);
       const userSelectedDate = action.payload;
-      return { ...state, date: userSelectedDate.date() };
+      return { ...state, date: userSelectedDate.getDate() };
     }
     case RESET_CURRENT_TIME: {
       currentDateObj = dayjs(); // RESET current time

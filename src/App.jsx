@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { fetchEvents } from "./store/services";
 import { useEffect, useState } from "react";
 import { SET_USER_AUTH } from "./store/actions";
-import store from "./store/reducers";
 
 function App({ dispatch, isUserSignedIn }) {
   const [isAppLoading, setIsAppLoading] = useState(false);
@@ -15,7 +14,7 @@ function App({ dispatch, isUserSignedIn }) {
       "https://www.googleapis.com/auth/calendar"
     );
 
-    store.dispatch({
+    dispatch({
       type: SET_USER_AUTH,
       payload: {
         auth2,
@@ -27,9 +26,6 @@ function App({ dispatch, isUserSignedIn }) {
 
   useEffect(() => {
     getAuth();
-    if (isUserSignedIn) {
-      fetchEvents({});
-    }
   }, []);
 
   return (
@@ -40,13 +36,22 @@ function App({ dispatch, isUserSignedIn }) {
       {!isAppLoading ? (
         <>
           <Calendar />
-
           <button
-            onClick={
+            style={{ border: "1px solid black" }}
+            onClick={() => {
+              if (isUserSignedIn) {
+                fetchEvents({});
+              }
+            }}
+          >
+            Fetch
+          </button>
+          <button
+            onClick={() => {
               isUserSignedIn
-                ? gapi.auth2?.getAuthInstance().signOut
-                : gapi.auth2?.getAuthInstance().signIn
-            }
+                ? gapi.auth2?.getAuthInstance().signOut()
+                : gapi.auth2?.getAuthInstance().signIn();
+            }}
           >
             {isUserSignedIn ? "Google -> Log Out" : "Google -> Log In"}
           </button>

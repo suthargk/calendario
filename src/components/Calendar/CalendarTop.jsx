@@ -8,6 +8,7 @@ import {
 } from "../../store/actions";
 import dayjs from "dayjs";
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
+import { fetchEvents } from "../../store/services";
 
 const CalendarTop = ({ currentDate, dispatch, setReset }) => {
   const format = dayjs(
@@ -28,6 +29,17 @@ const CalendarTop = ({ currentDate, dispatch, setReset }) => {
         date: currentDate.date,
       },
     });
+
+    fetchEvents({
+      timeMin: dayjs(`${prevYear}-${prevMonth + 1}`)
+        .startOf("month")
+        .utc()
+        .format(),
+      timeMax: dayjs(`${prevYear}-${prevMonth + 1}`)
+        .endOf("month")
+        .utc()
+        .format(),
+    });
   };
 
   const handleNextMonth = () => {
@@ -44,6 +56,17 @@ const CalendarTop = ({ currentDate, dispatch, setReset }) => {
         date: currentDate.date,
       },
     });
+
+    fetchEvents({
+      timeMin: dayjs(`${nextYear}-${nextMonth + 1}`)
+        .startOf("month")
+        .utc()
+        .format(),
+      timeMax: dayjs(`${nextYear}-${nextMonth + 1}`)
+        .endOf("month")
+        .utc()
+        .format(),
+    });
   };
 
   const handleToday = () => {
@@ -53,10 +76,7 @@ const CalendarTop = ({ currentDate, dispatch, setReset }) => {
 
   const todayDate = new Date();
   return (
-    <div
-      // style={{ margin: "0 5.6px" }}
-      className="flex justify-between items-center p-2"
-    >
+    <div className="flex justify-between items-center p-2">
       <div className="text-lg font-semibold">{format}</div>
       <div className="flex justify-between items-center">
         <button
