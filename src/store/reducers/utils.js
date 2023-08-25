@@ -1,5 +1,3 @@
-import dayjs from "dayjs";
-
 export const WEEKDAYVALUES = {
   0: "SU",
   1: "MO",
@@ -18,17 +16,40 @@ function startOfWeek(dt) {
   return new Date(dt.getTime() - Math.abs(0 - weekday) * day);
 }
 
-function weeksBetween(d1, d2) {
+export function weeksBetween(d1, d2) {
   return Math.ceil((startOfWeek(d2) - startOfWeek(d1)) / week);
 }
 
-export const filterEvents = (
+function getWeeklyOccurences({
+  startDate,
+  count,
+  interval,
+  recurrenceStatusList,
+}) {
+  const occurrences = [];
+  let currentDate = new Date(startDate);
+
+  while (occurrences.length < count) {
+    const dayOfWeek = currentDate.getDay(); // 0 = Sunday, 6 = Saturday
+
+    if (recurrenceStatusList["BYDAY"].includes(WEEKDAYVALUES[dayOfWeek])) {
+      occurrences.push(new Date(currentDate));
+    }
+
+    currentDate.setDate(currentDate.getDate() + interval);
+  }
+
+  return occurrences;
+}
+
+export const filterEvents = ({
   recurrenceStatusList,
   event,
   userSelected,
   dateDifference,
-  interval = 1
-) => {
+  eventStartAt,
+  interval = 1,
+}) => {
   if (
     !recurrenceStatusList.hasOwnProperty("UNTIL") &&
     !recurrenceStatusList.hasOwnProperty("COUNT") &&
@@ -37,11 +58,20 @@ export const filterEvents = (
     return event;
   }
 
-  if (
-    recurrenceStatusList.hasOwnProperty("COUNT") &&
-    dateDifference >= 0 &&
-    dateDifference < recurrenceStatusList["COUNT"] * interval
-  ) {
+  if (recurrenceStatusList.hasOwnProperty("COUNT")) {
+    if (recurrenceStatusList.hasOwnProperty("BYDAY")) {
+      const occurrences = getWeeklyOccurences({
+        startDate: eventStartAt,
+        count: Number(recurrenceStatusList["COUNT"]),
+        interval,
+        recurrenceStatusList,
+      });
+
+      const endDate = occurrences[occurrences.length - 1];
+      return userSelected <= endDate && endDate;
+    } else
+      dateDifference >= 0 &&
+        dateDifference < recurrenceStatusList["COUNT"] * interval;
     return event;
   }
 
@@ -59,12 +89,12 @@ export const filterEvents = (
   }
 };
 
-export const getDailyIntervalEvents = (
+export const getDailyIntervalEvents = ({
   recurrenceStatusList,
   event,
   userSelected,
-  dateDifference
-) => {
+  dateDifference,
+}) => {
   const dailyIntervalRepeatDays = Number(recurrenceStatusList["INTERVAL"]);
 
   if (dateDifference > 0 && dateDifference % dailyIntervalRepeatDays === 0) {
@@ -78,27 +108,27 @@ export const getDailyIntervalEvents = (
   }
 };
 
-export const getWeeklyIntervalEvents = (
+export const getWeeklyIntervalEvents = ({
   recurrenceStatusList,
   event,
   eventStartAt,
   Weekdays,
-  userSelected
-) => {
+  userSelected,
+  dateDifference,
+}) => {
   const weeklyIntervalRepeatDays = Number(recurrenceStatusList["INTERVAL"]);
-  const resetEventStartAtTime = new Date(dayjs(eventStartAt).startOf("day"));
-
-  const weekDifference = weeksBetween(resetEventStartAtTime, userSelected) - 1;
-
+  console.log(dateDifference, weeklyIntervalRepeatDays);
   if (
-    weekDifference % weeklyIntervalRepeatDays === 0 &&
+    dateDifference % weeklyIntervalRepeatDays === 0 &&
     Weekdays.includes(WEEKDAYVALUES[userSelected.getDay()])
   ) {
-    return filterEvents(
+    return filterEvents({
       recurrenceStatusList,
       event,
       userSelected,
-      weekDifference
-    );
+      dateDifference,
+      eventStartAt,
+      interval: weeklyIntervalRepeatDays,
+    });
   }
 };
