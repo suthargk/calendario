@@ -64,10 +64,12 @@ const CalendarDays = ({ currentDate, dispatch }) => {
     }
 
     const selectedDate = new Date(
-      `${currentDate.year}-${String(currentDate.month + 1).padStart(
-        2,
-        0
-      )}-${String(dateValue.date).padStart(2, 0)}`
+      new Date(
+        `${currentDate.year}-${String(currentDate.month + 1).padStart(
+          2,
+          0
+        )}-${String(dateValue.date).padStart(2, 0)}`
+      ).setHours(0, 0, 0, 0)
     );
 
     dispatch({

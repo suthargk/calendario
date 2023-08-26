@@ -20,6 +20,12 @@ export function weeksBetween(d1, d2) {
   return Math.ceil((startOfWeek(d2) - startOfWeek(d1)) / week);
 }
 
+export function getMonthDifference(d1, d2) {
+  const monthDiff = d2.getMonth() - d1.getMonth();
+  const yearDiff = d2.getYear() - d1.getYear();
+  return monthDiff + yearDiff * 12;
+}
+
 function getWeeklyOccurences({
   startDate,
   count,
@@ -69,10 +75,13 @@ export const filterEvents = ({
 
       const endDate = occurrences[occurrences.length - 1];
       return userSelected <= endDate && endDate;
-    } else
+    }
+
+    if (
       dateDifference >= 0 &&
-        dateDifference < recurrenceStatusList["COUNT"] * interval;
-    return event;
+      dateDifference < recurrenceStatusList["COUNT"] * interval
+    )
+      return event;
   }
 
   if (
@@ -97,14 +106,14 @@ export const getDailyIntervalEvents = ({
 }) => {
   const dailyIntervalRepeatDays = Number(recurrenceStatusList["INTERVAL"]);
 
-  if (dateDifference > 0 && dateDifference % dailyIntervalRepeatDays === 0) {
-    return filterEvents(
+  if (dateDifference >= 0 && dateDifference % dailyIntervalRepeatDays === 0) {
+    return filterEvents({
       recurrenceStatusList,
       event,
       userSelected,
       dateDifference,
-      Number(recurrenceStatusList["INTERVAL"])
-    );
+      interval: Number(recurrenceStatusList["INTERVAL"]),
+    });
   }
 };
 
@@ -116,8 +125,8 @@ export const getWeeklyIntervalEvents = ({
   userSelected,
   dateDifference,
 }) => {
-  const weeklyIntervalRepeatDays = Number(recurrenceStatusList["INTERVAL"]);
-  console.log(dateDifference, weeklyIntervalRepeatDays);
+  const weeklyIntervalRepeatWeeks = Number(recurrenceStatusList["INTERVAL"]);
+
   if (
     dateDifference % weeklyIntervalRepeatDays === 0 &&
     Weekdays.includes(WEEKDAYVALUES[userSelected.getDay()])
@@ -128,7 +137,20 @@ export const getWeeklyIntervalEvents = ({
       userSelected,
       dateDifference,
       eventStartAt,
-      interval: weeklyIntervalRepeatDays,
+      interval: weeklyIntervalRepeatWeeks,
     });
+  }
+};
+
+export const getMonthlyIntervalEvents = ({
+  recurrenceStatusList,
+  event,
+  eventStartAt,
+  userSelected,
+  dateDifference,
+}) => {
+  const montlyIntervalRepeatMonths = Number(recurrenceStatusList["INTERVAL"]);
+  if (dateDifference % montlyIntervalRepeatMonths === 0) {
+    console.log("MOnth", dateDifference);
   }
 };
