@@ -3,8 +3,6 @@ import dayjs from "dayjs";
 const DayItem = ({ day, month, year, select, handleDaySelect }) => {
   const todayDate = dayjs();
 
-  const selectedDate = { day: day.day, month, year };
-
   return (
     <td
       style={

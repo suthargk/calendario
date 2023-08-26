@@ -100,13 +100,13 @@ const applySelectedDate = (state, action) => {
     const eventStartAt = new Date(event.start.dateTime);
     if (event.recurrence) {
       const recurrenceStatusList = getRecurrenceStatusList(event);
+      const dayDifference = dayjs(userSelected).diff(
+        dayjs(eventStartAt).startOf("day"),
+        "day"
+      );
 
       switch (recurrenceStatusList["RRULE:FREQ"]) {
         case "DAILY": {
-          const dayDifference = dayjs(userSelected).diff(
-            dayjs(eventStartAt).startOf("day"),
-            "day"
-          );
           return dailyRrule({
             recurrenceStatusList,
             event,
@@ -115,12 +115,12 @@ const applySelectedDate = (state, action) => {
           });
         }
         case "WEEKLY": {
+          const resetEventStartAtTime = new Date(
+            dayjs(eventStartAt).startOf("day")
+          );
           const weekDifference = weeksBetween(
             resetEventStartAtTime,
             userSelected
-          );
-          const resetEventStartAtTime = new Date(
-            dayjs(eventStartAt).startOf("day")
           );
           return weeklyRrule({
             recurrenceStatusList,

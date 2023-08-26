@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const WEEKDAYVALUES = {
   0: "SU",
   1: "MO",
@@ -46,6 +48,24 @@ function getWeeklyOccurences({
   }
 
   return occurrences;
+}
+
+function getNthWeekdayDate(year, month, getWeekDayInNumber, dateUnit) {
+  const firstDayOfMonth = new Date(year, month, 1);
+  const dayOfWeek = getWeekDayInNumber; // 5 corresponds to Friday
+
+  // Calculate the date of the first occurrence of the specified day
+  const firstOccurrence = new Date(
+    year,
+    month,
+    1 + ((dayOfWeek - firstDayOfMonth.getDay() + 7) % 7)
+  );
+
+  // Calculate the date of the nth occurrence
+  const nthOccurrence = new Date(firstOccurrence);
+  nthOccurrence.setDate(firstOccurrence.getDate() + (dateUnit - 1) * 7);
+
+  return nthOccurrence;
 }
 
 export const filterEvents = ({
@@ -98,6 +118,35 @@ export const filterEvents = ({
   }
 };
 
+const filterMonthlyEvents = ({
+  recurrenceStatusList,
+  event,
+  eventStartAt,
+  userSelected,
+  dateDifference,
+}) => {
+  if (
+    recurrenceStatusList.hasOwnProperty("BYDAY") &&
+    !recurrenceStatusList.hasOwnProperty("UNTIL") &&
+    !recurrenceStatusList.hasOwnProperty("COUNT")
+  ) {
+    const dateUnit = recurrenceStatusList["BYDAY"].replace(/[^-0-9]/g, "");
+    const weekDayUnit = recurrenceStatusList["BYDAY"].replace(/[^A-Z]/g, "");
+    const getWeekDayInNumber = Object.keys(WEEKDAYVALUES).find(
+      (day) => WEEKDAYVALUES[day] === weekDayUnit
+    );
+
+    const nthWeekdayDate = getNthWeekdayDate(
+      userSelected.getFullYear(),
+      userSelected.getMonth(),
+      getWeekDayInNumber,
+      dateUnit
+    );
+
+    if (dayjs(userSelected).diff(nthWeekdayDate, "days") === 0) return event;
+  }
+};
+
 export const getDailyIntervalEvents = ({
   recurrenceStatusList,
   event,
@@ -128,7 +177,7 @@ export const getWeeklyIntervalEvents = ({
   const weeklyIntervalRepeatWeeks = Number(recurrenceStatusList["INTERVAL"]);
 
   if (
-    dateDifference % weeklyIntervalRepeatDays === 0 &&
+    dateDifference % weeklyIntervalRepeatWeeks === 0 &&
     Weekdays.includes(WEEKDAYVALUES[userSelected.getDay()])
   ) {
     return filterEvents({
@@ -151,6 +200,12 @@ export const getMonthlyIntervalEvents = ({
 }) => {
   const montlyIntervalRepeatMonths = Number(recurrenceStatusList["INTERVAL"]);
   if (dateDifference % montlyIntervalRepeatMonths === 0) {
-    console.log("MOnth", dateDifference);
+    return filterMonthlyEvents({
+      recurrenceStatusList,
+      event,
+      eventStartAt,
+      userSelected,
+      dateDifference,
+    });
   }
 };
