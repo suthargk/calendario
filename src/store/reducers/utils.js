@@ -51,20 +51,12 @@ function getWeeklyOccurences({
 }
 
 function getNthWeekdayDate(year, month, getWeekDayInNumber, dateUnit) {
-  const firstDayOfMonth = new Date(year, month, 1);
-  const dayOfWeek = getWeekDayInNumber; // 5 corresponds to Friday
-
-  // Calculate the date of the first occurrence of the specified day
-  const firstOccurrence = new Date(
-    year,
-    month,
-    1 + ((dayOfWeek - firstDayOfMonth.getDay() + 7) % 7)
+  const firstDayOfMonth = dayjs(new Date(year, month, 1));
+  const firstWeekday = firstDayOfMonth.add(
+    (getWeekDayInNumber - firstDayOfMonth.day() + 7) % 7,
+    "day"
   );
-
-  // Calculate the date of the nth occurrence
-  const nthOccurrence = new Date(firstOccurrence);
-  nthOccurrence.setDate(firstOccurrence.getDate() + (dateUnit - 1) * 7);
-
+  const nthOccurrence = firstWeekday.add((dateUnit - 1) * 7, "day");
   return nthOccurrence;
 }
 
