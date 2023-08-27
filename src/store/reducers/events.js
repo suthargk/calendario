@@ -1,12 +1,10 @@
 import dayjs from "dayjs";
 import { ADD_EVENTS, USER_SELECTED_DATE } from "../actions";
 import {
-  WEEKDAYVALUES,
-  filterEvents,
-  getDailyIntervalEvents,
+  getDailyRruleEvents,
   getMonthDifference,
-  getMonthlyIntervalEvents,
-  getWeeklyIntervalEvents,
+  getMonthlyRruleEvents,
+  getWeeklyRruleEvents,
   weeksBetween,
 } from "./utils";
 const INITIAL_EVENTS = {
@@ -15,84 +13,15 @@ const INITIAL_EVENTS = {
 };
 
 const getRecurrenceStatusList = (event) => {
-  return event.recurrence[0].split(";").reduce((obj, item) => {
-    const splitedItem = item.split("=");
-    return { ...obj, [splitedItem[0]]: splitedItem[1] };
-  }, {});
+  return event.recurrence[0].split(";").reduce(
+    (obj, item) => {
+      const splitedItem = item.split("=");
+      return { ...obj, [splitedItem[0]]: splitedItem[1] };
+    },
+    { INTERVAL: "1" }
+  );
 };
 
-const dailyRrule = ({
-  recurrenceStatusList,
-  event,
-  userSelected,
-  dateDifference,
-}) => {
-  if (recurrenceStatusList.hasOwnProperty("INTERVAL")) {
-    return getDailyIntervalEvents({
-      recurrenceStatusList,
-      event,
-      userSelected,
-      dateDifference,
-    });
-  } else {
-    return filterEvents({
-      recurrenceStatusList,
-      event,
-      userSelected,
-      dateDifference,
-    });
-  }
-};
-
-const weeklyRrule = ({
-  recurrenceStatusList,
-  event,
-  eventStartAt,
-  userSelected,
-  weekDifference,
-  dayDifference,
-}) => {
-  const Weekdays = recurrenceStatusList["BYDAY"];
-  if (recurrenceStatusList.hasOwnProperty("INTERVAL") && dayDifference >= 0) {
-    return getWeeklyIntervalEvents({
-      recurrenceStatusList,
-      event,
-      eventStartAt,
-      Weekdays,
-      userSelected,
-      dateDifference: weekDifference,
-    });
-  } else if (
-    dayDifference >= 0 &&
-    Weekdays.includes(WEEKDAYVALUES[userSelected.getDay()])
-  ) {
-    return filterEvents({
-      recurrenceStatusList,
-      event,
-      userSelected,
-      dateDifference: weekDifference,
-      eventStartAt,
-    });
-  }
-};
-
-const monthlyRrule = ({
-  recurrenceStatusList,
-  event,
-  userSelected,
-  eventStartAt,
-  monthDifference,
-}) => {
-  if (recurrenceStatusList.hasOwnProperty("INTERVAL")) {
-    return getMonthlyIntervalEvents({
-      recurrenceStatusList,
-      event,
-      userSelected,
-      eventStartAt,
-      dateDifference: monthDifference,
-    });
-  }
-};
 const applySelectedDate = (state, action) => {
   const userSelected = action.payload;
 
@@ -107,11 +36,11 @@ const applySelectedDate = (state, action) => {
 
       switch (recurrenceStatusList["RRULE:FREQ"]) {
         case "DAILY": {
-          return dailyRrule({
+          return getDailyRruleEvents({
             recurrenceStatusList,
             event,
-            dateDifference: dayDifference,
             userSelected,
+            dateDifference: dayDifference,
           });
         }
         case "WEEKLY": {
@@ -122,13 +51,15 @@ const applySelectedDate = (state, action) => {
             resetEventStartAtTime,
             userSelected
           );
-          return weeklyRrule({
+
+          return getWeeklyRruleEvents({
             recurrenceStatusList,
             event,
-            weekDifference,
+            eventStartAt: resetEventStartAtTime,
+            Weekdays,
             userSelected,
             dayDifference,
-            eventStartAt: resetEventStartAtTime,
+            dateDifference: weekDifference,
           });
         }
 
@@ -138,12 +69,12 @@ const applySelectedDate = (state, action) => {
             userSelected
           );
 
-          return monthlyRrule({
+          return getMonthlyRruleEvents({
             recurrenceStatusList,
             event,
             userSelected,
             eventStartAt,
-            monthDifference,
+            dateDifference: monthDifference,
           });
         }
       }

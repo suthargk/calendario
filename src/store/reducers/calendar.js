@@ -1,13 +1,10 @@
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import {
   NEXT_MONTH,
   PREV_MONTH,
   RESET_CURRENT_TIME,
   USER_SELECTED_DATE,
 } from "../actions";
-
-dayjs.extend(utc);
 
 let currentDateObj = dayjs();
 
