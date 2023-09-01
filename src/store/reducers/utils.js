@@ -140,3 +140,24 @@ export const getMonthlyRruleEvents = ({
     });
   }
 };
+
+export const getYearlyRruleEvents = ({
+  dateDifference,
+  event,
+  recurrenceStatusList,
+  userSelected,
+}) => {
+  const yearlyIntervalRepeatMonths = Number(recurrenceStatusList["INTERVAL"]);
+
+  if (
+    dateDifference % yearlyIntervalRepeatMonths === 0 &&
+    dateDifference >= 0
+  ) {
+    if (
+      dayjs(event.start.dateTime.split("T")[0])
+        .add(dateDifference, "year")
+        .diff(userSelected, "days") === 0
+    )
+      return event;
+  }
+};
