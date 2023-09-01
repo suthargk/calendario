@@ -2,8 +2,8 @@ import dayjs from "dayjs";
 import {
   WEEKDAYVALUES,
   getIsDateOnEveryMonth,
+  getLastWeekdayMonth,
   getNthWeekdayDate,
-  weeksBetween,
 } from "../utils";
 
 export const filterMonthlyEvents = ({
@@ -14,30 +14,23 @@ export const filterMonthlyEvents = ({
   if (recurrenceStatusList.hasOwnProperty("BYDAY")) {
     let dateUnit = recurrenceStatusList["BYDAY"].replace(/[^-0-9]/g, "");
     const weekDay = recurrenceStatusList["BYDAY"].replace(/[^A-Z]/g, "");
-
-    if (dateUnit === "-1") {
-      const firstDayOfMonth = dayjs(
-        `${userSelected.getFullYear()}-
-          ${userSelected.getMonth() + 1}-01`
-      );
-
-      const weekDifference = weeksBetween(
-        firstDayOfMonth,
-        firstDayOfMonth.endOf("month")
-      );
-      dateUnit = weekDifference;
-    }
-
+    const firstDayOfMonth = dayjs(userSelected).startOf("month");
     const getWeekDayInNumber = Object.keys(WEEKDAYVALUES).find(
       (day) => WEEKDAYVALUES[day] === weekDay
     );
 
-    const nthWeekdayDate = getNthWeekdayDate(
-      userSelected.getFullYear(),
-      userSelected.getMonth(),
-      getWeekDayInNumber,
-      dateUnit
-    );
+    const nthWeekdayDate =
+      dateUnit === "-1"
+        ? getLastWeekdayMonth(
+            userSelected.getFullYear(),
+            userSelected.getMonth(),
+            getWeekDayInNumber
+          )
+        : getNthWeekdayDate(
+            firstDayOfMonth,
+            Number(getWeekDayInNumber),
+            dateUnit
+          );
 
     if (dayjs(userSelected).diff(nthWeekdayDate, "days") === 0) {
       return event;

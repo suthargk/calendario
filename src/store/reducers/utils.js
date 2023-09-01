@@ -54,14 +54,23 @@ export function getWeeklyOccurences({
   return occurrences;
 }
 
-export function getNthWeekdayDate(year, month, getWeekDayInNumber, dateUnit) {
-  const firstDayOfMonth = dayjs(new Date(year, month, 1));
+export function getNthWeekdayDate(firstDayOfMonth, weekday, nth) {
   const firstWeekday = firstDayOfMonth.add(
-    (getWeekDayInNumber - firstDayOfMonth.day() + 7) % 7,
+    (weekday - firstDayOfMonth.day() + 7) % 7,
     "day"
   );
-  const nthOccurrence = firstWeekday.add((dateUnit - 1) * 7, "day");
+  const nthOccurrence = firstWeekday.add((nth - 1) * 7, "day");
   return nthOccurrence;
+}
+
+export function getLastWeekdayMonth(year, month, weekday) {
+  "use strict";
+  let lastDay = new Date(year, month + 1, 0);
+  if (lastDay.getDay() < weekday) {
+    lastDay.setDate(lastDay.getDate() - 7);
+  }
+  lastDay.setDate(lastDay.getDate() - (lastDay.getDay() - weekday));
+  return lastDay;
 }
 
 export const getIsDateOnEveryMonth = ({ event, userSelected }) => {
