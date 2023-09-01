@@ -73,7 +73,6 @@ const applySelectedDate = (state, action) => {
             recurrenceStatusList,
             event,
             userSelected,
-            eventStartAt,
             dateDifference: monthDifference,
           });
         }
