@@ -5,6 +5,7 @@ import {
   getMonthDifference,
   getMonthlyRruleEvents,
   getWeeklyRruleEvents,
+  getYearlyRruleEvents,
   weeksBetween,
 } from "./utils";
 const INITIAL_EVENTS = {
@@ -73,18 +74,30 @@ const applySelectedDate = (state, action) => {
             recurrenceStatusList,
             event,
             userSelected,
-            eventStartAt,
             dateDifference: monthDifference,
           });
         }
-      }
 
-      if (
-        new Date(event.start.dateTime).toLocaleDateString() ===
-        new Date(userSelected).toLocaleDateString()
-      )
-        return event;
+        case "YEARLY": {
+          const yearDifference =
+            userSelected.getFullYear() -
+            new Date(event.start.dateTime).getFullYear();
+
+          return getYearlyRruleEvents({
+            event,
+            recurrenceStatusList,
+            userSelected,
+            dateDifference: yearDifference,
+          });
+        }
+      }
     }
+
+    if (
+      new Date(event.start.dateTime).toLocaleDateString() ===
+      new Date(userSelected).toLocaleDateString()
+    )
+      return event;
   });
 
   return { ...state, selectedDateEventList: userSelectedDateEvents };
