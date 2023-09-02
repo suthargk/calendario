@@ -64,7 +64,6 @@ export function getNthWeekdayDate(firstDayOfMonth, weekday, nth) {
 }
 
 export function getLastWeekdayMonth(year, month, weekday) {
-  "use strict";
   let lastDay = new Date(year, month + 1, 0);
   if (lastDay.getDay() < weekday) {
     lastDay.setDate(lastDay.getDate() - 7);
