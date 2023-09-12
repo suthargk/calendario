@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { SET_USER_AUTH } from "./store/actions";
 
 function App({ dispatch, isUserSignedIn }) {
+  console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
   const [isAppLoading, setIsAppLoading] = useState(false);
   const getAuth = async () => {
     let auth2 = await loadAuth2(
@@ -29,10 +30,7 @@ function App({ dispatch, isUserSignedIn }) {
   }, []);
 
   return (
-    <div
-      style={{ backgroundColor: "#EBEBEB", width: "350px" }}
-      className="p-4 rounded-xl"
-    >
+    <div style={{ backgroundColor: "#fff", width: "350px" }} className="p-4 ">
       {!isAppLoading ? (
         <>
           <Calendar />

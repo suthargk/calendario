@@ -1,25 +1,23 @@
 import { connect } from "react-redux";
+import CalendarSearch from "./CalendarSearch";
+import { useState } from "react";
+import CalendarTabSection from "./CalendarTabSection";
+import CalendarListSection from "./CalendarTabSection/CalendarListSection";
 
 const CalendarEvents = ({ selectedDateEventList }) => {
+  const [tabActive, setTabActive] = useState("Meetings");
+
+  const handleTab = (tabName) => {
+    setTabActive(tabName);
+  };
   return (
-    <div>
-      <h3
-        className="uppercase px-2 mb-1 text-sm"
-        style={{ color: "rgba(60, 60, 67, .6)" }}
-      >
-        Today
-      </h3>
-      <div className="bg-white p-4 rounded-xl font-normal">
-        {selectedDateEventList.map((event) => {
-          return (
-            <div key={event.id}>
-              <a href={event?.hangoutLink} target="_blank">
-                {event.summary}
-              </a>
-            </div>
-          );
-        })}
-      </div>
+    <div className="space-y-2">
+      <CalendarSearch />
+      <CalendarTabSection tabActive={tabActive} handleTab={handleTab} />
+      <CalendarListSection
+        tabActive={tabActive}
+        selectedDateEventList={selectedDateEventList}
+      />
     </div>
   );
 };
