@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Team Calendario",
+  "version": "0.0.1",
+  "description": "Team Calendario description",
+  "icons": {
+    "16": "./src/assets/calendar.png",
+    "48": "./src/assets/calendar.png",
+    "128": "./src/assets/calendar.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "./src/assets/calendar.png",
+      "48": "./src/assets/calendar.png",
+      "128": "./src/assets/calendar.png"
+    },
+    "default_title": "Team Calendario",
+    "default_popup": "./dist/index.html"
+  }
+}

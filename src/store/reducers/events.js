@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { ADD_EVENTS, USER_SELECTED_DATE } from "../actions";
 import {
+  colors,
   getDailyRruleEvents,
   getMonthDifference,
   getMonthlyRruleEvents,
@@ -107,7 +108,19 @@ const eventsReducer = (state = INITIAL_EVENTS, action) => {
   switch (action.type) {
     case ADD_EVENTS: {
       const events = action.payload;
-      return { ...state, eventList: events.items };
+      const eventsWithColor = events.items.map((event) => {
+        const colorName = colors[Math.trunc(Math.random() * colors.length)];
+
+        const attendeesWithColor =
+          event?.attendees?.length &&
+          event.attendees.map((attendee) => {
+            const colorName = colors[Math.trunc(Math.random() * colors.length)];
+            return { ...attendee, color: colorName };
+          });
+
+        return { ...event, attendees: attendeesWithColor, color: colorName };
+      });
+      return { ...state, eventList: eventsWithColor };
     }
 
     case USER_SELECTED_DATE: {

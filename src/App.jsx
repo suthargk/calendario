@@ -29,10 +29,7 @@ function App({ dispatch, isUserSignedIn }) {
   }, []);
 
   return (
-    <div
-      style={{ backgroundColor: "#EBEBEB", width: "350px" }}
-      className="p-4 rounded-xl"
-    >
+    <div style={{ backgroundColor: "#fff", width: "350px" }} className="p-4 ">
       {!isAppLoading ? (
         <>
           <Calendar />
