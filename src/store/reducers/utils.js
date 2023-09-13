@@ -169,3 +169,119 @@ export const getYearlyRruleEvents = ({
       return event;
   }
 };
+
+export const colors = [
+  "red",
+  "orange",
+  "blue",
+  "violet",
+  "indigo",
+  "amber",
+  "yellow",
+  "lime",
+  "green",
+  "cyan",
+  "sky",
+  "purple",
+  "fuchsia",
+  "pink",
+  "rose",
+];
+
+export const bgLinearGradientColor = {
+  red: `from-red-200 to-red-100`,
+  orange: `from-orange-200 to-orange-100`,
+  blue: `from-blue-200 to-blue-100`,
+  violet: `from-violet-200 to-violet-100`,
+  indigo: `from-indigo-200 to-indigo-100`,
+  amber: `from-amber-200 to-amber-100`,
+  yellow: `from-yellow-200 to-yellow-100`,
+  lime: `from-lime-200 to-lime-100`,
+  green: `from-green-200 to-green-100`,
+  cyan: `from-cyan-200 to-cyan-100`,
+  sky: `from-sky-200 to-sky-100`,
+  purple: `from-purple-200 to-purple-100`,
+  fuchsia: `from-fuchsia-200 to-fuchsia-100`,
+  pink: `from-pink-200 to-pink-100`,
+  rose: `from-rose-200 to-rose-100`,
+};
+
+export const HeadingTextColor = {
+  red: `text-red-900`,
+  orange: `text-orange-900`,
+  blue: `text-blue-900`,
+  violet: `text-violet-900`,
+  indigo: `text-indigo-900`,
+  amber: `text-amber-900`,
+  yellow: `text-yellow-900`,
+  lime: `text-lime-900`,
+  green: `text-green-900`,
+  cyan: `text-cyan-900`,
+  sky: `text-sky-900`,
+  purple: `text-purple-900`,
+  fuchsia: `text-fuchsia-900`,
+  pink: `text-pink-900`,
+  rose: `text-rose-900`,
+};
+
+export const textColor = {
+  red: `text-red-800`,
+  orange: `text-orange-800`,
+  blue: `text-blue-800`,
+  violet: `text-violet-800`,
+  indigo: `text-indigo-800`,
+  amber: `text-amber-800`,
+  yellow: `text-yellow-800`,
+  lime: `text-lime-800`,
+  green: `text-green-800`,
+  cyan: `text-cyan-800`,
+  sky: `text-sky-800`,
+  purple: `text-purple-800`,
+  fuchsia: `text-fuchsia-800`,
+  pink: `text-pink-800`,
+  rose: `text-rose-800`,
+};
+
+export const bgColor = {
+  red: `bg-red-600`,
+  orange: `bg-orange-600`,
+  blue: `bg-blue-600`,
+  violet: `bg-violet-600`,
+  indigo: `bg-indigo-600`,
+  amber: `bg-amber-600`,
+  yellow: `bg-yellow-600`,
+  lime: `bg-lime-600`,
+  green: `bg-green-600`,
+  cyan: `bg-cyan-600`,
+  sky: `bg-sky-600`,
+  purple: `bg-purple-600`,
+  fuchsia: `bg-fuchsia-600`,
+  pink: `bg-pink-600`,
+  rose: `bg-rose-600`,
+};
+
+export const attendeeBgColor = {
+  red: `bg-red-200`,
+  orange: `bg-orange-200`,
+  blue: `bg-blue-200`,
+  violet: `bg-violet-200`,
+  indigo: `bg-indigo-200`,
+  amber: `bg-amber-200`,
+  yellow: `bg-yellow-200`,
+  lime: `bg-lime-200`,
+  green: `bg-green-200`,
+  cyan: `bg-cyan-200`,
+  sky: `bg-sky-200`,
+  purple: `bg-purple-200`,
+  fuchsia: `bg-fuchsia-200`,
+  pink: `bg-pink-200`,
+  rose: `bg-rose-200`,
+};
+
+export const generateUserProfile = (user_name) => {
+  const userName = user_name.split(" ");
+
+  return userName.length === 1
+    ? userName[0].slice(0, 2)
+    : userName[0][0] + userName[1][0];
+};

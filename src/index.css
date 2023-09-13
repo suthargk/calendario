@@ -10,3 +10,9 @@ body {
   align-items: center;
   font-size: 16px;
 }
+
+.bg {
+  -webkit-border-image: url("../src/assets/calendar.png") 12 repeat;
+  padding: 20px;
+  height: 600px;
+}
