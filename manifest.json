@@ -4,15 +4,15 @@
   "version": "0.0.1",
   "description": "Team Calendario description",
   "icons": {
-    "16": "./src/assets/calendar.png",
-    "48": "./src/assets/calendar.png",
-    "128": "./src/assets/calendar.png"
+    "16": "./src/assets/extension_icons/calendar.png",
+    "48": "./src/assets/extension_icons/calendar.png",
+    "128": "./src/assets/extension_icons/calendar.png"
   },
   "action": {
     "default_icon": {
-      "16": "./src/assets/calendar.png",
-      "48": "./src/assets/calendar.png",
-      "128": "./src/assets/calendar.png"
+      "16": "./src/assets/extension_icons/calendar.png",
+      "48": "./src/assets/extension_icons/calendar.png",
+      "128": "./src/assets/extension_icons/calendar.png"
     },
     "default_title": "Team Calendario",
     "default_popup": "./dist/index.html"

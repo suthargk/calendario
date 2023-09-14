@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
-import { getRowDays } from "../../utils";
+
 import DayItem from "./DayItem";
+import { getRowDays } from "../../../utils";
 
 const DayRow = ({
   rowIndex,

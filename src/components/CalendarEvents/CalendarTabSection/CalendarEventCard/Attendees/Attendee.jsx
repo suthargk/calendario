@@ -1,12 +1,11 @@
 import React from "react";
 import {
   attendeeBgColor,
-  colors,
   generateUserProfile,
   textColor,
-} from "../../../../store/reducers/utils";
+} from "../../../../../store/reducers/utils";
 
-const AttendUser = ({ user, AttendeeColor }) => {
+const Attendee = ({ user, AttendeeColor }) => {
   const attendName = user.displayName || user.email;
   const attendTagName = generateUserProfile(attendName);
   return (
@@ -19,4 +18,4 @@ const AttendUser = ({ user, AttendeeColor }) => {
   );
 };
 
-export default AttendUser;
+export default Attendee;

@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import DayRow from "../Day/DayRow";
+import DayRow from "./Day/DayRow";
 import { useState } from "react";
 import {
   NEXT_MONTH,
