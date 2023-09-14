@@ -10,7 +10,7 @@ import Attendees from "./Attendees";
 import DownChevronIcon from "../../../../assets/icons/DownChevronIcon";
 import EventCardDetail from "./EventCardDetail";
 
-const CalendarEventCard = ({ event, handleEventOpen, isEventOpen }) => {
+const CalendarEventCard = ({ event, handleEventOpen, isEventOpenId }) => {
   const {
     summary,
     hangoutLink = "",
@@ -39,7 +39,7 @@ const CalendarEventCard = ({ event, handleEventOpen, isEventOpen }) => {
           <h2 className={`text-sm ${HeadingTextColor[color]}`}>
             {summary || "(No title)"}
           </h2>
-          {isEventOpen === event.id ? (
+          {isEventOpenId === event.id ? (
             <p className={`text-xs opacity-75 ${textColor[color]}`}>
               {eventDescription}
             </p>
@@ -51,7 +51,7 @@ const CalendarEventCard = ({ event, handleEventOpen, isEventOpen }) => {
         </div>
         <div
           className={`rounded-full duration-300 ${
-            isEventOpen === event.id
+            isEventOpenId === event.id
               ? "rotate-180 text-white " + bgColor[color]
               : "rotate-0 bg-white " + textColor[color]
           } shadow  p-0.5 flex justify-center items-center `}
@@ -60,11 +60,11 @@ const CalendarEventCard = ({ event, handleEventOpen, isEventOpen }) => {
         </div>
       </div>
 
-      {attendees && !(isEventOpen === event.id) && (
+      {attendees && !(isEventOpenId === event.id) && (
         <Attendees attendees={attendees} className="shadow" />
       )}
 
-      {isEventOpen === event.id && (
+      {isEventOpenId === event.id && (
         <EventCardDetail
           event={event}
           startTime={startTime}

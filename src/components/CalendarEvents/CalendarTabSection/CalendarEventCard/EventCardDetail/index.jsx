@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import TimeClockIcon from "../../../../../assets/icons/TimeClockIcon";
 import AttendeeIcon from "../../../../../assets/icons/AttendeeIcon";
 import BellIcon from "../../../../../assets/icons/BellIcon";
 import OrganizerIcon from "../../../../../assets/icons/OrganizerIcon";
 import MeetingLinkIcon from "../../../../../assets/icons/MeetingLinkIcon";
 import CopyIcon from "../../../../../assets/icons/CopyIcon";
+import MoreIcon from "../../../../../assets/icons/MoreIcon";
 import Attendees from "../Attendees";
 import EventCardDetailItem from "./EventCardDetailItem";
 
@@ -21,11 +22,33 @@ const EventCardDetail = ({
   const totalAttendeesResponse = attendees.filter(
     (attendee) => attendee.responseStatus === "accepted"
   ).length;
+  const [isMoreOptionOpen, setIsMoreOptionOpen] = useState(false);
 
   const organizerName = organizer.displayName || organizer.email;
 
   return (
-    <div className="shadow bg-white rounded-xl p-4 -mx-2 font-light">
+    <div className="relative shadow bg-white rounded-xl p-4 -mx-2 font-light">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsMoreOptionOpen(!isMoreOptionOpen);
+        }}
+        className={`absolute text-gray-600 right-2.5 top-2.5 p-1 rounded-full hover:bg-gray-100 ${
+          isMoreOptionOpen ? "bg-gray-100" : ""
+        }`}
+      >
+        <MoreIcon width={18} height={18} />
+      </button>
+      {isMoreOptionOpen && (
+        <div className="absolute flex flex-col divide-y bg-white z-10 shadow-xl top-10 right-4 text-sm py-1 border border-gray-200 rounded-lg">
+          <button className="px-3 py-1.5 text-start hover:bg-gray-100">
+            Show Event Detail
+          </button>
+          <button className="px-3 py-1.5 text-start hover:bg-gray-100">
+            Delete Event
+          </button>
+        </div>
+      )}
       <div
         className={`space-y-3  ${
           hangoutLink ? "mb-4 pb-4 border-b border-gray-200" : ""
