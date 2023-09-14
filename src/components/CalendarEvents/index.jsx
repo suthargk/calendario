@@ -1,8 +1,8 @@
 import { connect } from "react-redux";
-import CalendarSearch from "./CalendarSearch";
 import { useState } from "react";
 import CalendarTabSection from "./CalendarTabSection";
 import CalendarListSection from "./CalendarTabSection/CalendarListSection";
+import CalendarSearchBar from "./CalendarSearchBar";
 
 const CalendarEvents = ({ selectedDateEventList }) => {
   const [tabActive, setTabActive] = useState("Meetings");
@@ -11,8 +11,8 @@ const CalendarEvents = ({ selectedDateEventList }) => {
     setTabActive(tabName);
   };
   return (
-    <div className="space-y-2">
-      <CalendarSearch />
+    <div className="space-y-4">
+      <CalendarSearchBar />
       <CalendarTabSection tabActive={tabActive} handleTab={handleTab} />
       <CalendarListSection
         tabActive={tabActive}
