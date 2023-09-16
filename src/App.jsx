@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { fetchEvents } from "./store/services";
 import { useEffect, useState } from "react";
 import { SET_USER_AUTH } from "./store/actions";
+import CalendarEvents from "./components/CalendarEvents";
+import MinimalisticCalendar from "./components/MinimalisticCalendar";
 
 function App({ dispatch, isUserSignedIn }) {
   const [isAppLoading, setIsAppLoading] = useState(false);
@@ -29,10 +31,15 @@ function App({ dispatch, isUserSignedIn }) {
   }, []);
 
   return (
-    <div style={{ backgroundColor: "#fff", width: "350px" }} className="p-4 ">
+    <div
+      style={{ backgroundColor: "#fff", width: "350px" }}
+      className="p-4 rounded-2xl shadow"
+    >
       {!isAppLoading ? (
-        <>
+        <div className="space-y-4">
+          <MinimalisticCalendar />
           <Calendar />
+          <CalendarEvents />
           <button
             style={{ border: "1px solid black" }}
             onClick={() => {
@@ -52,7 +59,7 @@ function App({ dispatch, isUserSignedIn }) {
           >
             {isUserSignedIn ? "Google -> Log Out" : "Google -> Log In"}
           </button>
-        </>
+        </div>
       ) : (
         "Loading..."
       )}

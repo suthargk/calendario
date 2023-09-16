@@ -40,7 +40,7 @@ const EventCardDetail = ({
         <MoreIcon width={18} height={18} />
       </button>
       {isMoreOptionOpen && (
-        <div className="absolute flex flex-col divide-y bg-white z-10 shadow-xl top-10 right-4 text-sm py-1 border border-gray-200 rounded-lg">
+        <div className="absolute overflow-hidden flex flex-col divide-y bg-white z-10 shadow-xl top-10 right-4 text-sm py-0.5 border border-gray-200 rounded-lg">
           <button className="px-3 py-1.5 text-start hover:bg-gray-100">
             Show Event Detail
           </button>

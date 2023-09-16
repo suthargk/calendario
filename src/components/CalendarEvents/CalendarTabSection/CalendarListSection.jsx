@@ -12,7 +12,7 @@ const CalendarListSection = ({ tabActive, selectedDateEventList }) => {
   if (!selectedDateEventList.length) return <EmptyCalendarListSection />;
 
   return (
-    <div className="space-y-2 h-72 overflow-auto">
+    <div style={{ height: "400px" }} className="space-y-2 overflow-auto">
       {selectedDateEventList.map((event) => {
         return (
           <CalendarEventCard

@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 import { fetchEvents } from "../../store/services";
 
-const CalendarTop = ({ currentDate, dispatch, setReset }) => {
+const CalendarTop = ({ currentDate, dispatch, setReset, component }) => {
   const format = dayjs(
     `${currentDate.year}-${currentDate.month + 1}-01`
   ).format("MMMM YYYY");
@@ -75,6 +75,17 @@ const CalendarTop = ({ currentDate, dispatch, setReset }) => {
   };
 
   const todayDate = new Date();
+  const Component = component;
+
+  if (component)
+    return (
+      <Component
+        format={format}
+        handleNextMonth={handleNextMonth}
+        handlePrevMonth={handlePrevMonth}
+      />
+    );
+
   return (
     <div className="flex justify-between items-center p-2">
       <div className="text-lg font-semibold">{format}</div>
@@ -93,10 +104,10 @@ const CalendarTop = ({ currentDate, dispatch, setReset }) => {
           Today
         </button>
         <button className="p-2" onClick={handlePrevMonth}>
-          <PrevChevron />
+          <PrevChevron className="text-blue-500" />
         </button>
         <button className="p-2" onClick={handleNextMonth}>
-          <NextChevron />
+          <NextChevron className="text-blue-500" />
         </button>
       </div>
     </div>

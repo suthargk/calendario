@@ -1,4 +1,4 @@
-export const getRowDays = (
+export const getRowDates = (
   rowIndex,
   firstDayOfMonth,
   daysInMonth,

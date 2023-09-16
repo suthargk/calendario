@@ -9,9 +9,13 @@ import {
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 
 const CalendarDays = ({ currentDate, dispatch }) => {
-  const [select, setSelect] = useState({ date: null, month: null, year: null });
+  const [select, setSelect] = useState({
+    date: currentDate.date,
+    month: currentDate.month,
+    year: currentDate.year,
+  });
 
-  const handleDaySelect = (dateValue) => {
+  const handleDaySelect = (dateValue, day) => {
     let currentMonth = currentDate.month;
     let currentYear = currentDate.year;
 
@@ -39,6 +43,7 @@ const CalendarDays = ({ currentDate, dispatch }) => {
       date: dateValue.date,
       month: currentMonth,
       year: currentYear,
+      day,
     });
 
     if (dateValue.nextMonthDate) {
@@ -48,6 +53,7 @@ const CalendarDays = ({ currentDate, dispatch }) => {
           date: dateValue.date,
           month: currentMonth,
           year: currentYear,
+          day,
         },
       });
     }
@@ -59,6 +65,7 @@ const CalendarDays = ({ currentDate, dispatch }) => {
           date: dateValue.date,
           month: currentMonth,
           year: currentYear,
+          day,
         },
       });
     }
@@ -90,8 +97,8 @@ const CalendarDays = ({ currentDate, dispatch }) => {
             rowIndex={index}
             firstDayOfMonth={currentDate.firstDayOfMonth}
             daysInMonth={currentDate.daysInMonth}
-            year={currentDate.year}
-            month={currentDate.month}
+            currentYear={currentDate.year}
+            currentMonth={currentDate.month}
             daysInPreviousMonth={currentDate.daysInPreviousMonth}
             handleDaySelect={handleDaySelect}
             select={select}
