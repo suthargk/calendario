@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 import { fetchEvents } from "../../store/services";
 
-const CalendarTop = ({ currentDate, dispatch, setReset }) => {
+const CalendarTop = ({ currentDate, dispatch, setReset, component }) => {
   const format = dayjs(
     `${currentDate.year}-${currentDate.month + 1}-01`
   ).format("MMMM YYYY");
@@ -74,7 +74,18 @@ const CalendarTop = ({ currentDate, dispatch, setReset }) => {
     dispatch({ type: RESET_CURRENT_TIME });
   };
 
-  const todayDate = new Date();
+  const todayDate = dayjs();
+  const Component = component;
+
+  if (component)
+    return (
+      <Component
+        format={format}
+        handleNextMonth={handleNextMonth}
+        handlePrevMonth={handlePrevMonth}
+      />
+    );
+
   return (
     <div className="flex justify-between items-center p-2">
       <div className="text-lg font-semibold">{format}</div>
@@ -82,9 +93,9 @@ const CalendarTop = ({ currentDate, dispatch, setReset }) => {
         <button
           style={{
             backgroundColor:
-              currentDate.date === todayDate.getDate() &&
-              currentDate.month === todayDate.getMonth() &&
-              currentDate.year === todayDate.getFullYear() &&
+              currentDate.date === todayDate.date() &&
+              currentDate.month === todayDate.month() &&
+              currentDate.year === todayDate.year() &&
               "rgba(118,118,128, .12)",
           }}
           className="py-1.5 px-3 text-base rounded-md"
@@ -93,10 +104,10 @@ const CalendarTop = ({ currentDate, dispatch, setReset }) => {
           Today
         </button>
         <button className="p-2" onClick={handlePrevMonth}>
-          <PrevChevron />
+          <PrevChevron className="text-blue-500" />
         </button>
         <button className="p-2" onClick={handleNextMonth}>
-          <NextChevron />
+          <NextChevron className="text-blue-500" />
         </button>
       </div>
     </div>

@@ -1,20 +1,19 @@
 import { connect } from "react-redux";
-
 import DayItem from "./DayItem";
-import { getRowDays } from "../../../utils";
+import { getRowDates } from "../../../utils";
 
 const DayRow = ({
   rowIndex,
   firstDayOfMonth,
   daysInMonth,
-  year,
-  month,
+  currentYear,
+  currentMonth,
   dispatch,
   daysInPreviousMonth,
   handleDaySelect,
   select,
 }) => {
-  const days = getRowDays(
+  const dates = getRowDates(
     rowIndex,
     firstDayOfMonth,
     daysInMonth,
@@ -23,16 +22,17 @@ const DayRow = ({
 
   return (
     <tr className="text-gray-800">
-      {days?.map((day, index) => {
+      {dates?.map((date, index) => {
         return (
           <DayItem
             key={index}
-            day={day}
-            month={month}
-            year={year}
+            date={date}
+            currentYear={currentYear}
+            currentMonth={currentMonth}
             dispatch={dispatch}
             handleDaySelect={handleDaySelect}
             select={select}
+            day={index}
           />
         );
       })}

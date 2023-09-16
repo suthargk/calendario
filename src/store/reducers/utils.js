@@ -3,13 +3,13 @@ import { filterMonthlyEvents } from "./filterEvents/filterMonthlyEvents";
 import { filterDailyAndWeeklyEvents } from "./filterEvents/filterDailyAndWeeklyEvents";
 
 export const WEEKDAYVALUES = {
-  0: "SU",
-  1: "MO",
-  2: "TU",
-  3: "WE",
-  4: "TH",
-  5: "FR",
-  6: "SA",
+  0: "Sun",
+  1: "Mon",
+  2: "Tue",
+  3: "Wed",
+  4: "Thu",
+  5: "Fri",
+  6: "Sat",
 };
 
 const week = 7 * 24 * 60 * 60 * 1000;
@@ -189,21 +189,21 @@ export const colors = [
 ];
 
 export const bgLinearGradientColor = {
-  red: `from-red-100 to-red-50`,
-  orange: `from-orange-100 to-orange-50`,
-  blue: `from-blue-100 to-blue-50`,
-  violet: `from-violet-100 to-violet-50`,
-  indigo: `from-indigo-100 to-indigo-50`,
-  amber: `from-amber-100 to-amber-50`,
-  yellow: `from-yellow-100 to-yellow-50`,
-  lime: `from-lime-100 to-lime-50`,
-  green: `from-green-100 to-green-50`,
-  cyan: `from-cyan-100 to-cyan-50`,
-  sky: `from-sky-100 to-sky-50`,
-  purple: `from-purple-100 to-purple-50`,
-  fuchsia: `from-fuchsia-100 to-fuchsia-50`,
-  pink: `from-pink-100 to-pink-50`,
-  rose: `from-rose-100 to-rose-50`,
+  red: `from-red-200 to-red-100`,
+  orange: `from-orange-200 to-orange-100`,
+  blue: `from-blue-200 to-blue-100`,
+  violet: `from-violet-200 to-violet-100`,
+  indigo: `from-indigo-200 to-indigo-100`,
+  amber: `from-amber-200 to-amber-100`,
+  yellow: `from-yellow-200 to-yellow-100`,
+  lime: `from-lime-200 to-lime-100`,
+  green: `from-green-200 to-green-100`,
+  cyan: `from-cyan-200 to-cyan-100`,
+  sky: `from-sky-200 to-sky-100`,
+  purple: `from-purple-200 to-purple-100`,
+  fuchsia: `from-fuchsia-200 to-fuchsia-100`,
+  pink: `from-pink-200 to-pink-100`,
+  rose: `from-rose-200 to-rose-100`,
 };
 
 export const HeadingTextColor = {
@@ -276,6 +276,24 @@ export const attendeeBgColor = {
   fuchsia: `bg-fuchsia-200`,
   pink: `bg-pink-200`,
   rose: `bg-rose-200`,
+};
+
+export const borderColor = {
+  red: `border-red-200`,
+  orange: `border-orange-200`,
+  blue: `border-blue-200`,
+  violet: `border-violet-200`,
+  indigo: `border-indigo-200`,
+  amber: `border-amber-200`,
+  yellow: `border-yellow-200`,
+  lime: `border-lime-200`,
+  green: `border-green-200`,
+  cyan: `border-cyan-200`,
+  sky: `border-sky-200`,
+  purple: `border-purple-200`,
+  fuchsia: `border-fuchsia-200`,
+  pink: `border-pink-200`,
+  rose: `border-rose-200`,
 };
 
 export const generateUserProfile = (user_name) => {

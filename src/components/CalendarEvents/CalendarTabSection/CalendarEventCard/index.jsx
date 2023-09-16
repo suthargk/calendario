@@ -4,6 +4,7 @@ import {
   HeadingTextColor,
   bgColor,
   bgLinearGradientColor,
+  borderColor,
   textColor,
 } from "../../../../store/reducers/utils";
 import Attendees from "./Attendees";
@@ -32,7 +33,7 @@ const CalendarEventCard = ({ event, handleEventOpen, isEventOpenId }) => {
   return (
     <div
       onClick={() => handleEventOpen(event.id)}
-      className={`p-4 block rounded-xl space-y-4 cursor-pointer bg-gradient-to-b ${bgLinearGradientColor[color]}`}
+      className={`p-4 block rounded-xl space-y-4 cursor-pointer bg-gradient-to-b ${bgLinearGradientColor[color]} border ${borderColor[color]}`}
     >
       <div className="flex justify-between items-start gap-1">
         <div className="space-y-0.5">

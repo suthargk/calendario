@@ -1,17 +1,31 @@
 import { connect } from "react-redux";
 import DayRow from "./Day/DayRow";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   NEXT_MONTH,
   PREV_MONTH,
   USER_SELECTED_DATE,
 } from "../../store/actions";
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
+import dayjs from "dayjs";
 
 const CalendarDays = ({ currentDate, dispatch }) => {
-  const [select, setSelect] = useState({ date: null, month: null, year: null });
+  const [select, setSelect] = useState({
+    date: currentDate.date,
+    month: currentDate.month,
+    year: currentDate.year,
+  });
 
-  const handleDaySelect = (dateValue) => {
+  useEffect(() => {
+    setSelect({
+      ...select,
+      date: currentDate.date,
+      month: currentDate.month,
+      year: currentDate.year,
+    });
+  }, [currentDate.date]);
+
+  const handleDaySelect = (dateValue, day) => {
     let currentMonth = currentDate.month;
     let currentYear = currentDate.year;
 
@@ -39,6 +53,7 @@ const CalendarDays = ({ currentDate, dispatch }) => {
       date: dateValue.date,
       month: currentMonth,
       year: currentYear,
+      day,
     });
 
     if (dateValue.nextMonthDate) {
@@ -48,6 +63,7 @@ const CalendarDays = ({ currentDate, dispatch }) => {
           date: dateValue.date,
           month: currentMonth,
           year: currentYear,
+          day,
         },
       });
     }
@@ -59,27 +75,19 @@ const CalendarDays = ({ currentDate, dispatch }) => {
           date: dateValue.date,
           month: currentMonth,
           year: currentYear,
+          day,
         },
       });
     }
 
-    const selectedDate = new Date(
-      new Date(
-        `${currentDate.year}-${String(currentDate.month + 1).padStart(
-          2,
-          0
-        )}-${String(dateValue.date).padStart(2, 0)}`
-      ).setHours(0, 0, 0, 0)
+    const selectedDate = dayjs(
+      `${currentDate.year}-${currentDate.month + 1}-${dateValue.date}`
     );
 
     dispatch({
       type: USER_SELECTED_DATE,
       payload: selectedDate,
     });
-
-    // const minTimeUTC = selectedDate.startOf("day").utc().format();
-    // const maxTimeUTC = selectedDate.endOf("day").utc().format();
-    // fetchEvents({ timeMin: minTimeUTC, timeMax: maxTimeUTC });
   };
   return (
     <>
@@ -90,8 +98,8 @@ const CalendarDays = ({ currentDate, dispatch }) => {
             rowIndex={index}
             firstDayOfMonth={currentDate.firstDayOfMonth}
             daysInMonth={currentDate.daysInMonth}
-            year={currentDate.year}
-            month={currentDate.month}
+            currentYear={currentDate.year}
+            currentMonth={currentDate.month}
             daysInPreviousMonth={currentDate.daysInPreviousMonth}
             handleDaySelect={handleDaySelect}
             select={select}
@@ -109,7 +117,6 @@ function mapDispatchToProps(dispatch) {
 const mapStateToProps = (state) => {
   return {
     currentDate: state.calendar,
-    date: state.calendar.currentDate,
   };
 };
 
