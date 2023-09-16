@@ -22,7 +22,6 @@ const applyPrevMonth = (state, action) => {
   const { date, day, month, year } = action.payload;
   currentDateObj = currentDateObj.subtract(1, "month");
   const firstDayOfMonth = currentDateObj.startOf("month").format("d");
-
   return {
     ...state,
     firstDayOfMonth: Number(firstDayOfMonth),

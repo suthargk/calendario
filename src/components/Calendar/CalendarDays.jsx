@@ -81,7 +81,7 @@ const CalendarDays = ({ currentDate, dispatch }) => {
     }
 
     const selectedDate = dayjs(
-      `${currentDate.year}-${currentDate.month + 1}-${dateValue.date}`
+      new Date(currentYear, currentMonth, dateValue.date)
     );
 
     dispatch({
