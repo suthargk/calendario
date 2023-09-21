@@ -4,7 +4,14 @@ import PrevChevron from "../../assets/icons/PrevChevron";
 import NextChevron from "../../assets/icons/NextChevron";
 import { WEEKDAYVALUES } from "../../store/reducers/utils";
 import { getPrevNextFiveDates } from "./utils";
-import { USER_SELECTED_DATE } from "../../store/actions";
+import {
+  NEXT_MONTH,
+  PREV_MONTH,
+  USER_SELECTED_DATE,
+} from "../../store/actions";
+import dayjs from "dayjs";
+import { getNextMonthDate, getPrevMonthDate } from "../../utils";
+import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
 
 const MinimalisticCalendarBody = ({
   currentDate,
@@ -13,20 +20,67 @@ const MinimalisticCalendarBody = ({
   currentYear,
   dispatch,
   daysInPreviousMonth,
+  daysInMonth,
+  setIsLoading,
 }) => {
   const prevNextFiveDates = getPrevNextFiveDates({
     currentDate,
     currentDay,
     daysInPreviousMonth,
+    daysInMonth,
   });
 
-  const handleUserSelectDate = (date) => {
-    const selectedDate = new Date(
-      new Date(
-        `${currentYear}-${String(currentMonth + 1).padStart(2, 0)}-${String(
-          date
-        ).padStart(2, 0)}`
-      ).setHours(0, 0, 0, 0)
+  const handleUserSelectDate = (dateObj) => {
+    let selectedDateMonth = currentMonth;
+    let selectedDateYear = currentYear;
+
+    if (dateObj.isNextMonthDate) {
+      const { nextMonth, nextYear } = getNextMonthDate(
+        selectedDateMonth + 1,
+        selectedDateYear
+      );
+
+      selectedDateMonth = nextMonth;
+      selectedDateYear = nextYear;
+
+      dispatch({
+        type: NEXT_MONTH,
+        payload: {
+          date: dateObj.date,
+          month: selectedDateMonth,
+          year: selectedDateYear,
+          day: dateObj.day,
+        },
+      });
+      fetchEventsAPI(nextYear, nextMonth, setIsLoading);
+      fetchHolidayAPI(nextYear, nextMonth, setIsLoading);
+    }
+
+    if (dateObj.isPrevMonthDate) {
+      const { prevMonth, prevYear } = getPrevMonthDate(
+        selectedDateMonth - 1,
+        selectedDateYear
+      );
+
+      selectedDateMonth = prevMonth;
+      selectedDateYear = prevYear;
+
+      dispatch({
+        type: PREV_MONTH,
+        payload: {
+          date: dateObj.date,
+          month: selectedDateMonth,
+          year: selectedDateYear,
+          day: dateObj.day,
+        },
+      });
+
+      fetchEventsAPI(prevYear, prevMonth, setIsLoading);
+      fetchHolidayAPI(prevYear, prevMonth, setIsLoading);
+    }
+
+    const selectedDate = dayjs(
+      new Date(selectedDateYear, selectedDateMonth, dateObj.date)
     );
 
     dispatch({
@@ -36,37 +90,44 @@ const MinimalisticCalendarBody = ({
   };
 
   return (
-    <div className="flex justify-between items-center">
-      <button className="p-1.5 rounded-full border border-gray-200 bg-white">
+    <div className="flex justify-between items-center select-none">
+      <button
+        onClick={() => handleUserSelectDate(prevNextFiveDates[1])}
+        className="p-1.5 rounded-full border border-gray-200 bg-white"
+      >
         <PrevChevron width={11} height={11} />
       </button>
 
       <div className="flex justify-center">
-        {prevNextFiveDates.map((date) => {
+        {prevNextFiveDates.map((dateObj) => {
           return (
             <div
+              key={dateObj.date}
               style={{ width: "52px" }}
-              className={`py-2 cursor-pointer  text-center rounded-lg text-sm ${
-                currentDate === date.date ? "bg-blue-500 text-white" : ""
+              className={`py-2 cursor-pointer text-center rounded-lg text-sm ${
+                currentDate === dateObj.date ? "bg-blue-500 text-white" : ""
               }`}
-              onClick={() => handleUserSelectDate(date.date)}
+              onClick={() => handleUserSelectDate(dateObj)}
             >
               <div
                 className={`${
-                  currentDate === date.date ? "text-white" : "text-gray-400"
+                  currentDate === dateObj.date ? "text-white" : "text-gray-400"
                 }`}
               >
-                {WEEKDAYVALUES[date.day]}
+                {WEEKDAYVALUES[dateObj.day]}
               </div>
-              <div className="text-lg ">
-                {String(date.date).padStart(2, "0")}
+              <div className="text-lg">
+                {String(dateObj.date).padStart(2, "0")}
               </div>
             </div>
           );
         })}
       </div>
 
-      <button className="p-1.5 rounded-full border border-gray-200 bg-white">
+      <button
+        className="p-1.5 rounded-full border border-gray-200 bg-white"
+        onClick={() => handleUserSelectDate(prevNextFiveDates[3])}
+      >
         <NextChevron width={11} height={11} />
       </button>
     </div>
@@ -80,6 +141,7 @@ const mapStateToProps = (state) => {
     currentMonth: state.calendar.month,
     currentDay: state.calendar.day,
     daysInPreviousMonth: state.calendar.daysInPreviousMonth,
+    daysInMonth: state.calendar.daysInMonth,
   };
 };
 

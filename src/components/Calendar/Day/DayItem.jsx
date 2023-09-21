@@ -1,34 +1,35 @@
 import dayjs from "dayjs";
 
 const DayItem = ({
-  date,
+  rowDate,
   currentMonth,
   currentYear,
   select,
   handleDaySelect,
   day,
 }) => {
-  const todayDate = dayjs();
+  const todayFullDateFormat = dayjs().format("YYYY-MM-DD");
+
+  const selectFullDateFormat = dayjs(
+    new Date(select.year, select.month, select.date)
+  ).format("YYYY-MM-DD");
+
+  const rowFullDateFormat = dayjs(
+    new Date(currentYear, currentMonth, rowDate.date)
+  ).format("YYYY-MM-DD");
 
   return (
     <td
       style={
-        date.currentMonthDate &&
-        select.date === date.date &&
-        select.month === currentMonth &&
-        select.year === currentYear
+        rowDate.isCurrentMonthDate && selectFullDateFormat === rowFullDateFormat
           ? {
               backgroundColor: `${
-                date.date === todayDate.date() &&
-                select.month === todayDate.month() &&
-                select.year === todayDate.year()
+                selectFullDateFormat === todayFullDateFormat
                   ? "rgb(59 130 246)"
                   : "rgba(118,118,128, .12)"
               }`,
               color: `${
-                select.date === todayDate.date() &&
-                select.month === todayDate.month() &&
-                select.year === todayDate.year()
+                selectFullDateFormat === todayFullDateFormat
                   ? "white"
                   : "currentColor"
               }`,
@@ -36,18 +37,16 @@ const DayItem = ({
           : {}
       }
       className={` text-center p-2 rounded cursor-pointer ${
-        date.currentMonthDate &&
-        date.date === todayDate.date() &&
-        currentMonth === todayDate.month() &&
-        currentYear === todayDate.year() &&
-        `${
-          select.date ? "bg-white text-blue-500" : "bg-blue-500 text-white"
-        }   `
-      } 
-      ${date.prevMonthDate || date.nextMonthDate ? "opacity-20" : ""}`}
-      onClick={() => handleDaySelect(date, day)}
+        rowDate.isCurrentMonthDate && rowFullDateFormat === todayFullDateFormat
+          ? "bg-white text-blue-500"
+          : ""
+      }
+      ${
+        rowDate.isPrevMonthDate || rowDate.isNextMonthDate ? "opacity-20" : ""
+      }`}
+      onClick={() => handleDaySelect(rowDate, day)}
     >
-      {date.date}
+      {rowDate.date}
     </td>
   );
 };

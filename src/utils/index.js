@@ -1,3 +1,13 @@
+import dayjs from "dayjs";
+import {
+  getDailyRruleEvents,
+  getMonthDifference,
+  getMonthlyRruleEvents,
+  getWeeklyRruleEvents,
+  getYearlyRruleEvents,
+  weeksBetween,
+} from "../store/reducers/utils";
+
 export const getRowDates = (
   rowIndex,
   firstDayOfMonth,
@@ -12,15 +22,15 @@ export const getRowDates = (
       i < firstDayOfMonth
         ? {
             date: daysInPreviousMonth + 1 + i - firstDayOfMonth,
-            prevMonthDate: true,
-            nextMonthDate: false,
-            currentMonthDate: false,
+            isPrevMonthDate: true,
+            isNextMonthDate: false,
+            isCurrentMonthDate: false,
           }
         : {
             date: i + 1 - firstDayOfMonth,
-            prevMonthDate: false,
-            nextMonthDate: false,
-            currentMonthDate: true,
+            isPrevMonthDate: false,
+            isNextMonthDate: false,
+            isCurrentMonthDate: true,
           }
     );
   } else {
@@ -31,15 +41,15 @@ export const getRowDates = (
       if (i + rowDayStartsWith > daysInMonth)
         return {
           date: i + rowDayStartsWith - daysInMonth,
-          nextMonthDate: true,
-          prevMonthDate: false,
-          currentMonthDate: false,
+          isNextMonthDate: true,
+          isPrevMonthDate: false,
+          isCurrentMonthDate: false,
         };
       return {
         date: i + rowDayStartsWith,
-        nextMonthDate: false,
-        prevMonthDate: false,
-        currentMonthDate: true,
+        isNextMonthDate: false,
+        isPrevMonthDate: false,
+        isCurrentMonthDate: true,
       };
     });
   }
@@ -59,4 +69,95 @@ export const getPrevMonthDate = (prevMonth, year) => {
     prevMonth: prevMonth < 0 ? 11 : prevMonth,
     prevYear: prevMonth < 0 ? year - 1 : year,
   };
+};
+
+const getRecurrenceStatusList = (event) => {
+  return event.recurrence[0].split(";").reduce(
+    (obj, item) => {
+      const splitedItem = item.split("=");
+      return { ...obj, [splitedItem[0]]: splitedItem[1] };
+    },
+    { INTERVAL: "1" }
+  );
+};
+
+export const getSelectedDateEvents = (eventList, userSelectedDate) => {
+  const { date, month, year } = userSelectedDate;
+  const userSelected = dayjs(new Date(year, month, date));
+
+  const userSelectedDateEvents = eventList.filter((event) => {
+    const eventStartAt = new Date(event.start.dateTime);
+    if (event.recurrence) {
+      const recurrenceStatusList = getRecurrenceStatusList(event);
+      const dayDifference = dayjs(userSelected).diff(
+        dayjs(eventStartAt).startOf("day"),
+        "day"
+      );
+
+      switch (recurrenceStatusList["RRULE:FREQ"]) {
+        case "DAILY": {
+          return getDailyRruleEvents({
+            recurrenceStatusList,
+            event,
+            userSelected,
+            dateDifference: dayDifference,
+          });
+        }
+        case "WEEKLY": {
+          const resetEventStartAtTime = new Date(
+            dayjs(eventStartAt).startOf("day")
+          );
+          const weekDifference = weeksBetween(
+            resetEventStartAtTime,
+            userSelected
+          );
+
+          return getWeeklyRruleEvents({
+            recurrenceStatusList,
+            event,
+            eventStartAt: resetEventStartAtTime,
+            Weekdays,
+            userSelected,
+            dayDifference,
+            dateDifference: weekDifference,
+          });
+        }
+
+        case "MONTHLY": {
+          const monthDifference = getMonthDifference(
+            eventStartAt,
+            userSelected
+          );
+
+          return getMonthlyRruleEvents({
+            recurrenceStatusList,
+            event,
+            userSelected,
+            dateDifference: monthDifference,
+          });
+        }
+
+        case "YEARLY": {
+          const yearDifference =
+            userSelected.getFullYear() -
+            new Date(event.start.dateTime).getFullYear();
+
+          return getYearlyRruleEvents({
+            event,
+            recurrenceStatusList,
+            userSelected,
+            dateDifference: yearDifference,
+          });
+        }
+      }
+    }
+
+    if (
+      new Date(event.start.dateTime).toLocaleDateString() ===
+      new Date(userSelected).toLocaleDateString()
+    )
+      return event;
+  });
+
+  return userSelectedDateEvents;
 };

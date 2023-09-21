@@ -8,73 +8,84 @@ import {
 } from "../../store/actions";
 import dayjs from "dayjs";
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
-import { fetchEvents } from "../../store/services";
+import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
 
-const CalendarTop = ({ currentDate, dispatch, setReset, component }) => {
-  const format = dayjs(
-    `${currentDate.year}-${currentDate.month + 1}-01`
-  ).format("MMMM YYYY");
+const CalendarTop = ({
+  currentFullDate,
+  dispatch,
+  setReset,
+  component,
+  setIsLoading,
+}) => {
+  const { month: currentMonth, year: currentYear } = currentFullDate;
+  const format = dayjs(new Date(currentYear, currentMonth)).format("MMMM YYYY");
 
   const handlePrevMonth = () => {
     const { prevMonth, prevYear } = getPrevMonthDate(
-      currentDate.month - 1,
-      currentDate.year
+      currentMonth - 1,
+      currentYear
     );
+
+    const conditionalDate =
+      prevMonth === dayjs().month() && prevYear === dayjs().year()
+        ? dayjs().date()
+        : 1;
 
     dispatch({
       type: PREV_MONTH,
       payload: {
         month: prevMonth,
         year: prevYear,
-        date: currentDate.date,
+        date: conditionalDate,
       },
     });
 
-    fetchEvents({
-      timeMin: dayjs(`${prevYear}-${prevMonth + 1}`)
-        .startOf("month")
-        .utc()
-        .format(),
-      timeMax: dayjs(`${prevYear}-${prevMonth + 1}`)
-        .endOf("month")
-        .utc()
-        .format(),
-    });
+    fetchEventsAPI(prevYear, prevMonth, setIsLoading);
+    fetchHolidayAPI(prevYear, prevMonth, setIsLoading);
   };
 
   const handleNextMonth = () => {
     const { nextMonth, nextYear } = getNextMonthDate(
-      currentDate.month + 1,
-      currentDate.year
+      currentMonth + 1,
+      currentYear
     );
+
+    const conditionalDate =
+      nextMonth === dayjs().month() && nextYear === dayjs().year()
+        ? dayjs().date()
+        : 1;
 
     dispatch({
       type: NEXT_MONTH,
       payload: {
         month: nextMonth,
         year: nextYear,
-        date: currentDate.date,
+        date: conditionalDate,
       },
     });
 
-    fetchEvents({
-      timeMin: dayjs(`${nextYear}-${nextMonth + 1}`)
-        .startOf("month")
-        .utc()
-        .format(),
-      timeMax: dayjs(`${nextYear}-${nextMonth + 1}`)
-        .endOf("month")
-        .utc()
-        .format(),
-    });
+    fetchEventsAPI(nextYear, nextMonth, setIsLoading);
+    fetchHolidayAPI(nextYear, nextMonth, setIsLoading);
   };
 
   const handleToday = () => {
     setReset(Math.random());
     dispatch({ type: RESET_CURRENT_TIME });
+
+    const todaysMonth = dayjs().month();
+    const todaysYear = dayjs().year();
+    const todaysDate = dayjs().date();
+    if (!(currentMonth === todaysMonth && currentYear === todaysYear)) {
+      fetchEventsAPI(todaysYear, todaysMonth, todaysDate);
+      fetchHolidayAPI(todaysYear, todaysMonth);
+    }
   };
 
-  const todayDate = new Date();
+  const todayFullDate = dayjs().format("YYYY-MM-DD");
+  const currentFullDateFormat = dayjs(
+    new Date(currentYear, currentMonth, currentFullDate.date)
+  ).format("YYYY-MM-DD");
+
   const Component = component;
 
   if (component)
@@ -91,14 +102,11 @@ const CalendarTop = ({ currentDate, dispatch, setReset, component }) => {
       <div className="text-lg font-semibold">{format}</div>
       <div className="flex justify-between items-center">
         <button
-          style={{
-            backgroundColor:
-              currentDate.date === todayDate.getDate() &&
-              currentDate.month === todayDate.getMonth() &&
-              currentDate.year === todayDate.getFullYear() &&
-              "rgba(118,118,128, .12)",
-          }}
-          className="py-1.5 px-3 text-base rounded-md"
+          className={`py-1.5 px-3 text-base rounded-md ${
+            todayFullDate === currentFullDateFormat
+              ? "bg-gray-100 text-blue-500"
+              : ""
+          }`}
           onClick={handleToday}
         >
           Today
@@ -120,7 +128,7 @@ const mapToDispatch = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentDate: state.calendar,
+    currentFullDate: state.calendar,
   };
 };
 

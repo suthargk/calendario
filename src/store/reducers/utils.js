@@ -303,3 +303,18 @@ export const generateUserProfile = (user_name) => {
     ? userName[0].slice(0, 2)
     : userName[0][0] + userName[1][0];
 };
+
+export const getColorOnEventCard = (events) => {
+  return events.items.map((event) => {
+    const colorName = colors[Math.trunc(Math.random() * colors.length)];
+
+    const attendeesWithColor = event?.attendees?.length
+      ? event.attendees.map((attendee) => {
+          const colorName = colors[Math.trunc(Math.random() * colors.length)];
+          return { ...attendee, color: colorName };
+        })
+      : [];
+
+    return { ...event, attendees: attendeesWithColor, color: colorName };
+  });
+};

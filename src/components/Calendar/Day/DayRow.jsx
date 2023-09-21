@@ -13,7 +13,7 @@ const DayRow = ({
   handleDaySelect,
   select,
 }) => {
-  const dates = getRowDates(
+  const rowDates = getRowDates(
     rowIndex,
     firstDayOfMonth,
     daysInMonth,
@@ -22,11 +22,11 @@ const DayRow = ({
 
   return (
     <tr className="text-gray-800">
-      {dates?.map((date, index) => {
+      {rowDates?.map((rowDate, index) => {
         return (
           <DayItem
             key={index}
-            date={date}
+            rowDate={rowDate}
             currentYear={currentYear}
             currentMonth={currentMonth}
             dispatch={dispatch}

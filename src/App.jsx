@@ -1,7 +1,7 @@
 import Calendar from "./components/Calendar";
 import { gapi, loadAuth2 } from "gapi-script";
 import { connect } from "react-redux";
-import { fetchEvents } from "./store/services";
+import { fetchEvents, fetchHolidays } from "./store/services";
 import { useEffect, useState } from "react";
 import { SET_USER_AUTH } from "./store/actions";
 import CalendarEvents from "./components/CalendarEvents";
@@ -9,6 +9,7 @@ import MinimalisticCalendar from "./components/MinimalisticCalendar";
 
 function App({ dispatch, isUserSignedIn }) {
   const [isAppLoading, setIsAppLoading] = useState(false);
+  const [isEventSectionLoading, setIsEventSectionLoading] = useState(true);
   const getAuth = async () => {
     let auth2 = await loadAuth2(
       gapi,
@@ -27,7 +28,13 @@ function App({ dispatch, isUserSignedIn }) {
   };
 
   useEffect(() => {
-    getAuth();
+    const authAndFetch = new Promise((resolve) => {
+      resolve(getAuth());
+    });
+    authAndFetch.then(() => {
+      fetchEvents({ setIsLoading: setIsEventSectionLoading });
+      fetchHolidays({});
+    });
   }, []);
 
   return (
@@ -37,19 +44,9 @@ function App({ dispatch, isUserSignedIn }) {
     >
       {!isAppLoading ? (
         <div className="space-y-4">
-          <MinimalisticCalendar />
-          <Calendar />
-          <CalendarEvents />
-          <button
-            style={{ border: "1px solid black" }}
-            onClick={() => {
-              if (isUserSignedIn) {
-                fetchEvents({});
-              }
-            }}
-          >
-            Fetch
-          </button>
+          <MinimalisticCalendar setIsLoading={setIsEventSectionLoading} />
+          <Calendar setIsLoading={setIsEventSectionLoading} />
+          <CalendarEvents isLoading={isEventSectionLoading} />
           <button
             onClick={() => {
               isUserSignedIn

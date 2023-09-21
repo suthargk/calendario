@@ -1,20 +1,19 @@
 import CalendarTable from "./CalendarTable";
 import CalendarTop from "./CalendarTop";
-import CalendarEvents from "../CalendarEvents";
-import { useState } from "react";
+import { memo, useState } from "react";
 
-const Calendar = ({ hightLightWeeks }) => {
+const Calendar = ({ hightLightWeeks, setIsLoading }) => {
   const [reset, setReset] = useState(Math.random());
   return (
     <div
       key={reset}
       style={{ borderWidth: "1px" }}
-      className="bg-white p-3 rounded-xl border-gray-200"
+      className="bg-white p-3 rounded-xl border-gray-200 select-none"
     >
-      <CalendarTop setReset={setReset} />
+      <CalendarTop setReset={setReset} setIsLoading={setIsLoading} />
       <CalendarTable />
     </div>
   );
 };
 
-export default Calendar;
+export default memo(Calendar);

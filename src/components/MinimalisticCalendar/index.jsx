@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import CalendarTop from "../Calendar/CalendarTop";
 import PrevChevron from "../../assets/icons/PrevChevron";
 import NextChevron from "../../assets/icons/NextChevron";
@@ -17,7 +17,7 @@ const MinimalisticCalendarTop = ({
       >
         <PrevChevron width={11} height={11} />
       </button>
-      <div>{format}</div>
+      <div className="select-none">{format}</div>
       <button
         onClick={handleNextMonth}
         className="p-1.5 rounded-full shadow bg-white"
@@ -28,13 +28,16 @@ const MinimalisticCalendarTop = ({
   );
 };
 
-const MinimalisticCalendar = () => {
+const MinimalisticCalendar = ({ setIsLoading }) => {
   return (
     <div className="space-y-4">
-      <CalendarTop component={MinimalisticCalendarTop} />
-      <MinimalisticCalendarBody />
+      <CalendarTop
+        component={MinimalisticCalendarTop}
+        setIsLoading={setIsLoading}
+      />
+      <MinimalisticCalendarBody setIsLoading={setIsLoading} />
     </div>
   );
 };
 
-export default MinimalisticCalendar;
+export default memo(MinimalisticCalendar);

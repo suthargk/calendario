@@ -4,3 +4,4 @@ export const RESET_CURRENT_TIME = "RESET_CURRENT_TIME";
 export const SET_USER_AUTH = "SET_USER_AUTH";
 export const USER_SELECTED_DATE = "USER_SELECTED_DATE";
 export const ADD_EVENTS = "ADD_EVENTS";
+export const ADD_HOLIDAYS = "ADD_HOLIDAYS";
