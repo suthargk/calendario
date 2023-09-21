@@ -1,18 +1,9 @@
-import { connect } from "react-redux";
 import { useState } from "react";
 import CalendarTabSection from "./CalendarTabSection";
 import CalendarListSection from "./CalendarTabSection/CalendarListSection";
 import CalendarSearchBar from "./CalendarSearchBar";
-import { fetchHolidays } from "../../store/services";
-import dayjs from "dayjs";
 
-const CalendarEvents = ({
-  selectedDateEventList,
-  currentMonth,
-  currentYear,
-  daysInMonth,
-  publicHolidays,
-}) => {
+const CalendarEvents = () => {
   const [tabActive, setTabActive] = useState("Meetings");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,24 +15,9 @@ const CalendarEvents = ({
     <div className="space-y-4">
       <CalendarSearchBar />
       <CalendarTabSection tabActive={tabActive} handleTab={handleTab} />
-      <CalendarListSection
-        tabActive={tabActive}
-        selectedDateEventList={selectedDateEventList}
-        publicHolidays={publicHolidays}
-        isLoading={isLoading}
-      />
+      <CalendarListSection tabActive={tabActive} isLoading={isLoading} />
     </div>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    selectedDateEventList: state.events.selectedDateEventList,
-    publicHolidays: state.events.publicHolidays,
-    currentMonth: state.calendar.month,
-    currentYear: state.calendar.year,
-    daysInMonth: state.calendar.daysInMonth,
-  };
-};
-
-export default connect(mapStateToProps, null)(CalendarEvents);
+export default CalendarEvents;

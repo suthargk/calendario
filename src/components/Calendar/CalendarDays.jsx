@@ -49,7 +49,7 @@ const CalendarDays = ({ currentFullDate, dispatch }) => {
         },
       });
 
-      fetchEventsAPI(nextYear, nextMonth);
+      fetchEventsAPI(nextYear, nextMonth, dateValue.date);
       fetchHolidayAPI(nextYear, nextMonth);
     }
 
@@ -72,7 +72,7 @@ const CalendarDays = ({ currentFullDate, dispatch }) => {
         },
       });
 
-      fetchEventsAPI(prevYear, prevMonth);
+      fetchEventsAPI(prevYear, prevMonth, dateValue.date);
       fetchHolidayAPI(prevYear, prevMonth);
     }
 

@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import EmptyCalendarListSection from "./EmptyCalendarListSection";
 import CalendarEventCard from "./CalendarEventCard";
 import SpinnerIcon from "../../../assets/icons/SpinnerIcon";
 import CalendarHolidayCard from "./CalendarHolidayCard";
+import { connect } from "react-redux";
+import { getSelectedDateEvents } from "../../../utils";
+import dayjs from "dayjs";
 
 const CalendarListSection = ({
   tabActive,
-  selectedDateEventList,
+  eventList,
   publicHolidays,
+  currentFullDate,
   isLoading,
 }) => {
   const [isEventOpenId, setIsEventOpenId] = useState(null);
+
+  const currentFullDateFormat = dayjs(
+    new Date(currentFullDate.year, currentFullDate.month, currentFullDate.date)
+  ).format("YYYY-MM-DD");
+
+  const selectedDateEventList = useMemo(() => {
+    return getSelectedDateEvents(eventList, currentFullDate);
+  }, [eventList, currentFullDateFormat]);
 
   const getEventCards = () => {
     switch (tabActive) {
@@ -65,4 +77,12 @@ const CalendarListSection = ({
   );
 };
 
-export default CalendarListSection;
+const mapStateToProps = (state) => {
+  return {
+    currentFullDate: state.calendar,
+    eventList: state.events.eventList,
+    publicHolidays: state.events.publicHolidays,
+  };
+};
+
+export default connect(mapStateToProps, null)(CalendarListSection);

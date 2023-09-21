@@ -21,14 +21,21 @@ const INITIAL_STATE = {
 const applyPrevMonth = (state, action) => {
   const { date, month, year } = action.payload;
   currentDateObj = currentDateObj.subtract(1, "month");
-  const firstDayOfMonth = currentDateObj.startOf("month").format("d");
+  const firstDayOfMonth = Number(currentDateObj.startOf("month").format("d"));
+
+  const day =
+    dayjs().format("YYYY-MM-DD") ===
+    dayjs(new Date(year, month, date)).format("YYYY-MM-DD")
+      ? dayjs().day()
+      : firstDayOfMonth;
+
   return {
     ...state,
-    firstDayOfMonth: Number(firstDayOfMonth),
+    firstDayOfMonth,
     daysInMonth: currentDateObj.daysInMonth(),
     daysInPreviousMonth: currentDateObj.subtract(1, "month").daysInMonth(),
     date,
-    day: firstDayOfMonth,
+    day,
     month,
     year,
   };
@@ -37,11 +44,11 @@ const applyPrevMonth = (state, action) => {
 const applyNextMonth = (state, action) => {
   const { date, month, year } = action.payload;
   currentDateObj = currentDateObj.add(1, "month");
-  const firstDayOfMonth = currentDateObj.startOf("month").format("d");
+  const firstDayOfMonth = Number(currentDateObj.startOf("month").format("d"));
 
   return {
     ...state,
-    firstDayOfMonth: Number(firstDayOfMonth),
+    firstDayOfMonth,
     daysInMonth: currentDateObj.daysInMonth(),
     daysInPreviousMonth: currentDateObj.subtract(1, "month").daysInMonth(),
     date,
@@ -56,9 +63,11 @@ const calendarReducer = (state = INITIAL_STATE, action) => {
     case PREV_MONTH: {
       return applyPrevMonth(state, action);
     }
+
     case NEXT_MONTH: {
       return applyNextMonth(state, action);
     }
+
     case USER_SELECTED_DATE: {
       const userSelectedDate = action.payload;
 
@@ -68,6 +77,7 @@ const calendarReducer = (state = INITIAL_STATE, action) => {
         date: userSelectedDate.date(),
       };
     }
+
     case RESET_CURRENT_TIME: {
       currentDateObj = dayjs(); // RESET current time
       return INITIAL_STATE;

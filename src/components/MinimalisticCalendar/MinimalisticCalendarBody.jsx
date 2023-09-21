@@ -51,8 +51,7 @@ const MinimalisticCalendarBody = ({
           day: dateObj.day,
         },
       });
-
-      fetchEventsAPI(nextYear, nextMonth);
+      fetchEventsAPI(nextYear, nextMonth, dateObj.date);
       fetchHolidayAPI(nextYear, nextMonth);
     }
 
@@ -75,7 +74,7 @@ const MinimalisticCalendarBody = ({
         },
       });
 
-      fetchEventsAPI(prevYear, prevMonth);
+      fetchEventsAPI(prevYear, prevMonth, dateObj.date);
       fetchHolidayAPI(prevYear, prevMonth);
     }
 
@@ -104,7 +103,7 @@ const MinimalisticCalendarBody = ({
             <div
               key={dateObj.date}
               style={{ width: "52px" }}
-              className={`py-2 cursor-pointer  text-center rounded-lg text-sm ${
+              className={`py-2 cursor-pointer text-center rounded-lg text-sm ${
                 currentDate === dateObj.date ? "bg-blue-500 text-white" : ""
               }`}
               onClick={() => handleUserSelectDate(dateObj)}

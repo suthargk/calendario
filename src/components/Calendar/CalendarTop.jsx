@@ -20,19 +20,21 @@ const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
       currentYear
     );
 
+    const conditionalDate =
+      prevMonth === dayjs().month() && prevYear === dayjs().year()
+        ? dayjs().date()
+        : 1;
+
     dispatch({
       type: PREV_MONTH,
       payload: {
         month: prevMonth,
         year: prevYear,
-        date:
-          prevMonth === dayjs().month() && prevYear === dayjs().year()
-            ? dayjs().date()
-            : 1,
+        date: conditionalDate,
       },
     });
 
-    fetchEventsAPI(prevYear, prevMonth);
+    fetchEventsAPI(prevYear, prevMonth, conditionalDate);
     fetchHolidayAPI(prevYear, prevMonth);
   };
 
@@ -42,19 +44,21 @@ const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
       currentYear
     );
 
+    const conditionalDate =
+      nextMonth === dayjs().month() && nextYear === dayjs().year()
+        ? dayjs().date()
+        : 1;
+
     dispatch({
       type: NEXT_MONTH,
       payload: {
         month: nextMonth,
         year: nextYear,
-        date:
-          nextMonth === dayjs().month() && nextYear === dayjs().year()
-            ? dayjs().date()
-            : 1,
+        date: conditionalDate,
       },
     });
 
-    fetchEventsAPI(nextYear, nextMonth);
+    fetchEventsAPI(nextYear, nextMonth, conditionalDate);
     fetchHolidayAPI(nextYear, nextMonth);
   };
 
@@ -64,15 +68,22 @@ const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
 
     const todaysMonth = dayjs().month();
     const todaysYear = dayjs().year();
+    const todaysDate = dayjs().date();
     if (!(currentMonth === todaysMonth && currentYear === todaysYear)) {
-      fetchEventsAPI(todaysYear, todaysMonth);
+      fetchEventsAPI(todaysYear, todaysMonth, todaysDate);
       fetchHolidayAPI(todaysYear, todaysMonth);
     }
   };
 
   const todayFullDate = dayjs().format("YYYY-MM-DD");
   const currentFullDateFormat = dayjs(
-    new Date(currentYear, currentMonth, currentFullDate.date)
+    new Date(
+      currentYear,
+      currentMonth,
+      currentMonth === dayjs().month() && currentYear === dayjs().year()
+        ? dayjs().date()
+        : 1
+    )
   ).format("YYYY-MM-DD");
 
   const Component = component;
