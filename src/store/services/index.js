@@ -9,8 +9,10 @@ dayjs.extend(utc);
 export const fetchEvents = ({
   timeMin = dayjs().startOf("month").utc().format(),
   timeMax = dayjs().endOf("month").utc().format(),
+  setIsLoading,
 }) => {
   const access_token = store.getState().user.access_token;
+  setIsLoading(true);
   return axios
     .get("https://www.googleapis.com/calendar/v3/calendars/primary/events/", {
       headers: { Authorization: `Bearer ${access_token}` },
@@ -21,7 +23,10 @@ export const fetchEvents = ({
         type: ADD_EVENTS,
         payload: res.data,
       })
-    );
+    )
+    .finally(() => {
+      setIsLoading(false);
+    });
 };
 
 export const fetchHolidays = ({

@@ -9,6 +9,7 @@ import MinimalisticCalendar from "./components/MinimalisticCalendar";
 
 function App({ dispatch, isUserSignedIn }) {
   const [isAppLoading, setIsAppLoading] = useState(false);
+  const [isEventSectionLoading, setIsEventSectionLoading] = useState(true);
   const getAuth = async () => {
     let auth2 = await loadAuth2(
       gapi,
@@ -31,7 +32,7 @@ function App({ dispatch, isUserSignedIn }) {
       resolve(getAuth());
     });
     authAndFetch.then(() => {
-      fetchEvents({});
+      fetchEvents({ setIsLoading: setIsEventSectionLoading });
       fetchHolidays({});
     });
   }, []);
@@ -43,9 +44,9 @@ function App({ dispatch, isUserSignedIn }) {
     >
       {!isAppLoading ? (
         <div className="space-y-4">
-          <MinimalisticCalendar />
-          <Calendar />
-          <CalendarEvents />
+          <MinimalisticCalendar setIsLoading={setIsEventSectionLoading} />
+          <Calendar setIsLoading={setIsEventSectionLoading} />
+          <CalendarEvents isLoading={isEventSectionLoading} />
           <button
             onClick={() => {
               isUserSignedIn

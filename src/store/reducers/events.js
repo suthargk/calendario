@@ -2,7 +2,6 @@ import { ADD_EVENTS, ADD_HOLIDAYS } from "../actions";
 import { getColorOnEventCard } from "./utils";
 const INITIAL_EVENTS = {
   eventList: [],
-  selectedDateEventList: [],
   publicHolidays: [],
 };
 

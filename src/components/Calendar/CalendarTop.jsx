@@ -10,7 +10,13 @@ import dayjs from "dayjs";
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
 
-const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
+const CalendarTop = ({
+  currentFullDate,
+  dispatch,
+  setReset,
+  component,
+  setIsLoading,
+}) => {
   const { month: currentMonth, year: currentYear } = currentFullDate;
   const format = dayjs(new Date(currentYear, currentMonth)).format("MMMM YYYY");
 
@@ -34,8 +40,8 @@ const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
       },
     });
 
-    fetchEventsAPI(prevYear, prevMonth, conditionalDate);
-    fetchHolidayAPI(prevYear, prevMonth);
+    fetchEventsAPI(prevYear, prevMonth, setIsLoading);
+    fetchHolidayAPI(prevYear, prevMonth, setIsLoading);
   };
 
   const handleNextMonth = () => {
@@ -58,8 +64,8 @@ const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
       },
     });
 
-    fetchEventsAPI(nextYear, nextMonth, conditionalDate);
-    fetchHolidayAPI(nextYear, nextMonth);
+    fetchEventsAPI(nextYear, nextMonth, setIsLoading);
+    fetchHolidayAPI(nextYear, nextMonth, setIsLoading);
   };
 
   const handleToday = () => {
@@ -77,13 +83,7 @@ const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
 
   const todayFullDate = dayjs().format("YYYY-MM-DD");
   const currentFullDateFormat = dayjs(
-    new Date(
-      currentYear,
-      currentMonth,
-      currentMonth === dayjs().month() && currentYear === dayjs().year()
-        ? dayjs().date()
-        : 1
-    )
+    new Date(currentYear, currentMonth, currentFullDate.date)
   ).format("YYYY-MM-DD");
 
   const Component = component;

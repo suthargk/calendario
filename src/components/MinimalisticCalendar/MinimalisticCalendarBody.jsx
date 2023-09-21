@@ -21,6 +21,7 @@ const MinimalisticCalendarBody = ({
   dispatch,
   daysInPreviousMonth,
   daysInMonth,
+  setIsLoading,
 }) => {
   const prevNextFiveDates = getPrevNextFiveDates({
     currentDate,
@@ -51,8 +52,8 @@ const MinimalisticCalendarBody = ({
           day: dateObj.day,
         },
       });
-      fetchEventsAPI(nextYear, nextMonth, dateObj.date);
-      fetchHolidayAPI(nextYear, nextMonth);
+      fetchEventsAPI(nextYear, nextMonth, setIsLoading);
+      fetchHolidayAPI(nextYear, nextMonth, setIsLoading);
     }
 
     if (dateObj.isPrevMonthDate) {
@@ -74,8 +75,8 @@ const MinimalisticCalendarBody = ({
         },
       });
 
-      fetchEventsAPI(prevYear, prevMonth, dateObj.date);
-      fetchHolidayAPI(prevYear, prevMonth);
+      fetchEventsAPI(prevYear, prevMonth, setIsLoading);
+      fetchHolidayAPI(prevYear, prevMonth, setIsLoading);
     }
 
     const selectedDate = dayjs(

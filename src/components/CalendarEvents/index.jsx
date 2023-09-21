@@ -3,9 +3,8 @@ import CalendarTabSection from "./CalendarTabSection";
 import CalendarListSection from "./CalendarTabSection/CalendarListSection";
 import CalendarSearchBar from "./CalendarSearchBar";
 
-const CalendarEvents = () => {
+const CalendarEvents = ({ isLoading }) => {
   const [tabActive, setTabActive] = useState("Meetings");
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleTab = (tabName) => {
     setTabActive(tabName);
