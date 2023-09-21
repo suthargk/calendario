@@ -8,34 +8,36 @@ const DayItem = ({
   handleDaySelect,
   day,
 }) => {
-  const todayFullDate = dayjs().format("YYYY-MM-DD");
+  const todayFullDateFormat = dayjs().format("YYYY-MM-DD");
 
-  const selectFullDate = dayjs(
-    `${select.year}-${select.month + 1}-${select.date} `
+  const selectFullDateFormat = dayjs(
+    new Date(select.year, select.month, select.date)
   ).format("YYYY-MM-DD");
 
-  const rowFullDate = dayjs(
-    `${currentYear}-${currentMonth + 1}-${rowDate.date}`
+  const rowFullDateFormat = dayjs(
+    new Date(currentYear, currentMonth, rowDate.date)
   ).format("YYYY-MM-DD");
 
   return (
     <td
       style={
-        rowDate.isCurrentMonthDate && selectFullDate === rowFullDate
+        rowDate.isCurrentMonthDate && selectFullDateFormat === rowFullDateFormat
           ? {
               backgroundColor: `${
-                selectFullDate === todayFullDate
+                selectFullDateFormat === todayFullDateFormat
                   ? "rgb(59 130 246)"
                   : "rgba(118,118,128, .12)"
               }`,
               color: `${
-                selectFullDate === todayFullDate ? "white" : "currentColor"
+                selectFullDateFormat === todayFullDateFormat
+                  ? "white"
+                  : "currentColor"
               }`,
             }
           : {}
       }
       className={` text-center p-2 rounded cursor-pointer ${
-        rowDate.isCurrentMonthDate && rowFullDate === todayFullDate
+        rowDate.isCurrentMonthDate && rowFullDateFormat === todayFullDateFormat
           ? "bg-white text-blue-500"
           : ""
       }

@@ -49,8 +49,8 @@ const CalendarDays = ({ currentFullDate, dispatch }) => {
         },
       });
 
-      fetchEventsAPI(nextYear, nextMonth + 1);
-      fetchHolidayAPI(nextYear, nextMonth + 1);
+      fetchEventsAPI(nextYear, nextMonth);
+      fetchHolidayAPI(nextYear, nextMonth);
     }
 
     if (dateValue.isPrevMonthDate) {

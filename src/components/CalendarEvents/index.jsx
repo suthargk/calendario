@@ -18,18 +18,6 @@ const CalendarEvents = ({
 
   const handleTab = (tabName) => {
     setTabActive(tabName);
-
-    // if (tabName === "Holidays") {
-    //   fetchHolidays({
-    //     setIsLoading,
-    //     timeMin: dayjs(`${currentYear}-${currentMonth + 1}-01`)
-    //       .utc()
-    //       .format(),
-    //     timeMax: dayjs(`${currentYear}-${currentMonth + 1}-${daysInMonth}`)
-    //       .utc()
-    //       .format(),
-    //   });
-    // }
   };
 
   return (

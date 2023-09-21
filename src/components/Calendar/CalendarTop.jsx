@@ -11,14 +11,13 @@ import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
 
 const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
-  const format = dayjs(
-    `${currentFullDate.year}-${currentFullDate.month + 1}-01`
-  ).format("MMMM YYYY");
+  const { month: currentMonth, year: currentYear } = currentFullDate;
+  const format = dayjs(new Date(currentYear, currentMonth)).format("MMMM YYYY");
 
   const handlePrevMonth = () => {
     const { prevMonth, prevYear } = getPrevMonthDate(
-      currentFullDate.month - 1,
-      currentFullDate.year
+      currentMonth - 1,
+      currentYear
     );
 
     dispatch({
@@ -39,8 +38,8 @@ const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
 
   const handleNextMonth = () => {
     const { nextMonth, nextYear } = getNextMonthDate(
-      currentFullDate.month + 1,
-      currentFullDate.year
+      currentMonth + 1,
+      currentYear
     );
 
     dispatch({
@@ -55,8 +54,8 @@ const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
       },
     });
 
-    fetchEventsAPI(nextYear, nextMonth + 1);
-    fetchHolidayAPI(nextYear, nextMonth + 1);
+    fetchEventsAPI(nextYear, nextMonth);
+    fetchHolidayAPI(nextYear, nextMonth);
   };
 
   const handleToday = () => {
@@ -65,22 +64,15 @@ const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
 
     const todaysMonth = dayjs().month();
     const todaysYear = dayjs().year();
-    if (
-      !(
-        currentFullDate.month === todaysMonth &&
-        currentFullDate.year === todaysYear
-      )
-    ) {
-      fetchEventsAPI(todaysYear, todaysMonth + 1);
-      fetchHolidayAPI(todaysYear, todaysMonth + 1);
+    if (!(currentMonth === todaysMonth && currentYear === todaysYear)) {
+      fetchEventsAPI(todaysYear, todaysMonth);
+      fetchHolidayAPI(todaysYear, todaysMonth);
     }
   };
 
   const todayFullDate = dayjs().format("YYYY-MM-DD");
-  const currentFullDateInStr = dayjs(
-    `${currentFullDate.year}-${currentFullDate.month + 1}-${
-      currentFullDate.date
-    }`
+  const currentFullDateFormat = dayjs(
+    new Date(currentYear, currentMonth, currentFullDate.date)
   ).format("YYYY-MM-DD");
 
   const Component = component;
@@ -100,7 +92,7 @@ const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
       <div className="flex justify-between items-center">
         <button
           className={`py-1.5 px-3 text-base rounded-md ${
-            todayFullDate === currentFullDateInStr
+            todayFullDate === currentFullDateFormat
               ? "bg-gray-100 text-blue-500"
               : ""
           }`}

@@ -11,6 +11,7 @@ import {
 } from "../../store/actions";
 import dayjs from "dayjs";
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
+import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
 
 const MinimalisticCalendarBody = ({
   currentDate,
@@ -40,6 +41,19 @@ const MinimalisticCalendarBody = ({
 
       selectedDateMonth = nextMonth;
       selectedDateYear = nextYear;
+
+      dispatch({
+        type: NEXT_MONTH,
+        payload: {
+          date: dateObj.date,
+          month: selectedDateMonth,
+          year: selectedDateYear,
+          day: dateObj.day,
+        },
+      });
+
+      fetchEventsAPI(nextYear, nextMonth);
+      fetchHolidayAPI(nextYear, nextMonth);
     }
 
     if (dateObj.isPrevMonthDate) {
@@ -50,21 +64,7 @@ const MinimalisticCalendarBody = ({
 
       selectedDateMonth = prevMonth;
       selectedDateYear = prevYear;
-    }
 
-    if (dateObj.isNextMonthDate) {
-      dispatch({
-        type: NEXT_MONTH,
-        payload: {
-          date: dateObj.date,
-          month: selectedDateMonth,
-          year: selectedDateYear,
-          day: dateObj.day,
-        },
-      });
-    }
-
-    if (dateObj.isPrevMonthDate) {
       dispatch({
         type: PREV_MONTH,
         payload: {
@@ -74,7 +74,11 @@ const MinimalisticCalendarBody = ({
           day: dateObj.day,
         },
       });
+
+      fetchEventsAPI(prevYear, prevMonth);
+      fetchHolidayAPI(prevYear, prevMonth);
     }
+
     const selectedDate = dayjs(
       new Date(selectedDateYear, selectedDateMonth, dateObj.date)
     );

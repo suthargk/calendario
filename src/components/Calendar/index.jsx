@@ -1,6 +1,5 @@
 import CalendarTable from "./CalendarTable";
 import CalendarTop from "./CalendarTop";
-import CalendarEvents from "../CalendarEvents";
 import { useState } from "react";
 
 const Calendar = ({ hightLightWeeks }) => {
