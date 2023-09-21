@@ -1,6 +1,6 @@
 import React from "react";
 
-const Tab = ({ icon, label, active, handleTab, tabActive }) => {
+const Tab = ({ icon, label, handleTab, tabActive }) => {
   return (
     <div
       onClick={() => handleTab(label)}
