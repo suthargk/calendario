@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
-import { ADD_EVENTS, USER_SELECTED_DATE } from "../actions";
+import { ADD_EVENTS, ADD_HOLIDAYS, USER_SELECTED_DATE } from "../actions";
 import {
   colors,
+  getColorOnEventCard,
   getDailyRruleEvents,
   getMonthDifference,
   getMonthlyRruleEvents,
@@ -12,6 +13,7 @@ import {
 const INITIAL_EVENTS = {
   eventList: [],
   selectedDateEventList: [],
+  publicHolidays: [],
 };
 
 const getRecurrenceStatusList = (event) => {
@@ -104,27 +106,27 @@ const applySelectedDate = (state, action) => {
   return { ...state, selectedDateEventList: userSelectedDateEvents };
 };
 
+const applyAddHolidays = (state, action) => {
+  const data = action.payload;
+
+  const holidayEventsWithColor = getColorOnEventCard(data);
+  return { ...state, publicHolidays: holidayEventsWithColor };
+};
+
 const eventsReducer = (state = INITIAL_EVENTS, action) => {
   switch (action.type) {
     case ADD_EVENTS: {
       const events = action.payload;
-      const eventsWithColor = events.items.map((event) => {
-        const colorName = colors[Math.trunc(Math.random() * colors.length)];
-
-        const attendeesWithColor =
-          event?.attendees?.length &&
-          event.attendees.map((attendee) => {
-            const colorName = colors[Math.trunc(Math.random() * colors.length)];
-            return { ...attendee, color: colorName };
-          });
-
-        return { ...event, attendees: attendeesWithColor, color: colorName };
-      });
+      const eventsWithColor = getColorOnEventCard(events);
       return { ...state, eventList: eventsWithColor };
     }
 
     case USER_SELECTED_DATE: {
       return applySelectedDate(state, action);
+    }
+
+    case ADD_HOLIDAYS: {
+      return applyAddHolidays(state, action);
     }
 
     default:

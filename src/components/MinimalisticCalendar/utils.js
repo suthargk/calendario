@@ -4,7 +4,7 @@ export const getPrevNextFiveDates = ({
   daysInPreviousMonth,
   daysInMonth,
 }) => {
-  return new Array(5).fill(null).map((date, index) => {
+  return new Array(5).fill(null).map((_, index) => {
     let prevNextTwoDays = currentDay - 2 + index;
     let prevNextTwoDates = currentDate - 2 + index;
 

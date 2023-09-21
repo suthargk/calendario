@@ -17,7 +17,7 @@ const MinimalisticCalendarTop = ({
       >
         <PrevChevron width={11} height={11} />
       </button>
-      <div>{format}</div>
+      <div className="select-none">{format}</div>
       <button
         onClick={handleNextMonth}
         className="p-1.5 rounded-full shadow bg-white"

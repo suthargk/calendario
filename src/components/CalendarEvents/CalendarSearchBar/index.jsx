@@ -17,7 +17,7 @@ const CalendarSearchBar = () => {
         className="pl-9 pr-10 py-1.5 border-gray-200 rounded-xl w-full text-gray-600 placeholder:text-gray-400 placeholder:font-light placeholder:text-sm"
         placeholder="Search by name or day..."
       />
-      <button className="z-10 w-9 absolute right-0 pl-1">
+      <button className="z-10 w-9 absolute right-0 pl-1 h-full">
         <SortIcon className="text-gray-400 " />
       </button>
     </label>

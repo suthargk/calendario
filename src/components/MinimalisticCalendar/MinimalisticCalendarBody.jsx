@@ -58,7 +58,7 @@ const MinimalisticCalendarBody = ({
         payload: {
           date: dateObj.date,
           month: selectedDateMonth,
-          year: currentYear,
+          year: selectedDateYear,
           day: dateObj.day,
         },
       });
@@ -86,8 +86,11 @@ const MinimalisticCalendarBody = ({
   };
 
   return (
-    <div className="flex justify-between items-center">
-      <button className="p-1.5 rounded-full border border-gray-200 bg-white">
+    <div className="flex justify-between items-center select-none">
+      <button
+        onClick={() => handleUserSelectDate(prevNextFiveDates[1])}
+        className="p-1.5 rounded-full border border-gray-200 bg-white"
+      >
         <PrevChevron width={11} height={11} />
       </button>
 
@@ -95,6 +98,7 @@ const MinimalisticCalendarBody = ({
         {prevNextFiveDates.map((dateObj) => {
           return (
             <div
+              key={dateObj.date}
               style={{ width: "52px" }}
               className={`py-2 cursor-pointer  text-center rounded-lg text-sm ${
                 currentDate === dateObj.date ? "bg-blue-500 text-white" : ""
@@ -108,7 +112,7 @@ const MinimalisticCalendarBody = ({
               >
                 {WEEKDAYVALUES[dateObj.day]}
               </div>
-              <div className="text-lg ">
+              <div className="text-lg">
                 {String(dateObj.date).padStart(2, "0")}
               </div>
             </div>
@@ -116,7 +120,10 @@ const MinimalisticCalendarBody = ({
         })}
       </div>
 
-      <button className="p-1.5 rounded-full border border-gray-200 bg-white">
+      <button
+        className="p-1.5 rounded-full border border-gray-200 bg-white"
+        onClick={() => handleUserSelectDate(prevNextFiveDates[3])}
+      >
         <NextChevron width={11} height={11} />
       </button>
     </div>

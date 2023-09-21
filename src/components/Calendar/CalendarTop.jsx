@@ -8,17 +8,17 @@ import {
 } from "../../store/actions";
 import dayjs from "dayjs";
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
-import { fetchEvents } from "../../store/services";
+import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
 
-const CalendarTop = ({ currentDate, dispatch, setReset, component }) => {
+const CalendarTop = ({ currentFullDate, dispatch, setReset, component }) => {
   const format = dayjs(
-    `${currentDate.year}-${currentDate.month + 1}-01`
+    `${currentFullDate.year}-${currentFullDate.month + 1}-01`
   ).format("MMMM YYYY");
 
   const handlePrevMonth = () => {
     const { prevMonth, prevYear } = getPrevMonthDate(
-      currentDate.month - 1,
-      currentDate.year
+      currentFullDate.month - 1,
+      currentFullDate.year
     );
 
     dispatch({
@@ -26,26 +26,21 @@ const CalendarTop = ({ currentDate, dispatch, setReset, component }) => {
       payload: {
         month: prevMonth,
         year: prevYear,
-        date: currentDate.date,
+        date:
+          prevMonth === dayjs().month() && prevYear === dayjs().year()
+            ? dayjs().date()
+            : 1,
       },
     });
 
-    fetchEvents({
-      timeMin: dayjs(`${prevYear}-${prevMonth + 1}`)
-        .startOf("month")
-        .utc()
-        .format(),
-      timeMax: dayjs(`${prevYear}-${prevMonth + 1}`)
-        .endOf("month")
-        .utc()
-        .format(),
-    });
+    fetchEventsAPI(prevYear, prevMonth);
+    fetchHolidayAPI(prevYear, prevMonth);
   };
 
   const handleNextMonth = () => {
     const { nextMonth, nextYear } = getNextMonthDate(
-      currentDate.month + 1,
-      currentDate.year
+      currentFullDate.month + 1,
+      currentFullDate.year
     );
 
     dispatch({
@@ -53,28 +48,41 @@ const CalendarTop = ({ currentDate, dispatch, setReset, component }) => {
       payload: {
         month: nextMonth,
         year: nextYear,
-        date: currentDate.date,
+        date:
+          nextMonth === dayjs().month() && nextYear === dayjs().year()
+            ? dayjs().date()
+            : 1,
       },
     });
 
-    fetchEvents({
-      timeMin: dayjs(`${nextYear}-${nextMonth + 1}`)
-        .startOf("month")
-        .utc()
-        .format(),
-      timeMax: dayjs(`${nextYear}-${nextMonth + 1}`)
-        .endOf("month")
-        .utc()
-        .format(),
-    });
+    fetchEventsAPI(nextYear, nextMonth + 1);
+    fetchHolidayAPI(nextYear, nextMonth + 1);
   };
 
   const handleToday = () => {
     setReset(Math.random());
     dispatch({ type: RESET_CURRENT_TIME });
+
+    const todaysMonth = dayjs().month();
+    const todaysYear = dayjs().year();
+    if (
+      !(
+        currentFullDate.month === todaysMonth &&
+        currentFullDate.year === todaysYear
+      )
+    ) {
+      fetchEventsAPI(todaysYear, todaysMonth + 1);
+      fetchHolidayAPI(todaysYear, todaysMonth + 1);
+    }
   };
 
-  const todayDate = dayjs();
+  const todayFullDate = dayjs().format("YYYY-MM-DD");
+  const currentFullDateInStr = dayjs(
+    `${currentFullDate.year}-${currentFullDate.month + 1}-${
+      currentFullDate.date
+    }`
+  ).format("YYYY-MM-DD");
+
   const Component = component;
 
   if (component)
@@ -91,14 +99,11 @@ const CalendarTop = ({ currentDate, dispatch, setReset, component }) => {
       <div className="text-lg font-semibold">{format}</div>
       <div className="flex justify-between items-center">
         <button
-          style={{
-            backgroundColor:
-              currentDate.date === todayDate.date() &&
-              currentDate.month === todayDate.month() &&
-              currentDate.year === todayDate.year() &&
-              "rgba(118,118,128, .12)",
-          }}
-          className="py-1.5 px-3 text-base rounded-md"
+          className={`py-1.5 px-3 text-base rounded-md ${
+            todayFullDate === currentFullDateInStr
+              ? "bg-gray-100 text-blue-500"
+              : ""
+          }`}
           onClick={handleToday}
         >
           Today
@@ -120,7 +125,7 @@ const mapToDispatch = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    currentDate: state.calendar,
+    currentFullDate: state.calendar,
   };
 };
 

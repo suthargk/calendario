@@ -8,28 +8,29 @@ import {
 } from "../../store/actions";
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 import dayjs from "dayjs";
+import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
 
-const CalendarDays = ({ currentDate, dispatch }) => {
+const CalendarDays = ({ currentFullDate, dispatch }) => {
   const [select, setSelect] = useState({
-    date: currentDate.date,
-    month: currentDate.month,
-    year: currentDate.year,
+    date: currentFullDate.date,
+    month: currentFullDate.month,
+    year: currentFullDate.year,
   });
 
   useEffect(() => {
     setSelect({
       ...select,
-      date: currentDate.date,
-      month: currentDate.month,
-      year: currentDate.year,
+      date: currentFullDate.date,
+      month: currentFullDate.month,
+      year: currentFullDate.year,
     });
-  }, [currentDate.date]);
+  }, [currentFullDate.month, currentFullDate.date]);
 
   const handleDaySelect = (dateValue, day) => {
-    let currentMonth = currentDate.month;
-    let currentYear = currentDate.year;
+    let currentMonth = currentFullDate.month;
+    let currentYear = currentFullDate.year;
 
-    if (dateValue.nextMonthDate) {
+    if (dateValue.isNextMonthDate) {
       const { nextMonth, nextYear } = getNextMonthDate(
         currentMonth + 1,
         currentYear
@@ -37,26 +38,7 @@ const CalendarDays = ({ currentDate, dispatch }) => {
 
       currentMonth = nextMonth;
       currentYear = nextYear;
-    }
 
-    if (dateValue.prevMonthDate) {
-      const { prevMonth, prevYear } = getPrevMonthDate(
-        currentMonth - 1,
-        currentYear
-      );
-
-      currentMonth = prevMonth;
-      currentYear = prevYear;
-    }
-
-    setSelect({
-      date: dateValue.date,
-      month: currentMonth,
-      year: currentYear,
-      day,
-    });
-
-    if (dateValue.nextMonthDate) {
       dispatch({
         type: NEXT_MONTH,
         payload: {
@@ -66,9 +48,20 @@ const CalendarDays = ({ currentDate, dispatch }) => {
           day,
         },
       });
+
+      fetchEventsAPI(nextYear, nextMonth + 1);
+      fetchHolidayAPI(nextYear, nextMonth + 1);
     }
 
-    if (dateValue.prevMonthDate) {
+    if (dateValue.isPrevMonthDate) {
+      const { prevMonth, prevYear } = getPrevMonthDate(
+        currentMonth - 1,
+        currentYear
+      );
+
+      currentMonth = prevMonth;
+      currentYear = prevYear;
+
       dispatch({
         type: PREV_MONTH,
         payload: {
@@ -78,7 +71,17 @@ const CalendarDays = ({ currentDate, dispatch }) => {
           day,
         },
       });
+
+      fetchEventsAPI(prevYear, prevMonth);
+      fetchHolidayAPI(prevYear, prevMonth);
     }
+
+    setSelect({
+      date: dateValue.date,
+      month: currentMonth,
+      year: currentYear,
+      day,
+    });
 
     const selectedDate = dayjs(
       new Date(currentYear, currentMonth, dateValue.date)
@@ -89,6 +92,7 @@ const CalendarDays = ({ currentDate, dispatch }) => {
       payload: selectedDate,
     });
   };
+
   return (
     <>
       {new Array(6).fill(null).map((_, index) => {
@@ -96,11 +100,11 @@ const CalendarDays = ({ currentDate, dispatch }) => {
           <DayRow
             key={index}
             rowIndex={index}
-            firstDayOfMonth={currentDate.firstDayOfMonth}
-            daysInMonth={currentDate.daysInMonth}
-            currentYear={currentDate.year}
-            currentMonth={currentDate.month}
-            daysInPreviousMonth={currentDate.daysInPreviousMonth}
+            firstDayOfMonth={currentFullDate.firstDayOfMonth}
+            daysInMonth={currentFullDate.daysInMonth}
+            currentYear={currentFullDate.year}
+            currentMonth={currentFullDate.month}
+            daysInPreviousMonth={currentFullDate.daysInPreviousMonth}
             handleDaySelect={handleDaySelect}
             select={select}
           />
@@ -116,7 +120,7 @@ function mapDispatchToProps(dispatch) {
 
 const mapStateToProps = (state) => {
   return {
-    currentDate: state.calendar,
+    currentFullDate: state.calendar,
   };
 };
 

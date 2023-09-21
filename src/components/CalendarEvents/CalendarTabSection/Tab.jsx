@@ -8,7 +8,9 @@ const Tab = ({ icon, label, active, handleTab, tabActive }) => {
         tabActive === label && "text-gray-900"
       }`}
     >
-      <div className={`${tabActive === label && "text-blue-500"}`}>{icon}</div>
+      <div className={`${tabActive === label ? "text-blue-500" : ""}`}>
+        {icon}
+      </div>
       <span className="">{label}</span>
       {tabActive === label && (
         <span

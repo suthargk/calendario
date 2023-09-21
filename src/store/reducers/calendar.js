@@ -19,7 +19,7 @@ const INITIAL_STATE = {
 };
 
 const applyPrevMonth = (state, action) => {
-  const { date, day, month, year } = action.payload;
+  const { date, month, year } = action.payload;
   currentDateObj = currentDateObj.subtract(1, "month");
   const firstDayOfMonth = currentDateObj.startOf("month").format("d");
   return {
@@ -28,14 +28,14 @@ const applyPrevMonth = (state, action) => {
     daysInMonth: currentDateObj.daysInMonth(),
     daysInPreviousMonth: currentDateObj.subtract(1, "month").daysInMonth(),
     date,
-    day,
+    day: firstDayOfMonth,
     month,
     year,
   };
 };
 
 const applyNextMonth = (state, action) => {
-  const { date, day, month, year } = action.payload;
+  const { date, month, year } = action.payload;
   currentDateObj = currentDateObj.add(1, "month");
   const firstDayOfMonth = currentDateObj.startOf("month").format("d");
 
@@ -45,7 +45,7 @@ const applyNextMonth = (state, action) => {
     daysInMonth: currentDateObj.daysInMonth(),
     daysInPreviousMonth: currentDateObj.subtract(1, "month").daysInMonth(),
     date,
-    day,
+    day: firstDayOfMonth,
     month,
     year,
   };

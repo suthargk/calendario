@@ -12,15 +12,15 @@ export const getRowDates = (
       i < firstDayOfMonth
         ? {
             date: daysInPreviousMonth + 1 + i - firstDayOfMonth,
-            prevMonthDate: true,
-            nextMonthDate: false,
-            currentMonthDate: false,
+            isPrevMonthDate: true,
+            isNextMonthDate: false,
+            isCurrentMonthDate: false,
           }
         : {
             date: i + 1 - firstDayOfMonth,
-            prevMonthDate: false,
-            nextMonthDate: false,
-            currentMonthDate: true,
+            isPrevMonthDate: false,
+            isNextMonthDate: false,
+            isCurrentMonthDate: true,
           }
     );
   } else {
@@ -31,15 +31,15 @@ export const getRowDates = (
       if (i + rowDayStartsWith > daysInMonth)
         return {
           date: i + rowDayStartsWith - daysInMonth,
-          nextMonthDate: true,
-          prevMonthDate: false,
-          currentMonthDate: false,
+          isNextMonthDate: true,
+          isPrevMonthDate: false,
+          isCurrentMonthDate: false,
         };
       return {
         date: i + rowDayStartsWith,
-        nextMonthDate: false,
-        prevMonthDate: false,
-        currentMonthDate: true,
+        isNextMonthDate: false,
+        isPrevMonthDate: false,
+        isCurrentMonthDate: true,
       };
     });
   }

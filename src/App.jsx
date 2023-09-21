@@ -1,11 +1,12 @@
 import Calendar from "./components/Calendar";
 import { gapi, loadAuth2 } from "gapi-script";
 import { connect } from "react-redux";
-import { fetchEvents } from "./store/services";
+import { fetchEvents, fetchHolidays } from "./store/services";
 import { useEffect, useState } from "react";
-import { SET_USER_AUTH } from "./store/actions";
+import { SET_USER_AUTH, USER_SELECTED_DATE } from "./store/actions";
 import CalendarEvents from "./components/CalendarEvents";
 import MinimalisticCalendar from "./components/MinimalisticCalendar";
+import dayjs from "dayjs";
 
 function App({ dispatch, isUserSignedIn }) {
   const [isAppLoading, setIsAppLoading] = useState(false);
@@ -27,7 +28,13 @@ function App({ dispatch, isUserSignedIn }) {
   };
 
   useEffect(() => {
-    getAuth();
+    const authAndFetch = new Promise((resolve) => {
+      resolve(getAuth());
+    });
+    authAndFetch.then(() => {
+      fetchEvents({});
+      fetchHolidays({});
+    });
   }, []);
 
   return (
@@ -40,16 +47,6 @@ function App({ dispatch, isUserSignedIn }) {
           <MinimalisticCalendar />
           <Calendar />
           <CalendarEvents />
-          <button
-            style={{ border: "1px solid black" }}
-            onClick={() => {
-              if (isUserSignedIn) {
-                fetchEvents({});
-              }
-            }}
-          >
-            Fetch
-          </button>
           <button
             onClick={() => {
               isUserSignedIn
