@@ -12,7 +12,8 @@ const CalendarListSection = ({
   eventList,
   publicHolidays,
   currentFullDate,
-  isLoading,
+  isHolidaySectionLoading,
+  isEventSectionLoading,
 }) => {
   const [isEventOpenId, setIsEventOpenId] = useState(null);
 
@@ -60,7 +61,7 @@ const CalendarListSection = ({
     isEventOpenId === id ? setIsEventOpenId(null) : setIsEventOpenId(id);
   };
 
-  if (isLoading)
+  if (isEventSectionLoading || isHolidaySectionLoading)
     return (
       <div
         style={{ height: "20.2rem" }}

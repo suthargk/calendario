@@ -28,14 +28,21 @@ const MinimalisticCalendarTop = ({
   );
 };
 
-const MinimalisticCalendar = ({ setIsLoading }) => {
+const MinimalisticCalendar = ({
+  setIsEventSectionLoading,
+  setIsHolidaySectionLoading,
+}) => {
   return (
     <div className="space-y-4">
       <CalendarTop
         component={MinimalisticCalendarTop}
-        setIsLoading={setIsLoading}
+        setIsEventSectionLoading={setIsEventSectionLoading}
+        setIsHolidaySectionLoading={setIsHolidaySectionLoading}
       />
-      <MinimalisticCalendarBody setIsLoading={setIsLoading} />
+      <MinimalisticCalendarBody
+        setIsEventSectionLoading={setIsEventSectionLoading}
+        setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+      />
     </div>
   );
 };

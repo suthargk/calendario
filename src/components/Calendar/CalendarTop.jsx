@@ -15,7 +15,8 @@ const CalendarTop = ({
   dispatch,
   setReset,
   component,
-  setIsLoading,
+  setIsEventSectionLoading,
+  setIsHolidaySectionLoading,
 }) => {
   const { month: currentMonth, year: currentYear } = currentFullDate;
   const format = dayjs(new Date(currentYear, currentMonth)).format("MMMM YYYY");
@@ -40,8 +41,8 @@ const CalendarTop = ({
       },
     });
 
-    fetchEventsAPI(prevYear, prevMonth, setIsLoading);
-    fetchHolidayAPI(prevYear, prevMonth, setIsLoading);
+    fetchEventsAPI(prevYear, prevMonth, setIsEventSectionLoading);
+    fetchHolidayAPI(prevYear, prevMonth, setIsHolidaySectionLoading);
   };
 
   const handleNextMonth = () => {
@@ -64,8 +65,8 @@ const CalendarTop = ({
       },
     });
 
-    fetchEventsAPI(nextYear, nextMonth, setIsLoading);
-    fetchHolidayAPI(nextYear, nextMonth, setIsLoading);
+    fetchEventsAPI(nextYear, nextMonth, setIsEventSectionLoading);
+    fetchHolidayAPI(nextYear, nextMonth, setIsHolidaySectionLoading);
   };
 
   const handleToday = () => {
@@ -74,10 +75,9 @@ const CalendarTop = ({
 
     const todaysMonth = dayjs().month();
     const todaysYear = dayjs().year();
-    const todaysDate = dayjs().date();
     if (!(currentMonth === todaysMonth && currentYear === todaysYear)) {
-      fetchEventsAPI(todaysYear, todaysMonth, todaysDate);
-      fetchHolidayAPI(todaysYear, todaysMonth);
+      fetchEventsAPI(todaysYear, todaysMonth, setIsEventSectionLoading);
+      fetchHolidayAPI(todaysYear, todaysMonth, setIsHolidaySectionLoading);
     }
   };
 
