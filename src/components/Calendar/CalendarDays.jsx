@@ -10,7 +10,12 @@ import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 import dayjs from "dayjs";
 import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
 
-const CalendarDays = ({ currentFullDate, dispatch }) => {
+const CalendarDays = ({
+  currentFullDate,
+  dispatch,
+  setIsEventSectionLoading,
+  setIsHolidaySectionLoading,
+}) => {
   const [select, setSelect] = useState({
     date: currentFullDate.date,
     month: currentFullDate.month,
@@ -49,8 +54,8 @@ const CalendarDays = ({ currentFullDate, dispatch }) => {
         },
       });
 
-      fetchEventsAPI(nextYear, nextMonth, dateValue.date);
-      fetchHolidayAPI(nextYear, nextMonth);
+      fetchEventsAPI(nextYear, nextMonth, setIsEventSectionLoading);
+      fetchHolidayAPI(nextYear, nextMonth, setIsHolidaySectionLoading);
     }
 
     if (dateValue.isPrevMonthDate) {
@@ -72,8 +77,8 @@ const CalendarDays = ({ currentFullDate, dispatch }) => {
         },
       });
 
-      fetchEventsAPI(prevYear, prevMonth, dateValue.date);
-      fetchHolidayAPI(prevYear, prevMonth);
+      fetchEventsAPI(prevYear, prevMonth, setIsEventSectionLoading);
+      fetchHolidayAPI(prevYear, prevMonth, setIsHolidaySectionLoading);
     }
 
     setSelect({

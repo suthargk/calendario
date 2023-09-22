@@ -10,6 +10,7 @@ import MinimalisticCalendar from "./components/MinimalisticCalendar";
 function App({ dispatch, isUserSignedIn }) {
   const [isAppLoading, setIsAppLoading] = useState(false);
   const [isEventSectionLoading, setIsEventSectionLoading] = useState(true);
+  const [isHolidaySectionLoading, setIsHolidaySectionLoading] = useState(true);
   const getAuth = async () => {
     let auth2 = await loadAuth2(
       gapi,
@@ -32,8 +33,8 @@ function App({ dispatch, isUserSignedIn }) {
       resolve(getAuth());
     });
     authAndFetch.then(() => {
-      fetchEvents({ setIsLoading: setIsEventSectionLoading });
-      fetchHolidays({});
+      fetchEvents({ setIsEventSectionLoading });
+      fetchHolidays({ setIsHolidaySectionLoading });
     });
   }, []);
 
@@ -44,9 +45,18 @@ function App({ dispatch, isUserSignedIn }) {
     >
       {!isAppLoading ? (
         <div className="space-y-4">
-          <MinimalisticCalendar setIsLoading={setIsEventSectionLoading} />
-          <Calendar setIsLoading={setIsEventSectionLoading} />
-          <CalendarEvents isLoading={isEventSectionLoading} />
+          <MinimalisticCalendar
+            setIsEventSectionLoading={setIsEventSectionLoading}
+            setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+          />
+          <Calendar
+            setIsEventSectionLoading={setIsEventSectionLoading}
+            setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+          />
+          <CalendarEvents
+            isEventSectionLoading={isEventSectionLoading}
+            isHolidaySectionLoading={isHolidaySectionLoading}
+          />
           <button
             onClick={() => {
               isUserSignedIn

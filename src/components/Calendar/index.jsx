@@ -2,7 +2,11 @@ import CalendarTable from "./CalendarTable";
 import CalendarTop from "./CalendarTop";
 import { memo, useState } from "react";
 
-const Calendar = ({ hightLightWeeks, setIsLoading }) => {
+const Calendar = ({
+  hightLightWeeks,
+  setIsEventSectionLoading,
+  setIsHolidaySectionLoading,
+}) => {
   const [reset, setReset] = useState(Math.random());
   return (
     <div
@@ -10,8 +14,15 @@ const Calendar = ({ hightLightWeeks, setIsLoading }) => {
       style={{ borderWidth: "1px" }}
       className="bg-white p-3 rounded-xl border-gray-200 select-none"
     >
-      <CalendarTop setReset={setReset} setIsLoading={setIsLoading} />
-      <CalendarTable />
+      <CalendarTop
+        setReset={setReset}
+        setIsEventSectionLoading={setIsEventSectionLoading}
+        setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+      />
+      <CalendarTable
+        setIsEventSectionLoading={setIsEventSectionLoading}
+        setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+      />
     </div>
   );
 };
