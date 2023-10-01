@@ -33,7 +33,7 @@ const MinimalisticCalendar = ({
   setIsHolidaySectionLoading,
 }) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <CalendarTop
         component={MinimalisticCalendarTop}
         setIsEventSectionLoading={setIsEventSectionLoading}

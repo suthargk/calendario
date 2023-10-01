@@ -6,11 +6,13 @@ import { useEffect, useState } from "react";
 import { SET_USER_AUTH } from "./store/actions";
 import CalendarEvents from "./components/CalendarEvents";
 import MinimalisticCalendar from "./components/MinimalisticCalendar";
+import CalendarHeader from "./components/CalendarHeader";
 
 function App({ dispatch, isUserSignedIn }) {
   const [isAppLoading, setIsAppLoading] = useState(false);
   const [isEventSectionLoading, setIsEventSectionLoading] = useState(true);
   const [isHolidaySectionLoading, setIsHolidaySectionLoading] = useState(true);
+  const [isFullCalendar, setIsFullCalendar] = useState(false);
   const getAuth = async () => {
     let auth2 = await loadAuth2(
       gapi,
@@ -44,20 +46,26 @@ function App({ dispatch, isUserSignedIn }) {
       className="p-4 rounded-2xl shadow"
     >
       {!isAppLoading ? (
-        <div className="space-y-4">
+        <div className="space-y-3">
+          <CalendarHeader
+            isFullCalendar={isFullCalendar}
+            handleFullCalendar={() => setIsFullCalendar(!isFullCalendar)}
+          />
           <MinimalisticCalendar
             setIsEventSectionLoading={setIsEventSectionLoading}
             setIsHolidaySectionLoading={setIsHolidaySectionLoading}
           />
-          <Calendar
-            setIsEventSectionLoading={setIsEventSectionLoading}
-            setIsHolidaySectionLoading={setIsHolidaySectionLoading}
-          />
+          {isFullCalendar && (
+            <Calendar
+              setIsEventSectionLoading={setIsEventSectionLoading}
+              setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+            />
+          )}
           <CalendarEvents
             isEventSectionLoading={isEventSectionLoading}
             isHolidaySectionLoading={isHolidaySectionLoading}
           />
-          <button
+          {/* <button
             onClick={() => {
               isUserSignedIn
                 ? gapi.auth2?.getAuthInstance().signOut()
@@ -65,7 +73,7 @@ function App({ dispatch, isUserSignedIn }) {
             }}
           >
             {isUserSignedIn ? "Google -> Log Out" : "Google -> Log In"}
-          </button>
+          </button> */}
         </div>
       ) : (
         "Loading..."
