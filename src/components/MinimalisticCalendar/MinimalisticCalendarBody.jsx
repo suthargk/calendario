@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PrevChevron from "../../assets/icons/PrevChevron";
 import NextChevron from "../../assets/icons/NextChevron";
@@ -12,6 +12,7 @@ import {
 import dayjs from "dayjs";
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
+import ToolTip from "../common/ToolTip";
 
 const MinimalisticCalendarBody = ({
   currentDate,
@@ -24,12 +25,23 @@ const MinimalisticCalendarBody = ({
   setIsEventSectionLoading,
   setIsHolidaySectionLoading,
 }) => {
+  const [onPrevDateMouseOver, setOnPrevDateMouseOver] = useState(false);
+  const [onNextDateMouseOver, setOnNextDateMouseOver] = useState(false);
   const prevNextFiveDates = getPrevNextFiveDates({
     currentDate,
     currentDay,
     daysInPreviousMonth,
     daysInMonth,
   });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOnPrevDateMouseOver(false);
+      setOnNextDateMouseOver(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [onPrevDateMouseOver, onNextDateMouseOver]);
 
   const handleUserSelectDate = (dateObj) => {
     let selectedDateMonth = currentMonth;
@@ -94,9 +106,16 @@ const MinimalisticCalendarBody = ({
     <div className="flex justify-between items-center select-none">
       <button
         onClick={() => handleUserSelectDate(prevNextFiveDates[1])}
-        className="p-1.5 rounded-full border border-gray-200 bg-white"
+        className="relative p-1.5 rounded-full border border-gray-200 bg-white focus:outline-2 focus:outline-blue-500"
+        onMouseEnter={() => setOnPrevDateMouseOver(true)}
+        onMouseLeave={() => setOnPrevDateMouseOver(false)}
+        onFocus={() => setOnPrevDateMouseOver(true)}
+        onBlur={() => setOnPrevDateMouseOver(false)}
       >
         <PrevChevron width={11} height={11} />
+        {onPrevDateMouseOver && (
+          <ToolTip direction="left" text="Previous date" />
+        )}
       </button>
 
       <div className="flex justify-center">
@@ -104,8 +123,8 @@ const MinimalisticCalendarBody = ({
           return (
             <div
               key={dateObj.date}
-              style={{ width: "52px" }}
-              className={`py-2 cursor-pointer text-center rounded-lg text-sm ${
+              style={{ width: "52px", height: "60px" }}
+              className={`py-2.5 flex flex-col justify-between items-center cursor-pointer text-center rounded-lg text-sm ${
                 currentDate === dateObj.date ? "bg-blue-500 text-white" : ""
               }`}
               onClick={() => handleUserSelectDate(dateObj)}
@@ -113,11 +132,11 @@ const MinimalisticCalendarBody = ({
               <div
                 className={`${
                   currentDate === dateObj.date ? "text-white" : "text-gray-400"
-                }`}
+                } leading-none`}
               >
                 {WEEKDAYVALUES[dateObj.day]}
               </div>
-              <div className="text-lg">
+              <div className="text-lg leading-none	">
                 {String(dateObj.date).padStart(2, "0")}
               </div>
             </div>
@@ -126,10 +145,15 @@ const MinimalisticCalendarBody = ({
       </div>
 
       <button
-        className="p-1.5 rounded-full border border-gray-200 bg-white"
+        className="relative p-1.5 rounded-full border border-gray-200 bg-white focus:outline-2 focus:outline-blue-500"
         onClick={() => handleUserSelectDate(prevNextFiveDates[3])}
+        onMouseEnter={() => setOnNextDateMouseOver(true)}
+        onMouseLeave={() => setOnNextDateMouseOver(false)}
+        onFocus={() => setOnNextDateMouseOver(true)}
+        onBlur={() => setOnNextDateMouseOver(false)}
       >
         <NextChevron width={11} height={11} />
+        {onNextDateMouseOver && <ToolTip direction="right" text="Next date" />}
       </button>
     </div>
   );

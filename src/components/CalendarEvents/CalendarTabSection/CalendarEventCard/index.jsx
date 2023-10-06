@@ -11,7 +11,12 @@ import Attendees from "./Attendees";
 import DownChevronIcon from "../../../../assets/icons/DownChevronIcon";
 import EventCardDetail from "./EventCardDetail";
 
-const CalendarEventCard = ({ event, handleEventOpen, isEventOpenId }) => {
+const CalendarEventCard = ({
+  event,
+  handleEventOpen,
+  isEventOpenId,
+  index,
+}) => {
   const {
     summary,
     hangoutLink = "",
@@ -32,8 +37,9 @@ const CalendarEventCard = ({ event, handleEventOpen, isEventOpenId }) => {
 
   return (
     <div
+      tabIndex={index}
       onClick={() => handleEventOpen(event.id)}
-      className={`p-4 block rounded-xl space-y-4 cursor-pointer bg-gradient-to-b ${bgLinearGradientColor[color]} border ${borderColor[color]}`}
+      className={`p-4 block rounded-xl space-y-4 cursor-pointer  focus:outline-2 focus:outline-blue-500 bg-gradient-to-b ${bgLinearGradientColor[color]} border ${borderColor[color]}`}
     >
       <div className="flex justify-between items-start gap-1">
         <div className="space-y-0.5">

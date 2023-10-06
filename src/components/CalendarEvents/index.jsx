@@ -11,7 +11,7 @@ const CalendarEvents = ({ isEventSectionLoading, isHolidaySectionLoading }) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <CalendarSearchBar />
       <CalendarTabSection tabActive={tabActive} handleTab={handleTab} />
       <CalendarListSection
