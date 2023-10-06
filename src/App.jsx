@@ -7,12 +7,15 @@ import { SET_USER_AUTH } from "./store/actions";
 import CalendarEvents from "./components/CalendarEvents";
 import MinimalisticCalendar from "./components/MinimalisticCalendar";
 import CalendarHeader from "./components/CalendarHeader";
+import Login from "./components/Auth/Login";
+import Loader from "./components/common/Loader";
 
 function App({ dispatch, isUserSignedIn }) {
-  const [isAppLoading, setIsAppLoading] = useState(false);
+  const [isAppLoading, setIsAppLoading] = useState(true);
   const [isEventSectionLoading, setIsEventSectionLoading] = useState(true);
   const [isHolidaySectionLoading, setIsHolidaySectionLoading] = useState(true);
-  const [isFullCalendar, setIsFullCalendar] = useState(false);
+
+  const [reset, setReset] = useState(Math.random());
   const getAuth = async () => {
     let auth2 = await loadAuth2(
       gapi,
@@ -42,41 +45,36 @@ function App({ dispatch, isUserSignedIn }) {
 
   return (
     <div
-      style={{ backgroundColor: "#fff", width: "350px" }}
-      className="p-4 rounded-2xl shadow"
+      style={{
+        backgroundColor: "#fff",
+        width: "350px",
+        padding: "13px",
+        height: "600px",
+      }}
+      className="app relative rounded-2xl shadow"
     >
-      {!isAppLoading ? (
+      {isAppLoading ? (
+        <Loader />
+      ) : isUserSignedIn ? (
         <div className="space-y-3">
           <CalendarHeader
-            isFullCalendar={isFullCalendar}
-            handleFullCalendar={() => setIsFullCalendar(!isFullCalendar)}
+            reset={reset}
+            setReset={setReset}
+            setIsEventSectionLoading={setIsEventSectionLoading}
+            setIsHolidaySectionLoading={setIsHolidaySectionLoading}
           />
           <MinimalisticCalendar
             setIsEventSectionLoading={setIsEventSectionLoading}
             setIsHolidaySectionLoading={setIsHolidaySectionLoading}
           />
-          {isFullCalendar && (
-            <Calendar
-              setIsEventSectionLoading={setIsEventSectionLoading}
-              setIsHolidaySectionLoading={setIsHolidaySectionLoading}
-            />
-          )}
+
           <CalendarEvents
             isEventSectionLoading={isEventSectionLoading}
             isHolidaySectionLoading={isHolidaySectionLoading}
           />
-          {/* <button
-            onClick={() => {
-              isUserSignedIn
-                ? gapi.auth2?.getAuthInstance().signOut()
-                : gapi.auth2?.getAuthInstance().signIn();
-            }}
-          >
-            {isUserSignedIn ? "Google -> Log Out" : "Google -> Log In"}
-          </button> */}
         </div>
       ) : (
-        "Loading..."
+        <Login isUserSignedIn={isUserSignedIn} />
       )}
     </div>
   );

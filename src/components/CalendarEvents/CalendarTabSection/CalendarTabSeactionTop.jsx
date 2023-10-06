@@ -5,7 +5,11 @@ import Tab from "./Tab";
 
 const CalendarTabSeactionTop = ({ tabActive, handleTab }) => {
   return (
-    <div className="-mx-4">
+    <div
+      style={{
+        margin: "0px -12.8px",
+      }}
+    >
       <div
         style={{ borderTopWidth: 1, borderBottomWidth: 1 }}
         className="w-full border-gray-200 flex"

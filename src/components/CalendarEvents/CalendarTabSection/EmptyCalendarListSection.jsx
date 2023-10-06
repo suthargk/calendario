@@ -4,7 +4,7 @@ import EmptyCalendarIcon from "../../../assets/icons/EmptyCalendarIcon";
 const EmptyCalendarListSection = () => {
   return (
     <div
-      style={{ borderWidth: 1, height: "20.2rem" }}
+      style={{ borderWidth: 1, height: "20.03rem" }}
       className="rounded-xl border-gray-200 flex justify-center items-center flex-col space-y-4 py-4 h-80"
     >
       <EmptyCalendarIcon width={50} height={50} />

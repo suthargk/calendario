@@ -6,13 +6,17 @@ const Calendar = ({
   hightLightWeeks,
   setIsEventSectionLoading,
   setIsHolidaySectionLoading,
+  setReset,
+  reset,
 }) => {
-  const [reset, setReset] = useState(Math.random());
   return (
     <div
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
       key={reset}
       style={{ borderWidth: "1px" }}
-      className="bg-white p-3 rounded-xl border-gray-200 select-none"
+      className="bg-white p-3 shadow-2xl rounded-xl border-gray-200 select-none "
     >
       <CalendarTop
         setReset={setReset}

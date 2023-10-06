@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from "react";
 import EmptyCalendarListSection from "./EmptyCalendarListSection";
 import CalendarEventCard from "./CalendarEventCard";
-import SpinnerIcon from "../../../assets/icons/SpinnerIcon";
 import CalendarHolidayCard from "./CalendarHolidayCard";
 import { connect } from "react-redux";
 import { getSelectedDateEvents } from "../../../utils";
 import dayjs from "dayjs";
+import Loader from "../../common/Loader";
 
 const CalendarListSection = ({
   tabActive,
@@ -31,11 +31,12 @@ const CalendarListSection = ({
         if (!selectedDateEventList.length) return <EmptyCalendarListSection />;
         return (
           <>
-            {selectedDateEventList.map((event) => {
+            {selectedDateEventList.map((event, index) => {
               return (
                 <CalendarEventCard
                   key={event.id}
                   event={event}
+                  index={index}
                   handleEventOpen={handleEventOpen}
                   isEventOpenId={isEventOpenId}
                 />
@@ -62,17 +63,10 @@ const CalendarListSection = ({
   };
 
   if (isEventSectionLoading || isHolidaySectionLoading)
-    return (
-      <div
-        style={{ height: "20.2rem" }}
-        className="flex justify-center items-center"
-      >
-        <SpinnerIcon width={40} height={40} />
-      </div>
-    );
+    return <Loader style={{ height: "20.03rem" }} />;
 
   return (
-    <div style={{ height: "20.2rem" }} className="space-y-2 overflow-auto">
+    <div style={{ height: "20.03rem" }} className="space-y-2 overflow-auto">
       {getEventCards()}
     </div>
   );
