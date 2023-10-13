@@ -7,7 +7,7 @@ const Loader = ({ className, ...rest }) => {
       className={`flex justify-center items-center h-full w-full ${className}`}
       {...rest}
     >
-      <SpinnerIcon width={40} height={40} />
+      <SpinnerIcon width={40} height={40} className="fill-gray-500" />
     </div>
   );
 };

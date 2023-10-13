@@ -51,7 +51,7 @@ function App({ dispatch, isUserSignedIn }) {
         padding: "13px",
         height: "600px",
       }}
-      className="app relative rounded-2xl shadow"
+      className="app relative rounded-2xl shadow overflow-hidden"
     >
       {isAppLoading ? (
         <Loader />
