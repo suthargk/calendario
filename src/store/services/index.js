@@ -55,3 +55,19 @@ export const fetchHolidays = ({
       setIsHolidaySectionLoading(false);
     });
 };
+
+export const deleteEvent = ({ setIsLoading, eventId }) => {
+  const access_token = store.getState().user.access_token;
+  setIsLoading(true);
+  return axios
+    .delete(
+      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${eventId}`,
+      {
+        headers: { Authorization: `Bearer ${access_token}` },
+      }
+    )
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => setIsLoading(false));
+};
