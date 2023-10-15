@@ -12,7 +12,9 @@ import Attendees from "../Attendees";
 import EventCardDetailItem from "./EventCardDetailItem";
 import { createPortal } from "react-dom";
 import AlertOverlay from "../../../../common/AlertOverlay";
-import { deleteEvent, fetchEvents } from "../../../../../store/services";
+import { deleteEvent } from "../../../../../store/services";
+import EventDetailOverlay from "../../../../common/EventDetailOverlay";
+import { motion } from "framer-motion";
 
 const EventCardDetail = ({
   event,
@@ -24,6 +26,8 @@ const EventCardDetail = ({
   conferenceData,
   reminders,
   hangoutLink,
+  summary,
+  description,
 }) => {
   const totalAttendeesResponse = attendees.filter(
     (attendee) => attendee.responseStatus === "accepted"
@@ -32,6 +36,8 @@ const EventCardDetail = ({
   const [isAlertOverlayOpen, setIsAlertOverlayOpen] = useState(false);
   const organizerName = organizer.displayName || organizer.email;
   const [isButtonLoading, setIsButtonLoading] = useState(false);
+  const [isEventDetailOverlayOpen, setIsEventDetailOverlayOpen] =
+    useState(false);
 
   const handleDeleteEvent = (eventId) => {
     setIsButtonLoading(true);
@@ -57,7 +63,10 @@ const EventCardDetail = ({
       {isMoreOptionOpen && (
         <div className="absolute overflow-hidden flex flex-col divide-y bg-white z-10 shadow-xl top-10 right-4 text-sm py-0.5 border border-gray-200 rounded-lg">
           <button
-            onClick={() => setIsMoreOptionOpen(false)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsEventDetailOverlayOpen(true);
+            }}
             className="px-3 py-1.5 text-start hover:bg-gray-100"
           >
             Show Event Detail
@@ -185,6 +194,30 @@ const EventCardDetail = ({
             }}
             className="absolute top-0 left-0 right-0 bottom-0"
           ></div>,
+          document.querySelector(".app")
+        )}
+
+      {isEventDetailOverlayOpen &&
+        createPortal(
+          <motion.div
+            initial={{ left: "100%" }}
+            animate={{ left: "0", border: "0" }}
+            transition={{ velocity: 2, mass: 0.5 }}
+            className="absolute z-40 top-0 bottom-0 right-0 left-0 bg-white w-full border-l"
+          >
+            <EventDetailOverlay
+              event={event}
+              startTime={startTime}
+              endTime={endTime}
+              attendees={attendees}
+              organizer={organizer}
+              conferenceData={conferenceData}
+              reminders={reminders}
+              hangoutLink={hangoutLink}
+              summary={summary}
+              description={description}
+            />
+          </motion.div>,
           document.querySelector(".app")
         )}
 

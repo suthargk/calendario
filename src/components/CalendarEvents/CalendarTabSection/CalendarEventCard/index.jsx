@@ -82,6 +82,8 @@ const CalendarEventCard = ({
           color={color}
           reminders={reminders}
           hangoutLink={hangoutLink}
+          summary={summary}
+          description={description}
         />
       )}
     </div>

@@ -18,6 +18,7 @@ const CalendarHeader = ({
   dispatch,
   setIsEventSectionLoading,
   setIsHolidaySectionLoading,
+  handleSettingPage,
 }) => {
   const { month: currentMonth, year: currentYear } = currentFullDate;
   const [isFullCalendar, setIsFullCalendar] = useState(false);
@@ -93,6 +94,7 @@ const CalendarHeader = ({
           onMouseEnter={() => {
             setOnSettingMouseOver(true);
           }}
+          onClick={handleSettingPage}
           onMouseLeave={() => setOnSettingMouseOver(false)}
           onFocus={() => setOnSettingMouseOver(true)}
           onBlur={() => setOnSettingMouseOver(false)}
