@@ -47,9 +47,10 @@ const CalendarEventCard = ({
             {summary || "(No title)"}
           </h2>
           {isEventOpenId === event.id ? (
-            <p className={`text-xs opacity-75 ${textColor[color]}`}>
-              {eventDescription}
-            </p>
+            <p
+              className={`text-xs opacity-75 ${textColor[color]}`}
+              dangerouslySetInnerHTML={{ __html: eventDescription }}
+            />
           ) : (
             <p className={`text-xs opacity-75 ${textColor[color]}`}>
               {startTime} - {endTime} (UTC)
