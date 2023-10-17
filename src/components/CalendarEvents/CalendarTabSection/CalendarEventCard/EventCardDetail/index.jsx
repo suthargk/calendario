@@ -15,6 +15,7 @@ import AlertOverlay from "../../../../common/AlertOverlay";
 import { deleteEvent } from "../../../../../store/services";
 import EventDetailOverlay from "../../../../common/EventDetailOverlay";
 import { motion } from "framer-motion";
+import Reminder from "../../../../common/Reminder";
 
 const EventCardDetail = ({
   event,
@@ -27,7 +28,9 @@ const EventCardDetail = ({
   reminders,
   hangoutLink,
   summary,
+  location,
   description,
+  attachments,
 }) => {
   const totalAttendeesResponse = attendees.filter(
     (attendee) => attendee.responseStatus === "accepted"
@@ -66,6 +69,7 @@ const EventCardDetail = ({
             onClick={(e) => {
               e.stopPropagation();
               setIsEventDetailOverlayOpen(true);
+              setIsMoreOptionOpen(false);
             }}
             className="px-3 py-1.5 text-start hover:bg-gray-100"
           >
@@ -121,19 +125,10 @@ const EventCardDetail = ({
           </EventCardDetailItem>
         ) : null}
 
-        {(reminders.useDefault === false && reminders.overrides) ||
-        reminders.useDefault ? (
-          <EventCardDetailItem
-            icon={<BellIcon width={14} height={14} className="text-gray-600" />}
-          >
-            <p className="text-sm">
-              {reminders?.overrides
-                ? reminders?.overrides?.[0].minutes + " min"
-                : "30 min"}{" "}
-              <span className="text-gray-600 opacity-85">before</span>
-            </p>
-          </EventCardDetailItem>
-        ) : null}
+        <Reminder
+          reminders={reminders}
+          icon={<BellIcon width={14} height={14} className="text-gray-600" />}
+        />
 
         <EventCardDetailItem
           icon={
@@ -216,6 +211,9 @@ const EventCardDetail = ({
               hangoutLink={hangoutLink}
               summary={summary}
               description={description}
+              location={location}
+              attachments={attachments}
+              setIsEventDetailOverlayOpen={setIsEventDetailOverlayOpen}
             />
           </motion.div>,
           document.querySelector(".app")

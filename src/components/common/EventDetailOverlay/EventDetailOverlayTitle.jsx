@@ -17,7 +17,7 @@ const EventDetailOverlayTitle = ({ summary, organizer }) => {
           <span>
             by {organizer.displayName ? organizer.displayName : organizer.email}{" "}
           </span>
-          <span className="inline-block bg-green-100 rounded-full text-green-700 text-[10px] px-2 self-start">
+          <span className="inline-block bg-green-100 rounded-full text-green-800 text-[10px] px-2 self-start">
             Confirmed
           </span>
         </div>

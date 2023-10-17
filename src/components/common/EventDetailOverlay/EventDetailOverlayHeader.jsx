@@ -1,10 +1,13 @@
 import React from "react";
 import PrevChevron from "../../../assets/icons/PrevChevron";
 
-const EventDetailOverlayHeader = () => {
+const EventDetailOverlayHeader = ({ setIsEventDetailOverlayOpen }) => {
   return (
     <div className="p-2.5 border-b border-gray-200 flex items-center">
-      <button className="flex items-center gap-1 text-blue-500">
+      <button
+        className="flex items-center gap-1 text-blue-500"
+        onClick={() => setIsEventDetailOverlayOpen(false)}
+      >
         <PrevChevron width={14} height={14} />
         <span className="text-sm">Calendar</span>
       </button>

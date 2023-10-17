@@ -25,9 +25,11 @@ const CalendarEventCard = ({
     end,
     organizer,
     attendees = [],
-    conferenceData,
     color,
+    location,
     reminders,
+    conferenceData,
+    attachments,
   } = event;
   const startTime = `${dayjs(start.dateTime).format("HH:mm A")}`;
   const endTime = `${dayjs(end.dateTime).format("HH:mm A")}`;
@@ -85,6 +87,8 @@ const CalendarEventCard = ({
           hangoutLink={hangoutLink}
           summary={summary}
           description={description}
+          location={location}
+          attachments={attachments}
         />
       )}
     </div>

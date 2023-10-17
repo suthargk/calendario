@@ -14,7 +14,11 @@ const Participants = ({ attendees }) => {
               index === 0 ? "ml-4" : ""
             } ${attendees.length - 1 === index ? "mr-4" : ""}`}
           >
-            <Attendee user={participant} AttendeeColor={participant.color} />
+            <Attendee
+              user={participant}
+              AttendeeColor={participant.color}
+              status={participant.responseStatus}
+            />
             <p className="w-max text-sm">
               {participant.displayName
                 ? participant.displayName
