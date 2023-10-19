@@ -16,7 +16,12 @@ const Attendees = ({ attendees, className, style }) => {
     >
       {attendees?.map((user) => {
         return (
-          <Attendee key={user.email} user={user} AttendeeColor={user.color} />
+          <Attendee
+            key={user.email}
+            user={user}
+            AttendeeColor={user.color}
+            status={user.responseStatus}
+          />
         );
       })}
     </div>

@@ -1,6 +1,7 @@
 import React from "react";
+import { getMeetingStatus } from "../../../utils";
 
-const EventDetailOverlayTitle = ({ summary, organizer }) => {
+const EventDetailOverlayTitle = ({ summary, organizer, meetingStatus }) => {
   return (
     <div className="flex gap-2">
       {/* <div className="w-1/6">
@@ -12,14 +13,13 @@ const EventDetailOverlayTitle = ({ summary, organizer }) => {
         </div>
       </div> */}
       <h1 className="font-medium w-full">
-        <span>{summary}</span>
+        <span>{summary ? summary : "(No title)"}</span>
         <div className="w-full text-gray-500 text-xs font-normal gap-1.5 flex items-center  flex-wrap">
           <span>
             by {organizer.displayName ? organizer.displayName : organizer.email}{" "}
           </span>
-          <span className="inline-block bg-green-100 rounded-full text-green-800 text-[10px] px-2 self-start">
-            Confirmed
-          </span>
+
+          {getMeetingStatus(meetingStatus)}
         </div>
       </h1>
     </div>

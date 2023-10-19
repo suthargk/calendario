@@ -12,11 +12,11 @@ const Attendee = ({ user, AttendeeColor, status }) => {
   return (
     <div
       style={{ fontSize: "11px", width: "26px", height: "26px" }}
-      className={`relative flex justify-center items-center border-2 border-white -mr-2 rounded-full uppercase ${textColor[AttendeeColor]} ${attendeeBgColor[AttendeeColor]}`}
+      className={`relative flex justify-center items-center border-2 border-white -mr-2 rounded-full uppercase ${textColor[AttendeeColor].darkest} ${attendeeBgColor[AttendeeColor]}`}
     >
       <span>{attendTagName}</span>
       {status && (
-        <span className="absolute bottom-0 right-0 ">
+        <span className="absolute bottom-0 right-0">
           {getAttendeeStatus(status)}
         </span>
       )}

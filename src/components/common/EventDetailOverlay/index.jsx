@@ -12,8 +12,8 @@ import Attachments from "./Attachments";
 const EventDetailOverlay = ({
   event,
   organizer,
-  startTime,
-  endTime,
+  startTimeFormat,
+  endTimeFormat,
   attendees,
   conferenceData,
   reminders,
@@ -23,6 +23,8 @@ const EventDetailOverlay = ({
   location,
   setIsEventDetailOverlayOpen,
   attachments,
+  meetingStatus,
+  totalAttendeesResponse,
 }) => {
   const joinByPhone = conferenceData?.entryPoints?.find(
     (entry) => entry.entryPointType === "phone"
@@ -35,10 +37,22 @@ const EventDetailOverlay = ({
         setIsEventDetailOverlayOpen={setIsEventDetailOverlayOpen}
       />
       <div className="p-4 space-y-4 overflow-auto h-full">
-        <EventDetailOverlayTitle summary={summary} organizer={organizer} />
-        <EventDetailOverlayTimeDuration />
+        <EventDetailOverlayTitle
+          summary={summary}
+          organizer={organizer}
+          meetingStatus={meetingStatus}
+        />
+        <EventDetailOverlayTimeDuration
+          startTimeFormat={startTimeFormat}
+          endTimeFormat={endTimeFormat}
+        />
         {description && <EventDescription description={description} />}
-        {attendees?.length ? <Participants attendees={attendees} /> : null}
+        {attendees?.length ? (
+          <Participants
+            attendees={attendees}
+            totalAttendeesResponse={totalAttendeesResponse}
+          />
+        ) : null}
         {/* <RepeatOn /> */}
         {/* <div>
           <h2 className="font-medium text-xs">Reminder</h2>

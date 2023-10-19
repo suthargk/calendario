@@ -17,7 +17,9 @@ const Attachments = ({ attachments }) => {
     <div>
       <h2 className="font-medium text-xs">
         <span>Attachments </span>
-        <span className="font-semibold">({attachments.length})</span>
+        <span className="font-semibold text-gray-500">
+          ({attachments.length})
+        </span>
       </h2>
 
       <ul className="flex flex-wrap gap-1 mt-2">
@@ -27,11 +29,11 @@ const Attachments = ({ attachments }) => {
               <a
                 target="__blank"
                 href={attachment.fileUrl}
-                className="flex items-center gap-1 rounded-full text-xs border border-gray-200 px-1.5 py-0.5 text-gray-700 "
+                className="flex items-center gap-1 rounded-full text-xs border border-gray-200 px-[3.5px] py-0.5 text-gray-700 duration-300 hover:bg-gray-50"
               >
                 <img
                   src={attachment.iconLink}
-                  className="w-3 h-3 rounded-full"
+                  className="rounded-full w-[13px] h-[13px]"
                 />
 
                 <span>{attachment.title}</span>

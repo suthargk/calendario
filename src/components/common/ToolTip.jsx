@@ -42,7 +42,10 @@ const ToolTip = ({ direction = "top", text }) => {
   }
 
   return (
-    <div className={`absolute z-50 shadow-2xl ${parentDiv} `}>
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className={`absolute z-50 shadow-2xl ${parentDiv} `}
+    >
       <motion.div
         className={motionDiv}
         initial={{ opacity: 0, ...initial }}

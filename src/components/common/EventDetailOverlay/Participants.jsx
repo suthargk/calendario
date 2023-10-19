@@ -1,12 +1,15 @@
 import React from "react";
 import Attendee from "../../CalendarEvents/CalendarTabSection/CalendarEventCard/Attendees/Attendee";
 
-const Participants = ({ attendees }) => {
-  console.log(attendees);
-
+const Participants = ({ attendees, totalAttendeesResponse }) => {
   return (
     <div className=" space-y-2">
-      <h2 className="font-medium text-xs">Participants</h2>
+      <h2 className="font-medium text-xs">
+        <span>Attendees </span>
+        <span className="text-gray-500">
+          ({totalAttendeesResponse} confirmed)
+        </span>
+      </h2>
       <div className="-mx-4 flex gap-2 overflow-auto">
         {attendees.map((participant, index) => (
           <div

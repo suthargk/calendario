@@ -4,7 +4,7 @@ const Location = ({ location }) => {
   return (
     <div>
       <h2 className="font-medium text-xs">Location</h2>
-      <p className="text-gray-600">{location}</p>
+      <p className="text-gray-600 text-sm">{location}</p>
     </div>
   );
 };

@@ -203,3 +203,31 @@ export const getAttendeeStatus = (status) => {
       return null;
   }
 };
+
+export const getMeetingStatus = (status) => {
+  switch (status) {
+    case "confirmed":
+      return (
+        <span className="inline-block  rounded-full text-[10px] px-2 self-start text-green-800 bg-green-100">
+          Confirmed
+        </span>
+      );
+
+    case "cancelled":
+      return (
+        <span className="inline-block  rounded-full text-[10px] px-2 self-start text-red-800 bg-red-100">
+          Cancelled
+        </span>
+      );
+
+    case "tentative":
+      return (
+        <span className="inline-block  rounded-full text-[10px] px-2 self-start text-orange-800 bg-orange-100">
+          Cancelled
+        </span>
+      );
+
+    default:
+      return null;
+  }
+};

@@ -45,7 +45,6 @@ const MinimalisticCalendarBody = ({
   }, [onPrevDateMouseOver, onNextDateMouseOver]);
 
   const handleUserSelectDate = (dateObj) => {
-    console.log(dateObj);
     let selectedDateMonth = currentMonth;
     let selectedDateYear = currentYear;
 

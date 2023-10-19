@@ -1,4 +1,3 @@
-import Calendar from "./components/Calendar";
 import { gapi, loadAuth2 } from "gapi-script";
 import { connect } from "react-redux";
 import { fetchEvents, fetchHolidays } from "./store/services";
