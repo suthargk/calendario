@@ -1,4 +1,3 @@
-import Calendar from "./components/Calendar";
 import { gapi, loadAuth2 } from "gapi-script";
 import { connect } from "react-redux";
 import { fetchEvents, fetchHolidays } from "./store/services";
@@ -9,11 +8,13 @@ import MinimalisticCalendar from "./components/MinimalisticCalendar";
 import CalendarHeader from "./components/CalendarHeader";
 import Login from "./components/Auth/Login";
 import Loader from "./components/common/Loader";
+import Setting from "./components/Setting";
 
 function App({ dispatch, isUserSignedIn }) {
   const [isAppLoading, setIsAppLoading] = useState(true);
   const [isEventSectionLoading, setIsEventSectionLoading] = useState(true);
   const [isHolidaySectionLoading, setIsHolidaySectionLoading] = useState(true);
+  const [isSettingPageOpen, setIsSettingPageOpen] = useState(false);
 
   const [reset, setReset] = useState(Math.random());
   const getAuth = async () => {
@@ -56,23 +57,28 @@ function App({ dispatch, isUserSignedIn }) {
       {isAppLoading ? (
         <Loader />
       ) : isUserSignedIn ? (
-        <div className="space-y-3">
-          <CalendarHeader
-            reset={reset}
-            setReset={setReset}
-            setIsEventSectionLoading={setIsEventSectionLoading}
-            setIsHolidaySectionLoading={setIsHolidaySectionLoading}
-          />
-          <MinimalisticCalendar
-            setIsEventSectionLoading={setIsEventSectionLoading}
-            setIsHolidaySectionLoading={setIsHolidaySectionLoading}
-          />
+        isSettingPageOpen ? (
+          <Setting />
+        ) : (
+          <div className="space-y-3">
+            <CalendarHeader
+              reset={reset}
+              setReset={setReset}
+              setIsEventSectionLoading={setIsEventSectionLoading}
+              setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+              handleSettingPage={() => setIsSettingPageOpen(true)}
+            />
+            <MinimalisticCalendar
+              setIsEventSectionLoading={setIsEventSectionLoading}
+              setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+            />
 
-          <CalendarEvents
-            isEventSectionLoading={isEventSectionLoading}
-            isHolidaySectionLoading={isHolidaySectionLoading}
-          />
-        </div>
+            <CalendarEvents
+              isEventSectionLoading={isEventSectionLoading}
+              isHolidaySectionLoading={isHolidaySectionLoading}
+            />
+          </div>
+        )
       ) : (
         <Login isUserSignedIn={isUserSignedIn} />
       )}

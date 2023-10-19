@@ -27,6 +27,7 @@ const MinimalisticCalendarBody = ({
 }) => {
   const [onPrevDateMouseOver, setOnPrevDateMouseOver] = useState(false);
   const [onNextDateMouseOver, setOnNextDateMouseOver] = useState(false);
+
   const prevNextFiveDates = getPrevNextFiveDates({
     currentDate,
     currentDay,
@@ -103,58 +104,75 @@ const MinimalisticCalendarBody = ({
   };
 
   return (
-    <div className="flex justify-between items-center select-none">
-      <button
-        onClick={() => handleUserSelectDate(prevNextFiveDates[1])}
-        className="relative p-1.5 rounded-full border border-gray-200 bg-white focus:outline-2 focus:outline-blue-500"
-        onMouseEnter={() => setOnPrevDateMouseOver(true)}
-        onMouseLeave={() => setOnPrevDateMouseOver(false)}
-        onFocus={() => setOnPrevDateMouseOver(true)}
-        onBlur={() => setOnPrevDateMouseOver(false)}
+    <div className="flex justify-between select-none relative">
+      <div
+        style={{ height: "inherit" }}
+        className=" flex items-center bg-white w-[32px]"
       >
-        <PrevChevron width={11} height={11} />
-        {onPrevDateMouseOver && (
-          <ToolTip direction="left" text="Previous date" />
-        )}
-      </button>
-
-      <div className="flex justify-center">
-        {prevNextFiveDates.map((dateObj) => {
-          return (
-            <div
-              key={dateObj.date}
-              style={{ width: "52px", height: "60px" }}
-              className={`py-2.5 flex flex-col justify-between items-center cursor-pointer text-center rounded-lg text-sm ${
-                currentDate === dateObj.date ? "bg-blue-500 text-white" : ""
-              }`}
-              onClick={() => handleUserSelectDate(dateObj)}
-            >
+        <button
+          onClick={() => handleUserSelectDate(prevNextFiveDates[2])}
+          className="relative p-1.5 rounded-full border border-gray-200 bg-white focus:outline-2 focus:outline-blue-500"
+          onMouseEnter={() => setOnPrevDateMouseOver(true)}
+          onMouseLeave={() => setOnPrevDateMouseOver(false)}
+          onFocus={() => setOnPrevDateMouseOver(true)}
+          onBlur={() => setOnPrevDateMouseOver(false)}
+        >
+          <PrevChevron width={11} height={11} />
+          {onPrevDateMouseOver && (
+            <ToolTip direction="left" text="Previous date" />
+          )}
+        </button>
+      </div>
+      <div className="overflow-hidden">
+        <div className="flex-1 flex justify-center">
+          {prevNextFiveDates.map((dateObj) => {
+            return (
               <div
-                className={`${
-                  currentDate === dateObj.date ? "text-white" : "text-gray-400"
-                } leading-none`}
+                key={dateObj.date}
+                style={{ minWidth: "52px", height: "60px" }}
+                className={`py-2.5 flex flex-col justify-between items-center cursor-pointer text-center rounded-lg text-sm ${
+                  currentDate === dateObj.date ? "bg-blue-500 text-white" : ""
+                }`}
+                onClick={() => handleUserSelectDate(dateObj)}
               >
-                {WEEKDAYVALUES[dateObj.day]}
+                <div
+                  className={`${
+                    currentDate === dateObj.date
+                      ? "text-white"
+                      : "text-gray-400"
+                  } leading-none`}
+                >
+                  {WEEKDAYVALUES[dateObj.day]}
+                </div>
+                <div className="text-lg leading-none	">
+                  {String(dateObj.date).padStart(2, "0")}
+                </div>
               </div>
-              <div className="text-lg leading-none	">
-                {String(dateObj.date).padStart(2, "0")}
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
-      <button
-        className="relative p-1.5 rounded-full border border-gray-200 bg-white focus:outline-2 focus:outline-blue-500"
-        onClick={() => handleUserSelectDate(prevNextFiveDates[3])}
-        onMouseEnter={() => setOnNextDateMouseOver(true)}
-        onMouseLeave={() => setOnNextDateMouseOver(false)}
-        onFocus={() => setOnNextDateMouseOver(true)}
-        onBlur={() => setOnNextDateMouseOver(false)}
+      <div
+        style={{ height: "inherit" }}
+        className="flex items-center bg-white w-[32px] justify-end"
       >
-        <NextChevron width={11} height={11} />
-        {onNextDateMouseOver && <ToolTip direction="right" text="Next date" />}
-      </button>
+        <button
+          className="relative p-1.5 rounded-full border border-gray-200 bg-white focus:outline-2 focus:outline-blue-500"
+          onClick={() => {
+            handleUserSelectDate(prevNextFiveDates[4]);
+          }}
+          onMouseEnter={() => setOnNextDateMouseOver(true)}
+          onMouseLeave={() => setOnNextDateMouseOver(false)}
+          onFocus={() => setOnNextDateMouseOver(true)}
+          onBlur={() => setOnNextDateMouseOver(false)}
+        >
+          <NextChevron width={11} height={11} />
+          {onNextDateMouseOver && (
+            <ToolTip direction="right" text="Next date" />
+          )}
+        </button>
+      </div>
     </div>
   );
 };

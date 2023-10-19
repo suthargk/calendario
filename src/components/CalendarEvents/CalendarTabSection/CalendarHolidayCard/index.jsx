@@ -15,18 +15,20 @@ const CalendarHolidayCard = ({ holiday }) => {
 
   return (
     <div
-      className={`p-4 block rounded-xl space-y-3 bg-gradient-to-b ${bgLinearGradientColor[color]} border ${borderColor[color]}`}
+      className={`p-4 block rounded-xl space-y-3 bg-gradient-to-b ${bgLinearGradientColor[color]} border ${borderColor[color].light}`}
     >
       <div className="space-y-0.5">
         <h2 className={`text-sm ${HeadingTextColor[color]}`}>
           {summary || "(No title)"}
         </h2>
-        <p className={`text-xs uppercase opacity-75 ${textColor[color]}`}>
+        <p
+          className={`text-xs uppercase opacity-75 ${textColor[color].darkest}`}
+        >
           {startDate} - {endDate}
         </p>
       </div>
       <div className={`${HeadingTextColor[color]} text-sm`}>
-        <span className={`${textColor[color]} text-xs`}>
+        <span className={`${textColor[color].darkest} text-xs`}>
           Calendario wishes{" "}
         </span>
         <span className="">Happy {summary}!</span>

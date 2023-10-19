@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import TimeClockIcon from "../../../../../assets/icons/TimeClockIcon";
 import AttendeeIcon from "../../../../../assets/icons/AttendeeIcon";
 import BellIcon from "../../../../../assets/icons/BellIcon";
@@ -12,26 +12,73 @@ import Attendees from "../Attendees";
 import EventCardDetailItem from "./EventCardDetailItem";
 import { createPortal } from "react-dom";
 import AlertOverlay from "../../../../common/AlertOverlay";
-import { deleteEvent, fetchEvents } from "../../../../../store/services";
+import { deleteEvent } from "../../../../../store/services";
+import EventDetailOverlay from "../../../../common/EventDetailOverlay";
+import { motion } from "framer-motion";
+import Reminder from "../../../../common/Reminder";
+import RadioButton from "../../../../common/RadioButton";
+
+const AlertBody = () => {
+  const [value, setValue] = useState("this_event");
+
+  const handleChange = (radioValue) => {
+    setValue(radioValue);
+  };
+
+  return (
+    <div className="space-y-1.5 self-start pl-4 mb-1">
+      <RadioButton
+        value={"this_event" === value}
+        label="This event"
+        id="this_event"
+        className="text-sm"
+        onChange={() => handleChange("this_event")}
+      />
+      <RadioButton
+        value={"this_and_following_events" === value}
+        label="This and following events"
+        id="this_and_following_events"
+        className="text-sm"
+        onChange={() => handleChange("this_and_following_events")}
+      />
+      <RadioButton
+        value={"all_events" === value}
+        label="All events"
+        id="all_events"
+        className="text-sm"
+        onChange={() => handleChange("all_events")}
+      />
+    </div>
+  );
+};
 
 const EventCardDetail = ({
   event,
   organizer,
-  startTime,
-  endTime,
+  startTimeFormat,
+  endTimeFormat,
   attendees,
   color,
   conferenceData,
   reminders,
   hangoutLink,
+  summary,
+  location,
+  description,
+  attachments,
+  meetingStatus,
 }) => {
   const totalAttendeesResponse = attendees.filter(
     (attendee) => attendee.responseStatus === "accepted"
   ).length;
+
   const [isMoreOptionOpen, setIsMoreOptionOpen] = useState(false);
   const [isAlertOverlayOpen, setIsAlertOverlayOpen] = useState(false);
   const organizerName = organizer.displayName || organizer.email;
   const [isButtonLoading, setIsButtonLoading] = useState(false);
+  const [isEventDetailOverlayOpen, setIsEventDetailOverlayOpen] =
+    useState(false);
+  const meetingLinkRef = useRef(null);
 
   const handleDeleteEvent = (eventId) => {
     setIsButtonLoading(true);
@@ -39,6 +86,12 @@ const EventCardDetail = ({
       setIsLoading: setIsButtonLoading,
       eventId,
     });
+  };
+
+  const handleMeetingLinkClipboard = (e) => {
+    e.stopPropagation();
+    const clipboard = navigator.clipboard;
+    clipboard.writeText(meetingLinkRef.current.textContent);
   };
 
   return (
@@ -55,9 +108,17 @@ const EventCardDetail = ({
         <MoreIcon width={18} height={18} />
       </button>
       {isMoreOptionOpen && (
-        <div className="absolute overflow-hidden flex flex-col divide-y bg-white z-10 shadow-xl top-10 right-4 text-sm py-0.5 border border-gray-200 rounded-lg">
+        <motion.div
+          initial={{ scale: 0, opacity: 0, transformOrigin: "right top" }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="absolute overflow-hidden flex flex-col divide-y bg-white z-10 shadow-xl top-10 right-4 text-sm py-0.5 border border-gray-200 rounded-lg"
+        >
           <button
-            onClick={() => setIsMoreOptionOpen(false)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsEventDetailOverlayOpen(true);
+              setIsMoreOptionOpen(false);
+            }}
             className="px-3 py-1.5 text-start hover:bg-gray-100"
           >
             Show Event Detail
@@ -72,7 +133,7 @@ const EventCardDetail = ({
           >
             Delete Event
           </button>
-        </div>
+        </motion.div>
       )}
       <div
         className={`space-y-3  ${
@@ -85,7 +146,7 @@ const EventCardDetail = ({
           }
         >
           <p className="text-sm">
-            {startTime} - {endTime}{" "}
+            {startTimeFormat.time} - {endTimeFormat.time}{" "}
             <span className="text-gray-600 opacity-85">(UTC)</span>
           </p>
         </EventCardDetailItem>
@@ -112,19 +173,10 @@ const EventCardDetail = ({
           </EventCardDetailItem>
         ) : null}
 
-        {(reminders.useDefault === false && reminders.overrides) ||
-        reminders.useDefault ? (
-          <EventCardDetailItem
-            icon={<BellIcon width={14} height={14} className="text-gray-600" />}
-          >
-            <p className="text-sm">
-              {reminders?.overrides
-                ? reminders?.overrides?.[0].minutes + " min"
-                : "30 min"}{" "}
-              <span className="text-gray-600 opacity-85">before</span>
-            </p>
-          </EventCardDetailItem>
-        ) : null}
+        <Reminder
+          reminders={reminders}
+          icon={<BellIcon width={14} height={14} className="text-gray-600" />}
+        />
 
         <EventCardDetailItem
           icon={
@@ -152,10 +204,12 @@ const EventCardDetail = ({
               <span>Google Meet</span>
 
               <p className="relative text-sm text-gray-600 opacity-85">
-                <span>{conferenceData?.entryPoints[0].label}</span>
+                <span ref={meetingLinkRef}>
+                  {conferenceData?.entryPoints[0].label}
+                </span>
                 <button
                   className="absolute -top-1 -right-2 p-2 hover:bg-gray-100 rounded-full"
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={handleMeetingLinkClipboard}
                 >
                   <CopyIcon height={14} width={14} className="text-gray-600" />
                 </button>
@@ -188,11 +242,43 @@ const EventCardDetail = ({
           document.querySelector(".app")
         )}
 
+      {isEventDetailOverlayOpen &&
+        createPortal(
+          <motion.div
+            initial={{ left: "100%" }}
+            animate={{ left: "0", border: "0" }}
+            transition={{ velocity: 2, mass: 0.5 }}
+            className="absolute z-40 top-0 bottom-0 right-0 left-0 bg-white w-full border-l"
+          >
+            <EventDetailOverlay
+              event={event}
+              startTimeFormat={startTimeFormat}
+              endTimeFormat={endTimeFormat}
+              attendees={attendees}
+              organizer={organizer}
+              conferenceData={conferenceData}
+              reminders={reminders}
+              hangoutLink={hangoutLink}
+              summary={summary}
+              description={description}
+              location={location}
+              attachments={attachments}
+              setIsEventDetailOverlayOpen={setIsEventDetailOverlayOpen}
+              meetingStatus={meetingStatus}
+              totalAttendeesResponse={totalAttendeesResponse}
+            />
+          </motion.div>,
+          document.querySelector(".app")
+        )}
+
       {isAlertOverlayOpen &&
         createPortal(
           <AlertOverlay
-            title="Event Deletion"
-            description="Are you certain you want to delete event? This action is irreversible."
+            title={{
+              title: `Delete recurring event`,
+              className: "font-normal self-start pl-4 mb-2",
+            }}
+            body={<AlertBody />}
             setIsAlertOverlayOpen={setIsAlertOverlayOpen}
             setIsLoading={setIsButtonLoading}
             icon={

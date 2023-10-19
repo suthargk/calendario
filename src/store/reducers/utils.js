@@ -186,6 +186,8 @@ export const colors = [
   "fuchsia",
   "pink",
   "rose",
+  "emerald",
+  "teal",
 ];
 
 export const bgLinearGradientColor = {
@@ -204,6 +206,8 @@ export const bgLinearGradientColor = {
   fuchsia: `from-fuchsia-200 to-fuchsia-100`,
   pink: `from-pink-200 to-pink-100`,
   rose: `from-rose-200 to-rose-100`,
+  emerald: `from-emerald-200 to-emerald-100`,
+  teal: `from-teal-200 to-teal-100`,
 };
 
 export const HeadingTextColor = {
@@ -222,24 +226,88 @@ export const HeadingTextColor = {
   fuchsia: `text-fuchsia-900`,
   pink: `text-pink-900`,
   rose: `text-rose-900`,
+  emerald: `text-emerald-900`,
+  teal: `text-teal-900`,
 };
 
 export const textColor = {
-  red: `text-red-800`,
-  orange: `text-orange-800`,
-  blue: `text-blue-800`,
-  violet: `text-violet-800`,
-  indigo: `text-indigo-800`,
-  amber: `text-amber-800`,
-  yellow: `text-yellow-800`,
-  lime: `text-lime-800`,
-  green: `text-green-800`,
-  cyan: `text-cyan-800`,
-  sky: `text-sky-800`,
-  purple: `text-purple-800`,
-  fuchsia: `text-fuchsia-800`,
-  pink: `text-pink-800`,
-  rose: `text-rose-800`,
+  red: { light: `text-red-200`, dark: `text-red-600`, darkest: `text-red-800` },
+  orange: {
+    light: `text-orange-200`,
+    dark: `text-orange-600`,
+    darkest: `text-orange-800`,
+  },
+  blue: {
+    light: `text-blue-200`,
+    dark: `text-blue-600`,
+    darkest: `text-blue-800`,
+  },
+  violet: {
+    light: `text-violet-200`,
+    dark: `text-violet-600`,
+    darkest: `text-violet-800`,
+  },
+  indigo: {
+    light: `text-indigo-200`,
+    dark: `text-indigo-600`,
+    darkest: `text-indigo-800`,
+  },
+  amber: {
+    light: `text-amber-200`,
+    dark: `text-amber-600`,
+    darkest: `text-amber-800`,
+  },
+  yellow: {
+    light: `text-yellow-200`,
+    dark: `text-yellow-600`,
+    darkest: `text-yellow-800`,
+  },
+  lime: {
+    light: `text-lime-200`,
+    dark: `text-lime-600`,
+    darkest: `text-lime-800`,
+  },
+  green: {
+    light: `text-green-200`,
+    dark: `text-green-600`,
+    darkest: `text-green-800`,
+  },
+  cyan: {
+    light: `text-cyan-200`,
+    dark: `text-cyan-600`,
+    darkest: `text-cyan-800`,
+  },
+  sky: { light: `text-sky-200`, dark: `text-sky-600`, darkest: `text-sky-800` },
+  purple: {
+    light: `text-purple-200`,
+    dark: `text-purple-600`,
+    darkest: `text-purple-800`,
+  },
+  fuchsia: {
+    light: `text-fuchsia-200`,
+    dark: `text-fuchsia-600`,
+    darkest: `text-fushsia-800`,
+  },
+  pink: {
+    light: `text-pink-200`,
+    dark: `text-pink-600`,
+    darkest: `text-pink-800`,
+  },
+  rose: {
+    light: `text-rose-200`,
+    dark: `text-rose-600`,
+    darkest: `text-rose-800`,
+  },
+  emerald: {
+    light: `text-emerald-200`,
+    dark: `text-emerald-600`,
+    darkest: `text-emerald-800`,
+  },
+  teal: {
+    light: `text-teal-200`,
+    dark: `text-teal-600`,
+    darkest: `text-teal-800`,
+  },
 };
 
 export const bgColor = {
@@ -258,6 +326,8 @@ export const bgColor = {
   fuchsia: `bg-fuchsia-600`,
   pink: `bg-pink-600`,
   rose: `bg-rose-600`,
+  emerald: `bg-emerald-600`,
+  teal: `bg-teal-600`,
 };
 
 export const attendeeBgColor = {
@@ -276,24 +346,28 @@ export const attendeeBgColor = {
   fuchsia: `bg-fuchsia-200`,
   pink: `bg-pink-200`,
   rose: `bg-rose-200`,
+  emerald: `bg-emerald-200`,
+  teal: `bg-teal-200`,
 };
 
 export const borderColor = {
-  red: `border-red-200`,
-  orange: `border-orange-200`,
-  blue: `border-blue-200`,
-  violet: `border-violet-200`,
-  indigo: `border-indigo-200`,
-  amber: `border-amber-200`,
-  yellow: `border-yellow-200`,
-  lime: `border-lime-200`,
-  green: `border-green-200`,
-  cyan: `border-cyan-200`,
-  sky: `border-sky-200`,
-  purple: `border-purple-200`,
-  fuchsia: `border-fuchsia-200`,
-  pink: `border-pink-200`,
-  rose: `border-rose-200`,
+  red: { light: `border-red-200`, dark: `border-red-600` },
+  orange: { light: `border-orange-200`, dark: `border-orange-600` },
+  blue: { light: `border-blue-200`, dark: `border-blue-600` },
+  violet: { light: `border-violet-200`, dark: `border-violet-600` },
+  indigo: { light: `border-indigo-200`, dark: `border-indigo-600` },
+  amber: { light: `border-amber-200`, dark: `border-amber-600` },
+  yellow: { light: `border-yellow-200`, dark: `border-yellow-600` },
+  lime: { light: `border-lime-200`, dark: `border-lime-600` },
+  green: { light: `border-green-200`, dark: `border-green-600` },
+  cyan: { light: `border-cyan-200`, dark: `border-cyan-600` },
+  sky: { light: `border-sky-200`, dark: `border-sky-600` },
+  purple: { light: `border-purple-200`, dark: `border-purple-600` },
+  fuchsia: { light: `border-fuchsia-200`, dark: `border-fuchsia-600` },
+  pink: { light: `border-pink-200`, dark: `border-pink-600` },
+  rose: { light: `border-rose-200`, dark: `border-rose-600` },
+  emerald: { light: `border-emerald-200`, dark: `border-emerald-600` },
+  teal: { light: `border-teal-200`, dark: `border-teal-600` },
 };
 
 export const generateUserProfile = (user_name) => {

@@ -8,6 +8,10 @@ import {
   weeksBetween,
 } from "../store/reducers/utils";
 
+import CheckedIcon from "../assets/icons/CheckedIcon";
+import CloseIcon from "../assets/icons/CloseIcon";
+import QuestionMark from "../assets/icons/QuestionMark";
+
 export const getRowDates = (
   rowIndex,
   firstDayOfMonth,
@@ -83,6 +87,7 @@ const getRecurrenceStatusList = (event) => {
 
 export const getSelectedDateEvents = (eventList, userSelectedDate) => {
   const { date, month, year } = userSelectedDate;
+
   const userSelected = dayjs(new Date(year, month, date));
 
   const userSelectedDateEvents = eventList.filter((event) => {
@@ -160,4 +165,69 @@ export const getSelectedDateEvents = (eventList, userSelectedDate) => {
   });
 
   return userSelectedDateEvents;
+};
+
+export const getAttendeeStatus = (status) => {
+  switch (status) {
+    case "accepted": {
+      return (
+        <CheckedIcon
+          width={7}
+          height={7}
+          className="bg-green-500 rounded-full text-white p-[1px] ring-1	ring-white	"
+        />
+      );
+    }
+
+    case "declined": {
+      return (
+        <CloseIcon
+          width={7}
+          height={7}
+          className="bg-red-500 rounded-full text-white p-[1px] ring-1	ring-white	"
+        />
+      );
+    }
+
+    case "tentative": {
+      return (
+        <QuestionMark
+          width={6}
+          height={6}
+          className="bg-orange-500 rounded-full text-white p-[1px] ring-1	ring-white	"
+        />
+      );
+    }
+
+    default:
+      return null;
+  }
+};
+
+export const getMeetingStatus = (status) => {
+  switch (status) {
+    case "confirmed":
+      return (
+        <span className="inline-block  rounded-full text-[10px] px-2 self-start text-green-800 bg-green-100">
+          Confirmed
+        </span>
+      );
+
+    case "cancelled":
+      return (
+        <span className="inline-block  rounded-full text-[10px] px-2 self-start text-red-800 bg-red-100">
+          Cancelled
+        </span>
+      );
+
+    case "tentative":
+      return (
+        <span className="inline-block  rounded-full text-[10px] px-2 self-start text-orange-800 bg-orange-100">
+          Cancelled
+        </span>
+      );
+
+    default:
+      return null;
+  }
 };
