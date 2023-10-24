@@ -45,15 +45,7 @@ function App({ dispatch, isUserSignedIn }) {
   }, []);
 
   return (
-    <div
-      style={{
-        backgroundColor: "#fff",
-        width: "350px",
-        padding: "13px",
-        height: "600px",
-      }}
-      className="app relative rounded-2xl shadow overflow-hidden"
-    >
+    <div className="app bg-white relative rounded-2xl shadow overflow-hidden h-[600px] p-[13px] w-[350px] dark:bg-slate-800">
       {isAppLoading ? (
         <Loader />
       ) : isUserSignedIn ? (
@@ -72,7 +64,6 @@ function App({ dispatch, isUserSignedIn }) {
               setIsEventSectionLoading={setIsEventSectionLoading}
               setIsHolidaySectionLoading={setIsHolidaySectionLoading}
             />
-
             <CalendarEvents
               isEventSectionLoading={isEventSectionLoading}
               isHolidaySectionLoading={isHolidaySectionLoading}

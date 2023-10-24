@@ -1,7 +1,8 @@
 import { ADD_EVENTS, ADD_HOLIDAYS } from "../actions";
 import { getColorOnEventCard } from "./utils";
 const INITIAL_EVENTS = {
-  eventList: [],
+  confirmedEventList: [],
+  cancelledEventList: [],
   publicHolidays: [],
 };
 
@@ -17,7 +18,16 @@ const eventsReducer = (state = INITIAL_EVENTS, action) => {
     case ADD_EVENTS: {
       const events = action.payload;
       const eventsWithColor = getColorOnEventCard(events);
-      return { ...state, eventList: eventsWithColor };
+
+      const confirmedEventList = eventsWithColor.filter(
+        (event) => event.status === "confirmed"
+      );
+
+      const cancelledEventList = eventsWithColor.filter(
+        (event) => event.status === "cancelled"
+      );
+
+      return { ...state, confirmedEventList, cancelledEventList };
     }
 
     case ADD_HOLIDAYS: {

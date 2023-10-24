@@ -107,6 +107,11 @@ const CalendarEventCard = ({
             Are you going to attend?
           </span>
           <div className={`flex gap-2  ${textColor[color].dark}`}>
+            {/* <button
+              className={`border ${borderColor[color].dark} px-3 py-0.5 rounded-2xl text-sm`}
+            >
+              
+            </button> */}
             <button
               className={`border ${borderColor[color].dark} px-3 py-0.5 rounded-2xl text-sm`}
             >

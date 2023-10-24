@@ -9,7 +9,8 @@ import Loader from "../../common/Loader";
 
 const CalendarListSection = ({
   tabActive,
-  eventList,
+  cancelledEventList,
+  confirmedEventList,
   publicHolidays,
   currentFullDate,
   isHolidaySectionLoading,
@@ -22,8 +23,12 @@ const CalendarListSection = ({
   ).format("YYYY-MM-DD");
 
   const selectedDateEventList = useMemo(() => {
-    return getSelectedDateEvents(eventList, currentFullDate);
-  }, [eventList, currentFullDateFormat]);
+    return getSelectedDateEvents(
+      confirmedEventList,
+      cancelledEventList,
+      currentFullDate
+    );
+  }, [confirmedEventList, currentFullDateFormat]);
 
   const getEventCards = () => {
     switch (tabActive) {
@@ -75,7 +80,8 @@ const CalendarListSection = ({
 const mapStateToProps = (state) => {
   return {
     currentFullDate: state.calendar,
-    eventList: state.events.eventList,
+    confirmedEventList: state.events.confirmedEventList,
+    cancelledEventList: state.events.cancelledEventList,
     publicHolidays: state.events.publicHolidays,
   };
 };

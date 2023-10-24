@@ -113,10 +113,13 @@ export const getWeeklyRruleEvents = ({
 }) => {
   const weeklyIntervalRepeatWeeks = Number(recurrenceStatusList["INTERVAL"]);
   const Weekdays = recurrenceStatusList["BYDAY"];
+
   if (
     dateDifference % weeklyIntervalRepeatWeeks === 0 &&
     dayDifference >= 0 &&
-    Weekdays.includes(WEEKDAYVALUES[userSelected.getDay()])
+    Weekdays.includes(
+      WEEKDAYVALUES[userSelected.day()].toUpperCase().slice(0, 2)
+    )
   ) {
     return filterDailyAndWeeklyEvents({
       recurrenceStatusList,
@@ -286,7 +289,7 @@ export const textColor = {
   fuchsia: {
     light: `text-fuchsia-200`,
     dark: `text-fuchsia-600`,
-    darkest: `text-fushsia-800`,
+    darkest: `text-fuchsia-800`,
   },
   pink: {
     light: `text-pink-200`,

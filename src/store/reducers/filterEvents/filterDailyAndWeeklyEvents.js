@@ -22,7 +22,7 @@ export const filterDailyAndWeeklyEvents = ({
     if (dateDifference < recurrenceStatusList["COUNT"] * interval) return event;
   } else if (
     recurrenceStatusList.hasOwnProperty("UNTIL") &&
-    userSelected.getTime() <=
+    new Date(userSelected).getTime() <=
       new Date(
         recurrenceStatusList["UNTIL"]
           .split("T")[0]
@@ -30,7 +30,10 @@ export const filterDailyAndWeeklyEvents = ({
       ).getTime()
   ) {
     return event;
-  } else {
+  } else if (
+    !recurrenceStatusList.hasOwnProperty("UNTIL") &&
+    !recurrenceStatusList.hasOwnProperty("COUNT")
+  ) {
     return event;
   }
 };
