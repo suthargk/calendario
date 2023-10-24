@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { getSelectedDateEvents } from "../../../utils";
 import dayjs from "dayjs";
 import Loader from "../../common/Loader";
+import { motion } from "framer-motion";
 
 const CalendarListSection = ({
   tabActive,
@@ -71,9 +72,17 @@ const CalendarListSection = ({
     return <Loader style={{ height: "20.03rem" }} />;
 
   return (
-    <div style={{ height: "20.03rem" }} className="space-y-2 overflow-auto">
+    <motion.div
+      key={tabActive}
+      initial={{ y: 10, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: -10, opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      style={{ height: "20.03rem" }}
+      className="space-y-2 overflow-auto"
+    >
       {getEventCards()}
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,6 +1,6 @@
 import CalendarTable from "./CalendarTable";
 import CalendarTop from "./CalendarTop";
-import { memo, useState } from "react";
+import { memo } from "react";
 
 const Calendar = ({
   hightLightWeeks,
@@ -16,7 +16,7 @@ const Calendar = ({
       }}
       key={reset}
       style={{ borderWidth: "1px" }}
-      className="bg-white p-3 shadow-2xl rounded-xl border-gray-200 select-none "
+      className="bg-white p-3 shadow-2xl rounded-xl border-gray-200 select-none w-[320px] mt-11 ml-3.5"
     >
       <CalendarTop
         setReset={setReset}

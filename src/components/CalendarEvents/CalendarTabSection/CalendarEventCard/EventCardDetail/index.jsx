@@ -143,34 +143,54 @@ const EventCardDetail = ({
       >
         <MoreIcon width={18} height={18} />
       </button>
-      {isMoreOptionOpen && (
-        <motion.div
-          initial={{ scale: 0, opacity: 0, transformOrigin: "right top" }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="absolute overflow-hidden flex flex-col divide-y bg-white z-10 shadow-xl top-10 right-4 text-sm py-0.5 border border-gray-200 rounded-lg"
+
+      <motion.div
+        initial={{
+          scale: 0,
+          opacity: 0,
+          transformOrigin: "right top",
+        }}
+        animate={
+          isMoreOptionOpen
+            ? {
+                scale: 1,
+                opacity: 1,
+                display: "flex",
+                transformOrigin: "right top",
+              }
+            : {
+                scale: 0,
+                opacity: 0,
+                transformOrigin: "right top",
+                transitionEnd: {
+                  display: "none",
+                },
+              }
+        }
+        className="absolute overflow-hidden flex flex-col divide-y bg-white z-10 shadow-xl top-10 right-4 text-sm py-0.5 border border-gray-200 rounded-lg"
+      >
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsEventDetailOverlayOpen(true);
+            setIsMoreOptionOpen(false);
+          }}
+          className="px-3 py-1.5 text-start hover:bg-gray-100"
         >
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsEventDetailOverlayOpen(true);
-              setIsMoreOptionOpen(false);
-            }}
-            className="px-3 py-1.5 text-start hover:bg-gray-100"
-          >
-            Show Event Detail
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsAlertOverlayOpen(true);
-              setIsMoreOptionOpen(false);
-            }}
-            className="px-3 py-1.5 text-start hover:bg-gray-100"
-          >
-            Delete Event
-          </button>
-        </motion.div>
-      )}
+          Show Event Detail
+        </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsAlertOverlayOpen(true);
+            setIsMoreOptionOpen(false);
+          }}
+          className="px-3 py-1.5 text-start hover:bg-gray-100"
+        >
+          Delete Event
+        </button>
+      </motion.div>
+
       <div
         className={`space-y-3  ${
           hangoutLink ? "mb-4 pb-4 border-b border-gray-200" : ""
@@ -278,37 +298,58 @@ const EventCardDetail = ({
           document.querySelector(".app")
         )}
 
-      {isEventDetailOverlayOpen &&
-        createPortal(
-          <motion.div
-            initial={{ left: "100%" }}
-            animate={{ left: "0", border: "0" }}
-            transition={{ velocity: 2, mass: 0.5 }}
-            className="absolute z-40 top-0 bottom-0 right-0 left-0 bg-white w-full border-l"
-          >
-            <EventDetailOverlay
-              event={event}
-              startTimeFormat={startTimeFormat}
-              endTimeFormat={endTimeFormat}
-              attendees={attendees}
-              organizer={organizer}
-              conferenceData={conferenceData}
-              reminders={reminders}
-              hangoutLink={hangoutLink}
-              summary={summary}
-              description={description}
-              location={location}
-              attachments={attachments}
-              setIsEventDetailOverlayOpen={setIsEventDetailOverlayOpen}
-              meetingStatus={meetingStatus}
-              totalAttendeesResponse={totalAttendeesResponse}
-            />
-          </motion.div>,
-          document.querySelector(".app")
-        )}
+      {createPortal(
+        <motion.div
+          initial={{ left: "100%", display: "none" }}
+          animate={
+            isEventDetailOverlayOpen
+              ? { left: "0%", border: "0", display: "block" }
+              : {
+                  left: "100%",
+                  border: "0",
+                  transitionEnd: { display: "none" },
+                }
+          }
+          transition={{ velocity: 2, mass: 0.5 }}
+          className="absolute z-40 top-0 bottom-0 right-0 left-0 bg-white w-full border-l"
+        >
+          <EventDetailOverlay
+            event={event}
+            startTimeFormat={startTimeFormat}
+            endTimeFormat={endTimeFormat}
+            attendees={attendees}
+            organizer={organizer}
+            conferenceData={conferenceData}
+            reminders={reminders}
+            hangoutLink={hangoutLink}
+            summary={summary}
+            description={description}
+            location={location}
+            attachments={attachments}
+            setIsEventDetailOverlayOpen={setIsEventDetailOverlayOpen}
+            meetingStatus={meetingStatus}
+            totalAttendeesResponse={totalAttendeesResponse}
+          />
+        </motion.div>,
+        document.querySelector(".app")
+      )}
 
-      {isAlertOverlayOpen &&
-        createPortal(
+      {createPortal(
+        <motion.div
+          initial={{ opacity: 0, scale: 0, display: "none" }}
+          animate={
+            isAlertOverlayOpen
+              ? { opacity: 1, scale: 1, display: "flex" }
+              : { opacity: 0, scale: 0, transitionEnd: { display: "none" } }
+          }
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsAlertOverlayOpen(false);
+            setIsLoading(false);
+          }}
+          // style={{ background: "rgba(0,0,0,.1)" }}
+          className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center"
+        >
           <AlertOverlay
             title={{
               title: `Delete recurring event`,
@@ -320,8 +361,6 @@ const EventCardDetail = ({
                 radioButtonValue={radioButtonValue}
               />
             }
-            setIsAlertOverlayOpen={setIsAlertOverlayOpen}
-            setIsLoading={setIsButtonLoading}
             icon={
               <DangerIcon width={22} height={22} className="text-red-500" />
             }
@@ -352,9 +391,10 @@ const EventCardDetail = ({
                 </button>
               </div>
             }
-          />,
-          document.querySelector(".app")
-        )}
+          />
+        </motion.div>,
+        document.querySelector(".app")
+      )}
     </div>
   );
 };

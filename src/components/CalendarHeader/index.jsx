@@ -60,7 +60,7 @@ const CalendarHeader = ({
             isFullCalendar ? "bg-gray-100 text-gray600" : ""
           }`}
           onClick={() => {
-            setIsFullCalendar(!isFullCalendar);
+            setIsFullCalendar((prev) => !prev);
           }}
           onMouseEnter={() => setOnFullCalendarMoveOver(true)}
           onMouseLeave={() => setOnFullCalendarMoveOver(false)}
@@ -70,29 +70,48 @@ const CalendarHeader = ({
           <FullCalendarIcon width={24} height={24} />
           {onFullCalendarMoveOver && <ToolTip text="Full calendar" />}
 
-          {isFullCalendar &&
-            createPortal(
-              <motion.div
-                style={{ width: "320px" }}
-                className="absolute z-40 top-0 bottom-0 right-0 left-0 cursor-default text-black opacity-1 mt-11 ml-3.5"
-                initial={{ opacity: 0, scale: 0, transformOrigin: "top right" }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  type: "spring",
-                  velocity: 5,
-                  mass: 0.5,
-                }}
-                onMouseOver={() => setOnFullCalendarMoveOver(false)}
-              >
-                <Calendar
-                  setReset={setReset}
-                  reset={reset}
-                  setIsEventSectionLoading={setIsEventSectionLoading}
-                  setIsHolidaySectionLoading={setIsHolidaySectionLoading}
-                />
-              </motion.div>,
-              document.querySelector(".app")
-            )}
+          {createPortal(
+            <motion.div
+              className="absolute z-40 top-0 bottom-0 right-0 left-0 cursor-default text-black opacity-1 "
+              initial={{
+                opacity: 0,
+                scale: 0,
+
+                display: "none",
+              }}
+              animate={
+                isFullCalendar
+                  ? {
+                      opacity: 1,
+                      scale: 1,
+                      display: "block",
+                      transformOrigin: "80% 14px",
+                    }
+                  : {
+                      opacity: 0,
+                      scale: 0,
+                      transformOrigin: "80% 14px",
+                      transitionEnd: {
+                        display: "none",
+                      },
+                    }
+              }
+              transition={{
+                type: "spring",
+                velocity: 5,
+                mass: 0.5,
+              }}
+              onMouseOver={() => setOnFullCalendarMoveOver(false)}
+            >
+              <Calendar
+                setReset={setReset}
+                reset={reset}
+                setIsEventSectionLoading={setIsEventSectionLoading}
+                setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+              />
+            </motion.div>,
+            document.querySelector(".app")
+          )}
         </button>
         <button
           onMouseEnter={() => {
