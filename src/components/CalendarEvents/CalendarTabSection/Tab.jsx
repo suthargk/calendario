@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const Tab = ({ icon, label, active, handleTab, tabActive }) => {
   return (
@@ -14,10 +15,11 @@ const Tab = ({ icon, label, active, handleTab, tabActive }) => {
       </div>
       <span style={{ fontSize: "15px" }}>{label}</span>
       {tabActive === label && (
-        <span
+        <motion.div
+          layoutId="underline"
           style={{ height: 2.5, bottom: -1.5 }}
-          className="absolute left-1/2 -translate-x-1/2 bg-blue-500 w-4/5 "
-        ></span>
+          className="absolute bg-blue-500 w-4/5 "
+        ></motion.div>
       )}
     </button>
   );

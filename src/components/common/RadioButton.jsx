@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 const RadioButton = ({ value, label, id, onChange, className }) => {
@@ -8,8 +8,12 @@ const RadioButton = ({ value, label, id, onChange, className }) => {
       className={`flex items-center gap-2 cursor-pointer text-gray-500 ${className}`}
     >
       <motion.div
-        whileHover={{ scale: 1.2 }}
-        whileTap={{ scale: 0.8 }}
+        animate={value ? { scale: 1.15 } : { scale: 1 }}
+        transition={{
+          type: "spring",
+          velocity: 5,
+          mass: 0.5,
+        }}
         className={`w-3.5 h-3.5 rounded-full  ${
           value
             ? "border-[4.5px] border-blue-500 bg-white"
