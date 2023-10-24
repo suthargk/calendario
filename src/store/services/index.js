@@ -56,12 +56,19 @@ export const fetchHolidays = ({
     });
 };
 
-export const deleteEvent = ({ setIsLoading, eventId }) => {
+export const deleteEvent = ({
+  setIsLoading,
+  eventId,
+  userSelectedDateFormat,
+  deleteType,
+}) => {
   const access_token = store.getState().user.access_token;
   setIsLoading(true);
   return axios
     .delete(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${eventId}`,
+      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${eventId}${
+        deleteType === "this_event" ? "_" + userSelectedDateFormat : ""
+      }`,
       {
         headers: { Authorization: `Bearer ${access_token}` },
       }
@@ -70,4 +77,22 @@ export const deleteEvent = ({ setIsLoading, eventId }) => {
       console.log(err);
     })
     .finally(() => setIsLoading(false));
+};
+
+export const deleteFollowingEvents = ({
+  setIsLoading,
+  recurrenceCondition,
+  eventId,
+}) => {
+  const access_token = store.getState().user.access_token;
+  setIsLoading(true);
+  return axios.patch(
+    ` https://www.googleapis.com/calendar/v3/calendars/primary/events/${eventId}`,
+    {
+      recurrence: recurrenceCondition,
+    },
+    {
+      headers: { Authorization: `Bearer ${access_token}` },
+    }
+  );
 };

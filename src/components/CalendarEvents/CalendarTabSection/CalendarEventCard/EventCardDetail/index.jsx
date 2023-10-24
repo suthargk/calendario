@@ -12,37 +12,41 @@ import Attendees from "../Attendees";
 import EventCardDetailItem from "./EventCardDetailItem";
 import { createPortal } from "react-dom";
 import AlertOverlay from "../../../../common/AlertOverlay";
-import { deleteEvent } from "../../../../../store/services";
+import {
+  deleteEvent,
+  deleteFollowingEvents,
+} from "../../../../../store/services";
 import EventDetailOverlay from "../../../../common/EventDetailOverlay";
 import { motion } from "framer-motion";
 import Reminder from "../../../../common/Reminder";
 import RadioButton from "../../../../common/RadioButton";
+import dayjs from "dayjs";
+import { connect } from "react-redux";
+import { getUserSelectedDate } from "../../../../../store/selectors";
+import {
+  getISOReplaceMilliSeconds,
+  getNormalizeRecurrenceStatusListInString,
+} from "../../../../../utils";
 
-const AlertBody = () => {
-  const [value, setValue] = useState("this_event");
-
-  const handleChange = (radioValue) => {
-    setValue(radioValue);
-  };
-
+const AlertBody = ({ handleChange, radioButtonValue }) => {
   return (
     <div className="space-y-1.5 self-start pl-4 mb-1">
       <RadioButton
-        value={"this_event" === value}
+        value={"this_event" === radioButtonValue}
         label="This event"
         id="this_event"
         className="text-sm"
         onChange={() => handleChange("this_event")}
       />
       <RadioButton
-        value={"this_and_following_events" === value}
+        value={"this_and_following_events" === radioButtonValue}
         label="This and following events"
         id="this_and_following_events"
         className="text-sm"
         onChange={() => handleChange("this_and_following_events")}
       />
       <RadioButton
-        value={"all_events" === value}
+        value={"all_events" === radioButtonValue}
         label="All events"
         id="all_events"
         className="text-sm"
@@ -67,6 +71,7 @@ const EventCardDetail = ({
   description,
   attachments,
   meetingStatus,
+  userSelectedFullDate,
 }) => {
   const totalAttendeesResponse = attendees.filter(
     (attendee) => attendee.responseStatus === "accepted"
@@ -80,12 +85,43 @@ const EventCardDetail = ({
     useState(false);
   const meetingLinkRef = useRef(null);
 
-  const handleDeleteEvent = (eventId) => {
+  const [radioButtonValue, setRadioButtonValue] = useState("this_event");
+
+  const handleChange = (radioValue) => {
+    setRadioButtonValue(radioValue);
+  };
+
+  const handleDeleteEvent = (event) => {
     setIsButtonLoading(true);
-    deleteEvent({
-      setIsLoading: setIsButtonLoading,
-      eventId,
-    });
+    console.log(dayjs(userSelectedFullDate).subtract(1, "day"));
+
+    if (radioButtonValue === "this_and_following_events") {
+      const userSelectedDateFormat = getISOReplaceMilliSeconds(
+        dayjs(
+          `${userSelectedFullDate}T${event.start.dateTime.split("T")[1]}`
+        ).subtract(1, "day")
+      );
+
+      const normalizeRecurrenceStatusInString =
+        getNormalizeRecurrenceStatusListInString(event, userSelectedDateFormat);
+
+      deleteFollowingEvents({
+        setIsLoading: setIsButtonLoading,
+        eventId: event.id,
+        recurrenceCondition: [normalizeRecurrenceStatusInString],
+      });
+    } else {
+      const userSelectedDateFormat = getISOReplaceMilliSeconds(
+        dayjs(`${userSelectedFullDate}T${event.start.dateTime.split("T")[1]}`)
+      );
+
+      deleteEvent({
+        setIsLoading: setIsButtonLoading,
+        eventId: event.id,
+        userSelectedDateFormat,
+        deleteType: radioButtonValue,
+      });
+    }
   };
 
   const handleMeetingLinkClipboard = (e) => {
@@ -278,7 +314,12 @@ const EventCardDetail = ({
               title: `Delete recurring event`,
               className: "font-normal self-start pl-4 mb-2",
             }}
-            body={<AlertBody />}
+            body={
+              <AlertBody
+                handleChange={handleChange}
+                radioButtonValue={radioButtonValue}
+              />
+            }
             setIsAlertOverlayOpen={setIsAlertOverlayOpen}
             setIsLoading={setIsButtonLoading}
             icon={
@@ -297,7 +338,7 @@ const EventCardDetail = ({
                   Cancel
                 </button>
                 <button
-                  onClick={() => handleDeleteEvent(event.id)}
+                  onClick={() => handleDeleteEvent(event)}
                   className="relative flex justify-center items-center space-x-1 w-full text-sm border border-red-500 bg-red-500 p-1 text-white rounded-md duration-300 hover:bg-red-400 hover:border-red-400"
                 >
                   {isButtonLoading && (
@@ -318,4 +359,10 @@ const EventCardDetail = ({
   );
 };
 
-export default EventCardDetail;
+const mapStateToProps = (state) => {
+  return {
+    userSelectedFullDate: getUserSelectedDate(state),
+  };
+};
+
+export default connect(mapStateToProps, null)(EventCardDetail);

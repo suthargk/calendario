@@ -75,7 +75,7 @@ export const getPrevMonthDate = (prevMonth, year) => {
   };
 };
 
-const getRecurrenceStatusList = (event) => {
+export const getRecurrenceStatusList = (event) => {
   return event.recurrence[0].split(";").reduce(
     (obj, item) => {
       const splitedItem = item.split("=");
@@ -85,12 +85,55 @@ const getRecurrenceStatusList = (event) => {
   );
 };
 
-export const getSelectedDateEvents = (eventList, userSelectedDate) => {
+export const getNormalizeRecurrenceStatusListInString = (
+  event,
+  userSelectedDateFormat
+) => {
+  const recurrenceStatusList = {
+    ...getRecurrenceStatusList(event),
+    UNTIL: userSelectedDateFormat,
+  };
+
+  const recurrenceStatusListString = Object.keys(recurrenceStatusList).reduce(
+    (string, recurrenceStatusKey) => {
+      if (
+        !(
+          recurrenceStatusKey === "INTERVAL" &&
+          recurrenceStatusList[recurrenceStatusKey] == "1"
+        )
+      ) {
+        return (
+          string +
+          `${recurrenceStatusKey}=${recurrenceStatusList[recurrenceStatusKey]};`
+        );
+      }
+      return string;
+    },
+    ""
+  );
+
+  return recurrenceStatusListString;
+};
+
+export const getSelectedDateEvents = (
+  confirmedEventList,
+  cancelledEventList,
+  userSelectedDate
+) => {
   const { date, month, year } = userSelectedDate;
 
   const userSelected = dayjs(new Date(year, month, date));
 
-  const userSelectedDateEvents = eventList.filter((event) => {
+  const userSelectedDateEvents = confirmedEventList.filter((event) => {
+    const hasUserSelectedDateEventCancelled = cancelledEventList.find(
+      (cancelledEvent) =>
+        cancelledEvent.recurringEventId === event.id &&
+        userSelected.format("YYYY-MM-DD") ===
+          dayjs(cancelledEvent.originalStartTime.dateTime).format("YYYY-MM-DD")
+    );
+
+    if (hasUserSelectedDateEventCancelled) return;
+
     const eventStartAt = new Date(event.start.dateTime);
     if (event.recurrence) {
       const recurrenceStatusList = getRecurrenceStatusList(event);
@@ -121,7 +164,6 @@ export const getSelectedDateEvents = (eventList, userSelectedDate) => {
             recurrenceStatusList,
             event,
             eventStartAt: resetEventStartAtTime,
-            Weekdays,
             userSelected,
             dayDifference,
             dateDifference: weekDifference,
@@ -230,4 +272,8 @@ export const getMeetingStatus = (status) => {
     default:
       return null;
   }
+};
+
+export const getISOReplaceMilliSeconds = (date) => {
+  return date.toISOString().replace(".000", "").replace(/[-:]/g, "");
 };

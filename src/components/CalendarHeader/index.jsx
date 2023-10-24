@@ -77,7 +77,11 @@ const CalendarHeader = ({
                 className="absolute z-40 top-0 bottom-0 right-0 left-0 cursor-default text-black opacity-1 mt-11 ml-3.5"
                 initial={{ opacity: 0, scale: 0, transformOrigin: "top right" }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ type: "spring", velocity: 2, mass: 0.5 }}
+                transition={{
+                  type: "spring",
+                  velocity: 5,
+                  mass: 0.5,
+                }}
                 onMouseOver={() => setOnFullCalendarMoveOver(false)}
               >
                 <Calendar

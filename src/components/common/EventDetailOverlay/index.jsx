@@ -5,7 +5,6 @@ import EventDetailOverlayTitle from "./EventDetailOverlayTitle";
 import EventDescription from "./EventDescription";
 import Participants from "./Participants";
 import JoinByPhone from "./JoinByPhone";
-import Reminder from "../Reminder";
 import Location from "./Location";
 import Attachments from "./Attachments";
 
@@ -30,7 +29,6 @@ const EventDetailOverlay = ({
     (entry) => entry.entryPointType === "phone"
   );
 
-  console.log(event);
   return (
     <div className="h-full flex flex-col" onClick={(e) => e.stopPropagation()}>
       <EventDetailOverlayHeader

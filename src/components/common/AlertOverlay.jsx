@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const AlertOverlay = ({
   icon,
@@ -21,7 +22,9 @@ const AlertOverlay = ({
       style={{ background: "rgba(0,0,0,.1)" }}
       className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center"
     >
-      <div
+      <motion.div
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
         onClick={(e) => e.stopPropagation()}
         className="rounded-lg w-72 divide-y divide-gray-200 z-50 bg-white shadow-2xl"
       >
@@ -38,7 +41,7 @@ const AlertOverlay = ({
           {body && body}
         </div>
         {footerAction}
-      </div>
+      </motion.div>
     </div>
   );
 };

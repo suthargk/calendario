@@ -16,7 +16,7 @@ const Attendee = ({ user, AttendeeColor, status }) => {
     >
       <span>{attendTagName}</span>
       {status && (
-        <span className="absolute bottom-0 right-0">
+        <span className="absolute bottom-0 right-[1px]">
           {getAttendeeStatus(status)}
         </span>
       )}
