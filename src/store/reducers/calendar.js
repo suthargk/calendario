@@ -3,6 +3,7 @@ import {
   NEXT_MONTH,
   PREV_MONTH,
   RESET_CURRENT_TIME,
+  SEARCH_VALUE,
   USER_SELECTED_DATE,
 } from "../actions";
 
@@ -16,6 +17,7 @@ const INITIAL_STATE = {
   year: currentDateObj.year(),
   day: currentDateObj.day(),
   daysInPreviousMonth: currentDateObj.subtract(1, "month").daysInMonth(),
+  searchValue: "",
 };
 
 const applyPrevMonth = (state, action) => {
@@ -38,6 +40,7 @@ const applyPrevMonth = (state, action) => {
     day,
     month,
     year,
+    searchValue: "",
   };
 };
 
@@ -55,6 +58,7 @@ const applyNextMonth = (state, action) => {
     day: firstDayOfMonth,
     month,
     year,
+    searchValue: "",
   };
 };
 
@@ -68,6 +72,11 @@ const calendarReducer = (state = INITIAL_STATE, action) => {
       return applyNextMonth(state, action);
     }
 
+    case SEARCH_VALUE: {
+      const value = action.payload;
+      return { ...state, searchValue: value };
+    }
+
     case USER_SELECTED_DATE: {
       const userSelectedDate = action.payload;
 
@@ -75,6 +84,7 @@ const calendarReducer = (state = INITIAL_STATE, action) => {
         ...state,
         day: userSelectedDate.day(),
         date: userSelectedDate.date(),
+        searchValue: "",
       };
     }
 

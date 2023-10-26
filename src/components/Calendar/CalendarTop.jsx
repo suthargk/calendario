@@ -9,6 +9,7 @@ import {
 import dayjs from "dayjs";
 import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
+import { useRef } from "react";
 
 const CalendarTop = ({
   currentFullDate,
@@ -21,7 +22,13 @@ const CalendarTop = ({
   const { month: currentMonth, year: currentYear } = currentFullDate;
   const format = dayjs(new Date(currentYear, currentMonth)).format("MMMM YYYY");
 
+  const fetchNextMonthRef = useRef(null);
+  const fetchPrevMonthRef = useRef(null);
+
   const handlePrevMonth = () => {
+    if (fetchPrevMonthRef.current) {
+      clearTimeout(fetchPrevMonthRef.current);
+    }
     const { prevMonth, prevYear } = getPrevMonthDate(
       currentMonth - 1,
       currentYear
@@ -41,11 +48,17 @@ const CalendarTop = ({
       },
     });
 
-    fetchEventsAPI(prevYear, prevMonth, setIsEventSectionLoading);
-    fetchHolidayAPI(prevYear, prevMonth, setIsHolidaySectionLoading);
+    fetchPrevMonthRef.current = setTimeout(() => {
+      fetchEventsAPI(prevYear, prevMonth, setIsEventSectionLoading);
+      fetchHolidayAPI(prevYear, prevMonth, setIsHolidaySectionLoading);
+    }, 200);
   };
 
   const handleNextMonth = () => {
+    if (fetchNextMonthRef.current) {
+      clearTimeout(fetchNextMonthRef.current);
+    }
+
     const { nextMonth, nextYear } = getNextMonthDate(
       currentMonth + 1,
       currentYear
@@ -65,8 +78,10 @@ const CalendarTop = ({
       },
     });
 
-    fetchEventsAPI(nextYear, nextMonth, setIsEventSectionLoading);
-    fetchHolidayAPI(nextYear, nextMonth, setIsHolidaySectionLoading);
+    fetchNextMonthRef.current = setTimeout(() => {
+      fetchEventsAPI(nextYear, nextMonth, setIsEventSectionLoading);
+      fetchHolidayAPI(nextYear, nextMonth, setIsHolidaySectionLoading);
+    }, 200);
   };
 
   const handleToday = () => {

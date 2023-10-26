@@ -3,33 +3,17 @@ import EmptyCalendarListSection from "./EmptyCalendarListSection";
 import CalendarEventCard from "./CalendarEventCard";
 import CalendarHolidayCard from "./CalendarHolidayCard";
 import { connect } from "react-redux";
-import { getSelectedDateEvents } from "../../../utils";
-import dayjs from "dayjs";
 import Loader from "../../common/Loader";
 import { motion } from "framer-motion";
 
 const CalendarListSection = ({
   tabActive,
-  cancelledEventList,
-  confirmedEventList,
   publicHolidays,
-  currentFullDate,
   isHolidaySectionLoading,
   isEventSectionLoading,
+  selectedDateEventList,
 }) => {
   const [isEventOpenId, setIsEventOpenId] = useState(null);
-
-  const currentFullDateFormat = dayjs(
-    new Date(currentFullDate.year, currentFullDate.month, currentFullDate.date)
-  ).format("YYYY-MM-DD");
-
-  const selectedDateEventList = useMemo(() => {
-    return getSelectedDateEvents(
-      confirmedEventList,
-      cancelledEventList,
-      currentFullDate
-    );
-  }, [confirmedEventList, currentFullDateFormat]);
 
   const getEventCards = () => {
     switch (tabActive) {
@@ -42,7 +26,6 @@ const CalendarListSection = ({
                 <CalendarEventCard
                   key={event.id}
                   event={event}
-                  index={index}
                   handleEventOpen={handleEventOpen}
                   isEventOpenId={isEventOpenId}
                 />
@@ -88,9 +71,6 @@ const CalendarListSection = ({
 
 const mapStateToProps = (state) => {
   return {
-    currentFullDate: state.calendar,
-    confirmedEventList: state.events.confirmedEventList,
-    cancelledEventList: state.events.cancelledEventList,
     publicHolidays: state.events.publicHolidays,
   };
 };
