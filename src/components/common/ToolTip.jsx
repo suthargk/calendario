@@ -1,8 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const ToolTip = ({ direction = "top", text }) => {
-  let parentDiv = "left-1/2 -translate-x-1/2";
+const ToolTip = ({ direction = "top", text, parentDivClass }) => {
+  let parentDiv = parentDivClass || "left-1/2 -translate-x-1/2";
   let motionDiv = "";
   let chevronPostion = "";
   let initial = { y: 0 };

@@ -76,7 +76,6 @@ const CalendarHeader = ({
               initial={{
                 opacity: 0,
                 scale: 0,
-
                 display: "none",
               }}
               animate={

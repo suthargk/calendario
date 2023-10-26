@@ -10,13 +10,9 @@ import {
 import Attendees from "./Attendees";
 import DownChevronIcon from "../../../../assets/icons/DownChevronIcon";
 import EventCardDetail from "./EventCardDetail";
+import { motion } from "framer-motion";
 
-const CalendarEventCard = ({
-  event,
-  handleEventOpen,
-  isEventOpenId,
-  index,
-}) => {
+const CalendarEventCard = ({ event, handleEventOpen, isEventOpenId }) => {
   const {
     summary,
     hangoutLink = "",
@@ -49,14 +45,16 @@ const CalendarEventCard = ({
     description.length > 30 ? description.slice(0, 30) + "..." : description;
 
   return (
-    <div
-      tabIndex={index}
+    <motion.button
       onClick={() => handleEventOpen(event.id)}
-      className={`p-4 block rounded-xl space-y-4 cursor-pointer  focus:outline-2 focus:outline-blue-500 bg-gradient-to-b ${bgLinearGradientColor[color]} border ${borderColor[color].light}`}
+      className={`w-full text-left p-4 block rounded-xl space-y-4 cursor-pointer  focus:outline-2 focus:outline-blue-500 bg-gradient-to-b ${bgLinearGradientColor[color]} border ${borderColor[color].light}`}
     >
       <div className="flex justify-between items-start gap-1">
-        <div className="space-y-0.5">
-          <h2 className={`text-sm ${HeadingTextColor[color]}`}>
+        <div className="space-y-0.5 overflow-hidden">
+          <h2
+            title={summary}
+            className={`text-sm ${HeadingTextColor[color]} whitespace-nowrap overflow-hidden text-ellipsis`}
+          >
             {summary || "(No title)"}
           </h2>
           {isEventOpenId === event.id ? (
@@ -107,11 +105,6 @@ const CalendarEventCard = ({
             Are you going to attend?
           </span>
           <div className={`flex gap-2  ${textColor[color].dark}`}>
-            {/* <button
-              className={`border ${borderColor[color].dark} px-3 py-0.5 rounded-2xl text-sm`}
-            >
-              
-            </button> */}
             <button
               className={`border ${borderColor[color].dark} px-3 py-0.5 rounded-2xl text-sm`}
             >
@@ -125,7 +118,7 @@ const CalendarEventCard = ({
           </div>
         </div>
       )}
-    </div>
+    </motion.button>
   );
 };
 

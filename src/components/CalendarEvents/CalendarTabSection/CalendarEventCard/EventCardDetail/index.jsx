@@ -15,6 +15,7 @@ import AlertOverlay from "../../../../common/AlertOverlay";
 import {
   deleteEvent,
   deleteFollowingEvents,
+  fetchEvents,
 } from "../../../../../store/services";
 import EventDetailOverlay from "../../../../common/EventDetailOverlay";
 import { motion } from "framer-motion";
@@ -28,7 +29,13 @@ import {
   getNormalizeRecurrenceStatusListInString,
 } from "../../../../../utils";
 
-const AlertBody = ({ handleChange, radioButtonValue }) => {
+const AlertBody = ({
+  handleChange,
+  radioButtonValue,
+  userSelectedFullDate,
+  event,
+}) => {
+  console.log();
   return (
     <div className="space-y-1.5 self-start pl-4 mb-1">
       <RadioButton
@@ -38,13 +45,16 @@ const AlertBody = ({ handleChange, radioButtonValue }) => {
         className="text-sm"
         onChange={() => handleChange("this_event")}
       />
-      <RadioButton
-        value={"this_and_following_events" === radioButtonValue}
-        label="This and following events"
-        id="this_and_following_events"
-        className="text-sm"
-        onChange={() => handleChange("this_and_following_events")}
-      />
+      {userSelectedFullDate !== event.start.dateTime.split("T")[0] ? (
+        <RadioButton
+          value={"this_and_following_events" === radioButtonValue}
+          label="This and following events"
+          id="this_and_following_events"
+          className="text-sm"
+          onChange={() => handleChange("this_and_following_events")}
+        />
+      ) : null}
+
       <RadioButton
         value={"all_events" === radioButtonValue}
         label="All events"
@@ -93,13 +103,14 @@ const EventCardDetail = ({
 
   const handleDeleteEvent = (event) => {
     setIsButtonLoading(true);
-    console.log(dayjs(userSelectedFullDate).subtract(1, "day"));
+
+    const userSelectedDateTime = dayjs(
+      `${userSelectedFullDate}T${event.start.dateTime.split("T")[1]}`
+    );
 
     if (radioButtonValue === "this_and_following_events") {
       const userSelectedDateFormat = getISOReplaceMilliSeconds(
-        dayjs(
-          `${userSelectedFullDate}T${event.start.dateTime.split("T")[1]}`
-        ).subtract(1, "day")
+        userSelectedDateTime.subtract(1, "day")
       );
 
       const normalizeRecurrenceStatusInString =
@@ -111,15 +122,16 @@ const EventCardDetail = ({
         recurrenceCondition: [normalizeRecurrenceStatusInString],
       });
     } else {
-      const userSelectedDateFormat = getISOReplaceMilliSeconds(
-        dayjs(`${userSelectedFullDate}T${event.start.dateTime.split("T")[1]}`)
-      );
+      const userSelectedDateFormat =
+        getISOReplaceMilliSeconds(userSelectedDateTime);
 
       deleteEvent({
         setIsLoading: setIsButtonLoading,
         eventId: event.id,
         userSelectedDateFormat,
-        deleteType: radioButtonValue,
+        deleteType: event.recurrence ? radioButtonValue : "",
+      }).then(() => {
+        fetchEvents();
       });
     }
   };
@@ -148,6 +160,7 @@ const EventCardDetail = ({
         initial={{
           scale: 0,
           opacity: 0,
+          display: "none",
           transformOrigin: "right top",
         }}
         animate={
@@ -167,6 +180,7 @@ const EventCardDetail = ({
                 },
               }
         }
+        // transition={{ type: "spring", velocity: 100 }}
         className="absolute overflow-hidden flex flex-col divide-y bg-white z-10 shadow-xl top-10 right-4 text-sm py-0.5 border border-gray-200 rounded-lg"
       >
         <button
@@ -353,13 +367,24 @@ const EventCardDetail = ({
           <AlertOverlay
             title={{
               title: `Delete recurring event`,
-              className: "font-normal self-start pl-4 mb-2",
+              className: `${
+                event.recurrence ? "font-normal self-start pl-4 mb-2" : ""
+              } `,
             }}
+            description={
+              !event.recurrence
+                ? `Are you certain you want to delete event? This action is irreversible.`
+                : ""
+            }
             body={
-              <AlertBody
-                handleChange={handleChange}
-                radioButtonValue={radioButtonValue}
-              />
+              event.recurrence ? (
+                <AlertBody
+                  event={event}
+                  handleChange={handleChange}
+                  radioButtonValue={radioButtonValue}
+                  userSelectedFullDate={userSelectedFullDate}
+                />
+              ) : null
             }
             icon={
               <DangerIcon width={22} height={22} className="text-red-500" />
