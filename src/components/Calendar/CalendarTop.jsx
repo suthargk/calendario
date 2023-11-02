@@ -26,6 +26,8 @@ const CalendarTop = ({
   const fetchPrevMonthRef = useRef(null);
 
   const handlePrevMonth = () => {
+    setIsEventSectionLoading(true);
+
     if (fetchPrevMonthRef.current) {
       clearTimeout(fetchPrevMonthRef.current);
     }
@@ -55,6 +57,8 @@ const CalendarTop = ({
   };
 
   const handleNextMonth = () => {
+    setIsEventSectionLoading(true);
+
     if (fetchNextMonthRef.current) {
       clearTimeout(fetchNextMonthRef.current);
     }

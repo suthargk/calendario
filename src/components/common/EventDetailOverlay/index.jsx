@@ -1,5 +1,4 @@
 import React from "react";
-import EventDetailOverlayHeader from "./EventDetailOverlayHeader";
 import EventDetailOverlayTimeDuration from "./EventDetailOverlayTimeDuration";
 import EventDetailOverlayTitle from "./EventDetailOverlayTitle";
 import EventDescription from "./EventDescription";
@@ -7,6 +6,7 @@ import Participants from "./Participants";
 import JoinByPhone from "./JoinByPhone";
 import Location from "./Location";
 import Attachments from "./Attachments";
+import PageHeader from "./EventDetailOverlayHeader";
 
 const EventDetailOverlay = ({
   event,
@@ -31,10 +31,8 @@ const EventDetailOverlay = ({
 
   return (
     <div className="h-full flex flex-col" onClick={(e) => e.stopPropagation()}>
-      <EventDetailOverlayHeader
-        setIsEventDetailOverlayOpen={setIsEventDetailOverlayOpen}
-      />
-      <div className="p-4 space-y-4 overflow-auto h-full">
+      <PageHeader setIsEventDetailOverlayOpen={setIsEventDetailOverlayOpen} />
+      <div className="p-4 space-y-4 overflow-auto h-full dark:bg-slate-800">
         <EventDetailOverlayTitle
           summary={summary}
           organizer={organizer}
@@ -61,7 +59,7 @@ const EventDetailOverlay = ({
         {location && <Location location={location} />}
         {hangoutLink ? (
           <a
-            className="flex rounded-lg text-sm transition-colors duration-200 hover:bg-zinc-900 text-white px-4 py-1.5 font-normal justify-center bg-black"
+            className="flex rounded-lg dark:bg-slate-700 dark:hover:bg-slate-600 text-sm transition-colors duration-200 hover:bg-zinc-900 text-white px-4 py-1.5 font-normal justify-center bg-black"
             href={hangoutLink}
             onClick={(e) => e.stopPropagation()}
             target="_blank"

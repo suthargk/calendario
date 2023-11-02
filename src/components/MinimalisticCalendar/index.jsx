@@ -25,11 +25,11 @@ const MinimalisticCalendarTop = ({
   return (
     <div
       style={{ padding: "5px" }}
-      className="flex justify-between w-full rounded-full bg-gray-100"
+      className="flex justify-between w-full rounded-full bg-gray-100 dark:bg-slate-800"
     >
       <button
         onClick={handlePrevMonth}
-        className="relative p-1.5 rounded-full shadow bg-white focus:outline-2 focus:outline-blue-500"
+        className="relative p-1.5 rounded-full shadow bg-white dark:bg-slate-700 focus:outline-2 focus:outline-blue-500"
         onMouseEnter={() => setOnPrevMonthMouseOver(true)}
         onMouseLeave={() => setOnPrevMonthMouseOver(false)}
         onFocus={() => setOnPrevMonthMouseOver(true)}
@@ -45,7 +45,7 @@ const MinimalisticCalendarTop = ({
       </div>
       <button
         onClick={handleNextMonth}
-        className="relative p-1.5 rounded-full shadow bg-white focus:outline-2 focus:outline-blue-500"
+        className="relative p-1.5 rounded-full shadow bg-white dark:bg-slate-700 focus:outline-2 focus:outline-blue-500"
         onMouseEnter={() => setOnNextMonthMouseOver(true)}
         onMouseLeave={() => setOnNextMonthMouseOver(false)}
         onFocus={() => setOnNextMonthMouseOver(true)}

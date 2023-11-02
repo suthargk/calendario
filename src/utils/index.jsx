@@ -216,7 +216,7 @@ export const getAttendeeStatus = (status) => {
         <CheckedIcon
           width={7}
           height={7}
-          className="bg-green-500 rounded-full text-white p-[1px] ring-1	ring-white	"
+          className="bg-green-500 rounded-full text-white p-[1px] ring-1 ring-white	dark:ring-slate-600"
         />
       );
     }
@@ -226,7 +226,7 @@ export const getAttendeeStatus = (status) => {
         <CloseIcon
           width={7}
           height={7}
-          className="bg-red-500 rounded-full text-white p-[1px] ring-1	ring-white	"
+          className="bg-red-500 rounded-full text-white p-[1px] ring-1	ring-white	dark:ring-slate-600"
         />
       );
     }
@@ -236,7 +236,7 @@ export const getAttendeeStatus = (status) => {
         <QuestionMark
           width={6}
           height={6}
-          className="bg-orange-500 rounded-full text-white p-[1px] ring-1	ring-white	"
+          className="bg-orange-500 rounded-full text-white p-[1px] ring-1	ring-white	dark:ring-slate-600"
         />
       );
     }

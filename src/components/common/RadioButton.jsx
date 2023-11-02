@@ -16,8 +16,8 @@ const RadioButton = ({ value, label, id, onChange, className }) => {
         }}
         className={`w-3.5 h-3.5 rounded-full  ${
           value
-            ? "border-[4.5px] border-blue-500 bg-white"
-            : "bg-white border border-gray-200"
+            ? "border-[4.5px] border-blue-500 bg-white dark:shadow-[rgb(59,130,246)_0px_0px_8px_1px]"
+            : "bg-white border border-gray-200 dark:bg-slate-800 dark:border-slate-700"
         }`}
       />
       <input

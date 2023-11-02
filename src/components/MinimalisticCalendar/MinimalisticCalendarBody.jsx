@@ -107,11 +107,11 @@ const MinimalisticCalendarBody = ({
     <div className="flex justify-between select-none relative">
       <div
         style={{ height: "inherit" }}
-        className=" flex items-center bg-white w-[32px]"
+        className=" flex items-center bg-white dark:bg-slate-900 w-[32px]"
       >
         <button
           onClick={() => handleUserSelectDate(prevNextFiveDates[2])}
-          className="relative p-1.5 rounded-full border border-gray-200 bg-white focus:outline-2 focus:outline-blue-500"
+          className="relative p-1.5 rounded-full border border-gray-200 dark:border-slate-600 dark:bg-slate-700 bg-white focus:outline-2 focus:outline-blue-500"
           onMouseEnter={() => setOnPrevDateMouseOver(true)}
           onMouseLeave={() => setOnPrevDateMouseOver(false)}
           onFocus={() => setOnPrevDateMouseOver(true)}
@@ -131,7 +131,9 @@ const MinimalisticCalendarBody = ({
                 key={dateObj.date}
                 style={{ minWidth: "52px", height: "60px" }}
                 className={`py-2.5 flex flex-col justify-between items-center cursor-pointer text-center rounded-lg text-sm ${
-                  currentDate === dateObj.date ? "bg-blue-500 text-white" : ""
+                  currentDate === dateObj.date
+                    ? "bg-blue-500 dark:bg-blue-600 text-white"
+                    : ""
                 }`}
                 onClick={() => handleUserSelectDate(dateObj)}
               >
@@ -155,10 +157,10 @@ const MinimalisticCalendarBody = ({
 
       <div
         style={{ height: "inherit" }}
-        className="flex items-center bg-white w-[32px] justify-end"
+        className="flex items-center bg-white w-[32px] justify-end dark:bg-slate-900"
       >
         <button
-          className="relative p-1.5 rounded-full border border-gray-200 bg-white focus:outline-2 focus:outline-blue-500"
+          className="relative p-1.5 rounded-full border border-gray-200 dark:bg-slate-700 dark:border-slate-600 bg-white focus:outline-2 focus:outline-blue-500"
           onClick={() => {
             handleUserSelectDate(prevNextFiveDates[4]);
           }}

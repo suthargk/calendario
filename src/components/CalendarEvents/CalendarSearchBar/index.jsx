@@ -26,14 +26,13 @@ const CalendarSearchBar = ({ searchValue, handleChange }) => {
   return (
     <label
       htmlFor="search-event"
-      className="w-full flex items-center relative divide-x"
+      className="w-full flex items-center relative divide-x dark:divide-slate-700"
     >
       <div className="flex items-center w-full">
-        <SearchIcon className="text-gray-400 z-10 absolute left-2" />
+        <SearchIcon className="text-gray-400 z-10 absolute left-2 dark:bg-slate-800" />
         <input
           id="#search-event"
           type="text"
-          className="search-event"
           name="search-event"
           value={searchValue}
           ref={inputRef}
@@ -43,7 +42,7 @@ const CalendarSearchBar = ({ searchValue, handleChange }) => {
           onFocus={() => setInputSelect(false)}
           onBlur={() => setInputSelect(true)}
           style={{ borderWidth: 1, paddingBottom: "5px", paddingTop: "5px" }}
-          className="pl-9 pr-10 py-1.5 border-gray-200 rounded-xl w-full text-gray-600 placeholder:text-gray-400 placeholder:font-light placeholder:text-sm focus:outline-2 focus:outline-blue-500"
+          className="pl-9 pr-10 py-1.5 border-gray-200 dark:border-slate-700 rounded-xl w-full text-gray-600 placeholder:text-gray-400 dark:placeholder:text-slate-400 dark:text-slate-200 placeholder:font-light placeholder:text-sm focus:outline-2 focus:outline-blue-500 dark:bg-slate-800"
           placeholder="Search"
         />
         {
@@ -56,10 +55,10 @@ const CalendarSearchBar = ({ searchValue, handleChange }) => {
             }
             className="flex gap-0.5 items-center justify-center absolute right-11 text-gray-400 cursor-text"
           >
-            <span className="bg-gray-100 p-1 rounded">
+            <span className="bg-gray-100 p-1 rounded dark:bg-slate-700">
               <CommandIcon width={12} height={12} />
             </span>
-            <span className="text-[12px] flex justify-center items-center text-sm bg-gray-100 p-1 leading-none rounded w-[20px] h-[20px]">
+            <span className="text-[12px] dark:bg-slate-700 flex justify-center items-center text-sm bg-gray-100 p-1 leading-none rounded w-[20px] h-[20px]">
               K
             </span>
           </motion.span>

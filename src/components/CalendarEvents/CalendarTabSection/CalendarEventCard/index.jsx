@@ -47,23 +47,25 @@ const CalendarEventCard = ({ event, handleEventOpen, isEventOpenId }) => {
   return (
     <motion.button
       onClick={() => handleEventOpen(event.id)}
-      className={`w-full text-left p-4 block rounded-xl space-y-4 cursor-pointer  focus:outline-2 focus:outline-blue-500 bg-gradient-to-b ${bgLinearGradientColor[color]} border ${borderColor[color].light}`}
+      className={`w-full text-left p-4 block rounded-xl space-y-4 cursor-pointer  focus:outline-2 focus:outline-blue-500 bg-gradient-to-b ${bgLinearGradientColor[color]} border ${borderColor[color].light} dark:from-slate-800 dark:to-slate-900 dark:border-slate-700`}
     >
       <div className="flex justify-between items-start gap-1">
         <div className="space-y-0.5 overflow-hidden">
           <h2
             title={summary}
-            className={`text-sm ${HeadingTextColor[color]} whitespace-nowrap overflow-hidden text-ellipsis`}
+            className={`text-sm dark:text-slate-50 ${HeadingTextColor[color]} whitespace-nowrap overflow-hidden text-ellipsis`}
           >
             {summary || "(No title)"}
           </h2>
           {isEventOpenId === event.id ? (
             <p
-              className={`text-xs opacity-75 ${textColor[color].darkest}`}
+              className={`text-xs opacity-75  ${textColor[color].darkest} dark:text-slate-400`}
               dangerouslySetInnerHTML={{ __html: eventDescription }}
             />
           ) : (
-            <p className={`text-xs opacity-75 ${textColor[color].darkest}`}>
+            <p
+              className={`text-xs opacity-75 ${textColor[color].darkest} dark:text-slate-400`}
+            >
               {startTimeFormat.time} - {endTimeFormat.time} (UTC)
             </p>
           )}
@@ -71,8 +73,9 @@ const CalendarEventCard = ({ event, handleEventOpen, isEventOpenId }) => {
         <div
           className={`rounded-full duration-300 ${
             isEventOpenId === event.id
-              ? "rotate-180 text-white " + bgColor[color]
-              : "rotate-0 bg-white " + textColor[color].darkest
+              ? "rotate-180 text-white dark:bg-slate-700 " + bgColor[color].dark
+              : "rotate-0 bg-white dark:bg-slate-700 dark:text-slate-50 " +
+                textColor[color].darkest
           } shadow  p-0.5 flex justify-center items-center `}
         >
           <DownChevronIcon width={16} height={16} />
@@ -101,17 +104,19 @@ const CalendarEventCard = ({ event, handleEventOpen, isEventOpenId }) => {
       )}
       {isEventOpenId === event.id && (
         <div className="flex justify-between items-center">
-          <span className={`text-[13px] ${textColor[color].darkest}`}>
+          <span
+            className={`text-[13px] ${textColor[color].darkest} dark:text-slate-500`}
+          >
             Are you going to attend?
           </span>
           <div className={`flex gap-2  ${textColor[color].dark}`}>
             <button
-              className={`border ${borderColor[color].dark} px-3 py-0.5 rounded-2xl text-sm`}
+              className={`border ${borderColor[color].dark} px-3 py-0.5 rounded-2xl text-sm dark:text-slate-500 dark:border-slate-500`}
             >
               No
             </button>
             <button
-              className={`border ${borderColor[color].dark} px-3  py-0.5 rounded-2xl text-sm`}
+              className={`border ${borderColor[color].dark} px-3  py-0.5 rounded-2xl text-sm dark:text-slate-500 dark:border-slate-500`}
             >
               Yes
             </button>

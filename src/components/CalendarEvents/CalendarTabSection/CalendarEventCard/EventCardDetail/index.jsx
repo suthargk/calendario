@@ -35,7 +35,6 @@ const AlertBody = ({
   userSelectedFullDate,
   event,
 }) => {
-  console.log();
   return (
     <div className="space-y-1.5 self-start pl-4 mb-1">
       <RadioButton
@@ -143,14 +142,14 @@ const EventCardDetail = ({
   };
 
   return (
-    <div className="relative shadow bg-white rounded-xl p-4 -mx-2 font-light">
+    <div className="relative shadow bg-white rounded-xl p-4 -mx-2 font-light dark:bg-slate-700 dark:border dark:border-slate-600">
       <button
         onClick={(e) => {
           e.stopPropagation();
           setIsMoreOptionOpen(!isMoreOptionOpen);
         }}
-        className={`absolute text-gray-600 right-2.5 top-2.5 p-1 rounded-full hover:bg-gray-100 ${
-          isMoreOptionOpen ? "bg-gray-100" : ""
+        className={`absolute text-gray-600 right-2.5 top-2.5 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-slate-600 dark:text-slate-400 dark:hover:text-slate-200 ${
+          isMoreOptionOpen ? "bg-gray-100 dark:bg-slate-800" : ""
         }`}
       >
         <MoreIcon width={18} height={18} />
@@ -181,7 +180,7 @@ const EventCardDetail = ({
               }
         }
         // transition={{ type: "spring", velocity: 100 }}
-        className="absolute overflow-hidden flex flex-col divide-y bg-white z-10 shadow-xl top-10 right-4 text-sm py-0.5 border border-gray-200 rounded-lg"
+        className="absolute overflow-hidden flex flex-col divide-y dark:divide-slate-600 bg-white z-10 shadow-xl top-10 right-4 text-sm py-0.5 border border-gray-200 rounded-lg dark:bg-slate-800 dark:border-slate-600"
       >
         <button
           onClick={(e) => {
@@ -189,7 +188,7 @@ const EventCardDetail = ({
             setIsEventDetailOverlayOpen(true);
             setIsMoreOptionOpen(false);
           }}
-          className="px-3 py-1.5 text-start hover:bg-gray-100"
+          className="px-3 py-1.5 text-start hover:bg-slate-100 dark:hover:bg-slate-700"
         >
           Show Event Detail
         </button>
@@ -199,7 +198,7 @@ const EventCardDetail = ({
             setIsAlertOverlayOpen(true);
             setIsMoreOptionOpen(false);
           }}
-          className="px-3 py-1.5 text-start hover:bg-gray-100"
+          className="px-3 py-1.5 text-start hover:bg-slate-100 dark:hover:bg-slate-700"
         >
           Delete Event
         </button>
@@ -207,37 +206,49 @@ const EventCardDetail = ({
 
       <div
         className={`space-y-3  ${
-          hangoutLink ? "mb-4 pb-4 border-b border-gray-200" : ""
+          hangoutLink
+            ? "mb-4 pb-4 border-b dark:border-slate-600 border-slate-300"
+            : ""
         }`}
       >
         <EventCardDetailItem
           icon={
-            <TimeClockIcon width={14} height={14} className="text-gray-600" />
+            <TimeClockIcon
+              width={14}
+              height={14}
+              className="text-gray-600 dark:text-slate-50"
+            />
           }
         >
-          <p className="text-sm">
+          <p className="text-sm dark:text-slate-50">
             {startTimeFormat.time} - {endTimeFormat.time}{" "}
-            <span className="text-gray-600 opacity-85">(UTC)</span>
+            <span className="text-gray-600 opacity-85 dark:text-slate-400">
+              (UTC)
+            </span>
           </p>
         </EventCardDetailItem>
 
         {attendees.length ? (
           <EventCardDetailItem
             icon={
-              <AttendeeIcon width={14} height={14} className="text-gray-600" />
+              <AttendeeIcon
+                width={14}
+                height={14}
+                className="text-gray-600 dark:text-slate-50"
+              />
             }
           >
-            <p className="text-sm space-y-1">
+            <p className="text-sm space-y-1 dark:text-slate-50">
               <span>
                 {attendees.length} attendee{" "}
-                <span className="text-gray-600 opacity-85">
+                <span className="text-gray-600 opacity-85 dark:text-slate-400">
                   ({totalAttendeesResponse} confirmed)
                 </span>
               </span>{" "}
               <Attendees
                 attendees={attendees}
                 color={color}
-                className="outline outline-1 outline-gray-200 rounded-full"
+                className="outline outline-1 outline-gray-200 rounded-full dark:outline-gray-500"
               />
             </p>
           </EventCardDetailItem>
@@ -245,15 +256,25 @@ const EventCardDetail = ({
 
         <Reminder
           reminders={reminders}
-          icon={<BellIcon width={14} height={14} className="text-gray-600" />}
+          icon={
+            <BellIcon
+              width={14}
+              height={14}
+              className="text-gray-600 dark:text-slate-50"
+            />
+          }
         />
 
         <EventCardDetailItem
           icon={
-            <OrganizerIcon width={14} height={14} className="text-gray-600" />
+            <OrganizerIcon
+              width={14}
+              height={14}
+              className="text-gray-600 dark:text-slate-50"
+            />
           }
         >
-          <p className="text-sm">
+          <p className="text-sm dark:text-slate-50">
             {organizerName.length > 30
               ? organizerName.slice(0, 30) + "..."
               : organizerName}
@@ -266,22 +287,22 @@ const EventCardDetail = ({
               <MeetingLinkIcon
                 width={14}
                 height={14}
-                className="text-gray-600"
+                className="text-gray-600 dark:text-slate-50"
               />
             }
           >
-            <p className=" text-sm space-y-1 grow">
+            <p className=" text-sm space-y-1 grow dark:text-slate-50">
               <span>Google Meet</span>
 
-              <p className="relative text-sm text-gray-600 opacity-85">
+              <p className="relative text-sm text-gray-600 opacity-85 dark:text-slate-400">
                 <span ref={meetingLinkRef}>
                   {conferenceData?.entryPoints[0].label}
                 </span>
                 <button
-                  className="absolute -top-1 -right-2 p-2 hover:bg-gray-100 rounded-full"
+                  className="absolute -top-1 -right-2 p-2 hover:bg-gray-100 rounded-full dark:hover:bg-slate-600 dark:hover:text-slate-200 text-gray-600 dark:text-slate-400"
                   onClick={handleMeetingLinkClipboard}
                 >
-                  <CopyIcon height={14} width={14} className="text-gray-600" />
+                  <CopyIcon height={14} width={14} />
                 </button>
               </p>
             </p>
@@ -291,7 +312,7 @@ const EventCardDetail = ({
 
       {hangoutLink ? (
         <a
-          className="flex rounded-lg text-sm transition-colors duration-200 hover:bg-zinc-900 text-white px-4 py-1.5 font-normal justify-center bg-black"
+          className="flex rounded-lg text-sm transition-colors duration-200 hover:bg-zinc-900 text-white px-4 py-1.5 font-normal justify-center bg-black dark:bg-slate-600 dark:text-white dark:hover:bg-slate-500"
           href={hangoutLink}
           onClick={(e) => e.stopPropagation()}
           target="_blank"
@@ -397,13 +418,13 @@ const EventCardDetail = ({
                     setIsButtonLoading(false);
                     setIsMoreOptionOpen(false);
                   }}
-                  className="w-full text-sm border border-gray-100 p-1 text-gray-700 rounded-md duration-300 hover:bg-gray-100"
+                  className="w-full dark:border-slate-700 dark:hover:border-slate-600 dark:bg-slate-700 dark:text-slate-50 dark:hover:bg-slate-600 text-sm border border-gray-100 p-1 text-gray-700 rounded-md duration-300 hover:bg-gray-100"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => handleDeleteEvent(event)}
-                  className="relative flex justify-center items-center space-x-1 w-full text-sm border border-red-500 bg-red-500 p-1 text-white rounded-md duration-300 hover:bg-red-400 hover:border-red-400"
+                  className="relative flex justify-center items-center space-x-1 w-full text-sm border border-red-500 bg-red-500 dark:border-red-600 dark:bg-red-600 dark:hover:bg-red-500 dark:hover:border-red-500 00 p-1 text-white rounded-md duration-300 hover:bg-red-400 hover:border-red-400"
                 >
                   {isButtonLoading && (
                     <SpinnerIcon
