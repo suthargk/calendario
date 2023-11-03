@@ -6,7 +6,7 @@ const getChildren = ({ value, label }) => {
   return (
     <div
       className={`h-4 w-4 rounded-full cursor-pointer p-[1px] ${
-        value ? "ring-[2.5px] ring-blue-500 " : ""
+        value ? "ring-[2.5px] ring-blue-500 dark:ring-blue-400" : ""
       }`}
     >
       <div
@@ -25,8 +25,8 @@ const AccentColor = () => {
   return (
     <div className="pt-2 space-y-3">
       <div>
-        <h2 className="text-sm">Accent color</h2>
-        <p className="text-xs text-gray-600">
+        <h2 className="text-sm dark:text-slate-50">Accent color</h2>
+        <p className="text-xs text-slate-600 dark:text-slate-400">
           Select your calendar accent color
         </p>
       </div>

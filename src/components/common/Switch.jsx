@@ -6,14 +6,14 @@ const Switch = ({ id, checked, onChange }) => {
       <input id={id} className="hidden" type="checkbox" checked={checked} />
       <div
         onClick={() => onChange(!checked)}
-        className={`flex items-center relative duration-300  w-[34px] border  rounded-full ${
+        className={`flex items-center relative duration-300 w-[34px] border  rounded-full ${
           checked
-            ? "bg-blue-500 border-blue-500"
-            : "bg-gray-200 border-gray-200"
+            ? "bg-blue-500 border-blue-500 dark:bg-blue-400 dark:border-blue-400"
+            : "bg-gray-200 border-gray-200 dark:bg-slate-600 dark:border-slate-700"
         }`}
       >
         <div
-          className={`rounded-full h-4 w-4 bg-white shadow-md  duration-300 transform ${
+          className={`rounded-full h-4 w-4 bg-white shadow-md duration-300 transform ${
             checked ? "translate-x-full " : "translate-x-0"
           }`}
         ></div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Theme from "./Theme";
 
 const getChildren = ({ imgSrc, label, value }) => {
@@ -6,7 +6,9 @@ const getChildren = ({ imgSrc, label, value }) => {
     <>
       <div
         className={`border-[2.5px] overflow-hidden cursor-pointer rounded-xl h-[72px] ${
-          value ? "border-blue-500" : "border-gray-100"
+          value
+            ? "border-blue-500 dark:border-blue-400"
+            : "border-gray-100 dark:border-slate-800"
         }`}
       >
         <img src={imgSrc} draggable={false} />
@@ -17,46 +19,71 @@ const getChildren = ({ imgSrc, label, value }) => {
 };
 
 const Themes = () => {
-  const [radioButtonValue, setRadioButtonValue] = useState("System");
+  const [radioButtonValue, setRadioButtonValue] = useState(() => {
+    return localStorage.getItem("theme") || "system";
+  });
   const handleChange = (value) => {
     setRadioButtonValue(value);
   };
 
+  useEffect(() => {
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [radioButtonValue]);
+
   return (
     <div className="space-y-3">
       <div>
-        <h2 className="text-sm">Interface theme</h2>
-        <p className="text-xs text-gray-600">Customise your calendar theme</p>
+        <h2 className="text-sm dark:text-slate-50">Interface theme</h2>
+        <p className="text-xs text-gray-600 dark:text-slate-400">
+          Customise your calendar theme
+        </p>
       </div>
       <div className="flex gap-1 h-full">
         <Theme
-          value={"System" === radioButtonValue}
-          onChange={() => handleChange("System")}
+          value={"system" === radioButtonValue}
+          onChange={() => {
+            localStorage.removeItem("theme");
+            handleChange("system");
+          }}
         >
           {getChildren({
-            value: "System" === radioButtonValue,
+            value: "system" === radioButtonValue,
             imgSrc: "./images/light_dark.png",
-            label: "System",
+            label: "system",
           })}
         </Theme>
         <Theme
-          value={"Light" === radioButtonValue}
-          onChange={() => handleChange("Light")}
+          value={"light" === radioButtonValue}
+          onChange={() => {
+            localStorage.theme = "light";
+            handleChange("light");
+          }}
         >
           {getChildren({
-            value: "Light" === radioButtonValue,
+            value: "light" === radioButtonValue,
             imgSrc: "./images/light.png",
-            label: "Light",
+            label: "light",
           })}
         </Theme>
         <Theme
-          value={"Dark" === radioButtonValue}
-          onChange={() => handleChange("Dark")}
+          value={"dark" === radioButtonValue}
+          onChange={() => {
+            localStorage.theme = "dark";
+            handleChange("dark");
+          }}
         >
           {getChildren({
-            value: "Dark" === radioButtonValue,
+            value: "dark" === radioButtonValue,
             imgSrc: "./images/dark.png",
-            label: "Dark",
+            label: "dark",
           })}
         </Theme>
       </div>

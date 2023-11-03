@@ -5,8 +5,8 @@ const Languages = () => {
   return (
     <div className="space-y-3 pt-2">
       <div>
-        <h2 className="text-sm">Language</h2>
-        <p className="text-xs text-gray-600">
+        <h2 className="text-sm dark:text-slate-50">Language</h2>
+        <p className="text-xs text-gray-600 dark:text-slate-400">
           Select the language of the calendar
         </p>
       </div>
