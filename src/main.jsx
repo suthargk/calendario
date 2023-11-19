@@ -22,8 +22,6 @@ if (
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <GoogleOAuthProvider clientId="221343553901-2mlufv5440ov1voj8g5uohbuclsved3e.apps.googleusercontent.com">
-      <App />
-    </GoogleOAuthProvider>
+    <App />
   </Provider>
 );
