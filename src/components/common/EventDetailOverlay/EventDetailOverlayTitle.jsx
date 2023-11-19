@@ -14,7 +14,7 @@ const EventDetailOverlayTitle = ({ summary, organizer, meetingStatus }) => {
       </div> */}
       <h1 className="font-medium w-full">
         <span>{summary ? summary : "(No title)"}</span>
-        <div className="w-full text-gray-500 text-xs font-normal gap-1.5 flex items-center  flex-wrap">
+        <div className="w-full text-gray-500 dark:text-slate-400 text-xs font-normal gap-1.5 flex items-center  flex-wrap">
           <span>
             by {organizer.displayName ? organizer.displayName : organizer.email}{" "}
           </span>

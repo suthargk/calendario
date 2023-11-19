@@ -12,7 +12,7 @@ const CalendarTabSeactionTop = ({ tabActive, handleTab }) => {
     >
       <div
         style={{ borderTopWidth: 1, borderBottomWidth: 1 }}
-        className="w-full border-gray-200 flex"
+        className="w-full border-gray-200 flex dark:border-slate-700"
       >
         <Tab
           icon={<MeetingIcon width={18} height={18} />}

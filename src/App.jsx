@@ -1,22 +1,20 @@
+import { useEffect, useState } from "react";
+
 import { gapi, loadAuth2 } from "gapi-script";
 import { connect } from "react-redux";
-import { fetchEvents, fetchHolidays } from "./store/services";
-import { useEffect, useState } from "react";
-import { SET_USER_AUTH } from "./store/actions";
-import CalendarEvents from "./components/CalendarEvents";
-import MinimalisticCalendar from "./components/MinimalisticCalendar";
-import CalendarHeader from "./components/CalendarHeader";
-import Login from "./components/Auth/Login";
-import Loader from "./components/common/Loader";
-import Setting from "./components/Setting";
 
-function App({ dispatch, isUserSignedIn }) {
+import CalendarApp from "./components";
+import Login from "./components/Auth/Login";
+import CalendarNetworkPopup from "./components/common/CalendarNetworkPopup";
+import Loader from "./components/common/Loader";
+import { SET_USER_AUTH } from "./store/actions";
+import { fetchEvents, fetchHolidays } from "./store/services";
+
+function App({ isUserSignedIn, dispatch }) {
   const [isAppLoading, setIsAppLoading] = useState(true);
   const [isEventSectionLoading, setIsEventSectionLoading] = useState(true);
   const [isHolidaySectionLoading, setIsHolidaySectionLoading] = useState(true);
-  const [isSettingPageOpen, setIsSettingPageOpen] = useState(false);
 
-  const [reset, setReset] = useState(Math.random());
   const getAuth = async () => {
     let auth2 = await loadAuth2(
       gapi,
@@ -27,61 +25,42 @@ function App({ dispatch, isUserSignedIn }) {
     dispatch({
       type: SET_USER_AUTH,
       payload: {
-        auth2,
+        isSignedIn: auth2.isSignedIn.le,
       },
     });
 
+    fetchEvents({ setIsEventSectionLoading });
+    fetchHolidays({ setIsHolidaySectionLoading });
     setIsAppLoading(false);
   };
 
   useEffect(() => {
-    const authAndFetch = new Promise((resolve) => {
-      resolve(getAuth());
-    });
-    authAndFetch.then(() => {
-      fetchEvents({ setIsEventSectionLoading });
-      fetchHolidays({ setIsHolidaySectionLoading });
-    });
+    getAuth();
   }, []);
 
   return (
-    <div className="app bg-white relative rounded-2xl shadow overflow-hidden h-[600px] p-[13px] w-[350px] dark:bg-slate-800">
+    <div className="app bg-white relative rounded-2xl shadow overflow-hidden h-[600px] p-[13px] w-[350px] dark:bg-slate-900 dark:text-slate-50">
+      <CalendarNetworkPopup />
+
       {isAppLoading ? (
         <Loader />
-      ) : isUserSignedIn ? (
-        isSettingPageOpen ? (
-          <Setting />
-        ) : (
-          <div className="space-y-3">
-            <CalendarHeader
-              reset={reset}
-              setReset={setReset}
-              setIsEventSectionLoading={setIsEventSectionLoading}
-              setIsHolidaySectionLoading={setIsHolidaySectionLoading}
-              handleSettingPage={() => setIsSettingPageOpen(true)}
-            />
-            <MinimalisticCalendar
-              setIsEventSectionLoading={setIsEventSectionLoading}
-              setIsHolidaySectionLoading={setIsHolidaySectionLoading}
-            />
-            <CalendarEvents
-              isEventSectionLoading={isEventSectionLoading}
-              isHolidaySectionLoading={isHolidaySectionLoading}
-            />
-          </div>
-        )
+      ) : !isUserSignedIn ? (
+        <Login
+          dispatch={dispatch}
+          setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+          setIsEventSectionLoading={setIsEventSectionLoading}
+        />
       ) : (
-        <Login isUserSignedIn={isUserSignedIn} />
+        <CalendarApp
+          isEventSectionLoading={isEventSectionLoading}
+          isHolidaySectionLoading={isHolidaySectionLoading}
+          setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+          setIsEventSectionLoading={setIsEventSectionLoading}
+        />
       )}
     </div>
   );
 }
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    dispatch,
-  };
-};
 
 const mapStateToProps = (state) => {
   return {
@@ -89,4 +68,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+const mapStateToDispatch = (dispatch) => {
+  return { dispatch };
+};
+
+export default connect(mapStateToProps, mapStateToDispatch)(App);

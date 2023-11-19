@@ -54,11 +54,11 @@ const ToolTip = ({ direction = "top", text, parentDivClass }) => {
       >
         <div
           style={{ clipPath: "polygon(50% 40%, 0% 100%, 100% 100%)" }}
-          className={`mx-auto flex justify-end h-2 w-2 bg-gray-900 ${chevronPostion}`}
+          className={`mx-auto flex justify-end h-2 w-2 bg-black ${chevronPostion}`}
         ></div>
         <div
           style={{ fontSize: "10px" }}
-          className={`px-1 py-0.5 w-max rounded font-light bg-gray-900 text-white`}
+          className={`px-1 py-0.5 w-max rounded font-light bg-black text-white`}
         >
           {text}
         </div>

@@ -12,7 +12,7 @@ const Attendees = ({ attendees, className, style }) => {
         }px)`,
         ...style,
       }}
-      className={`flex items-center bg-white rounded-full ${className}`}
+      className={`flex items-center bg-white rounded-full dark:bg-slate-700 ${className}`}
     >
       {attendees?.map((user) => {
         return (

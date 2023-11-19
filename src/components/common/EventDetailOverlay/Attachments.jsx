@@ -17,7 +17,7 @@ const Attachments = ({ attachments }) => {
     <div>
       <h2 className="font-medium text-xs">
         <span>Attachments </span>
-        <span className="font-semibold text-gray-500">
+        <span className="font-semibold text-gray-500 dark:text-slate-400">
           ({attachments.length})
         </span>
       </h2>
@@ -29,7 +29,7 @@ const Attachments = ({ attachments }) => {
               <a
                 target="__blank"
                 href={attachment.fileUrl}
-                className="flex items-center gap-1 rounded-full text-xs border border-gray-200 px-[3.5px] py-0.5 text-gray-700 duration-300 hover:bg-gray-50"
+                className="flex items-center gap-1 dark:hover:bg-slate-700 rounded-full text-xs border border-gray-200 dark:border-slate-700 px-[3.5px] py-0.5 text-gray-700 dark:text-slate-300 duration-300 hover:bg-gray-50"
               >
                 <img
                   src={attachment.iconLink}
@@ -45,7 +45,7 @@ const Attachments = ({ attachments }) => {
       {fileAttachment.showMoreButton ? (
         <button
           onClick={handleSeeMore}
-          className="text-blue-500 text-xs mt-2 underline"
+          className="text-blue-500 text-xs mt-2 underline dark:text-slate-100"
         >
           See more
         </button>
