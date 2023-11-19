@@ -1,14 +1,17 @@
 import React, { useState } from "react";
+
 import Switch from "../../common/Switch";
 
-const Integration = ({ icon, id, title, description }) => {
+const Integration = ({ icon, id, title, description, className, disabled }) => {
   const [toggle, setToggle] = useState(false);
 
   const handleChange = () => {
     setToggle(!toggle);
   };
   return (
-    <div className="border border-gray-200 p-2 rounded-md flex justify-between items-center dark:border-slate-700">
+    <div
+      className={`border border-gray-200 p-2 rounded-md flex justify-between items-center dark:border-slate-700 ${className}`}
+    >
       <div className="flex items-center space-x-2">
         <div className="border border-gray-200 rounded-md p-1 dark:border-slate-700">
           {icon}
@@ -21,7 +24,12 @@ const Integration = ({ icon, id, title, description }) => {
         </div>
       </div>
       <div>
-        <Switch checked={toggle} id={id} onChange={handleChange} />
+        <Switch
+          disabled={disabled}
+          checked={toggle}
+          id={id}
+          onChange={handleChange}
+        />
       </div>
     </div>
   );

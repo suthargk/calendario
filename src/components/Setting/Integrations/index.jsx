@@ -1,8 +1,10 @@
 import React from "react";
-import Integration from "./Integration";
-import OutlookIcon from "../../../assets/icons/OutlookIcon";
-import GoogleIcon from "../../../assets/icons/GoogleIcon";
+
 import { motion } from "framer-motion";
+
+import GoogleIcon from "../../../assets/icons/GoogleIcon";
+import OutlookIcon from "../../../assets/icons/OutlookIcon";
+import Integration from "./Integration";
 
 const Integrations = ({ tabActive }) => {
   return (
@@ -29,10 +31,12 @@ const Integrations = ({ tabActive }) => {
           description="Sync calendar data between App and Google"
         />
         <Integration
+          className="opacity-60 cursor-not-allowed"
           icon={<OutlookIcon width={24} height={24} />}
           title="Outlook"
           id="outlook"
           description="Sync calendar data between App and Outlook"
+          disabled
         />
       </div>
     </motion.div>

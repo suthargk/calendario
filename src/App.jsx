@@ -39,7 +39,7 @@ function App({ isUserSignedIn, dispatch }) {
   }, []);
 
   return (
-    <div className="app bg-white relative rounded-2xl shadow overflow-hidden h-[600px] p-[13px] w-[350px] dark:bg-slate-900 dark:text-slate-50">
+    <div className="app bg-white relative rounded-2xl shadow overflow-hidden h-[600px] p-[13px] w-[350px] dark:bg-slate-900 dark:text-slate-50 ">
       <CalendarNetworkPopup />
 
       {isAppLoading ? (

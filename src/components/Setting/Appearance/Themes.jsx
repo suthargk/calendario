@@ -6,7 +6,7 @@ const getChildren = ({ imgSrc, label, value }) => {
   return (
     <>
       <div
-        className={` border-[2.5px] overflow-hidden cursor-pointer rounded-xl h-[64px] ${
+        className={` border-[2.5px] overflow-hidden cursor-pointer rounded-xl h-[70px] ${
           value
             ? "border-blue-500 dark:border-blue-400"
             : "border-gray-100 dark:border-slate-800"
@@ -57,6 +57,7 @@ const Themes = () => {
       </div>
       <div className="flex gap-1 h-full">
         <Theme
+          className="w-1/3"
           value={"system" === radioButtonValue}
           onChange={() => {
             localStorage.removeItem("theme");
@@ -70,6 +71,7 @@ const Themes = () => {
           })}
         </Theme>
         <Theme
+          className="w-1/3"
           value={"light" === radioButtonValue}
           onChange={() => {
             localStorage.theme = "light";
@@ -83,6 +85,7 @@ const Themes = () => {
           })}
         </Theme>
         <Theme
+          className="w-1/3"
           value={"dark" === radioButtonValue}
           onChange={() => {
             localStorage.theme = "dark";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PageHeader from "../common/EventDetailOverlay/EventDetailOverlayHeader";
+
 import Tab from "../CalendarEvents/CalendarTabSection/Tab";
 import Appearance from "./Appearance";
 import Integrations from "./Integrations";
@@ -17,21 +17,31 @@ const Setting = ({ setIsSettingPageOpen }) => {
   };
 
   return (
-    <div className="">
-      {/* <PageHeader setIsEventDetailOverlayOpen={setIsSettingPageOpen} /> */}
-      <div className="border-b border-gray-200 flex mx-[-12.8px] dark:border-slate-700">
-        <Tab
-          label="Appearance"
-          handleTab={handleTab}
-          tabActive={tabActive}
-          layoutId="settings"
-        />
-        <Tab
-          label="Integrations"
-          handleTab={handleTab}
-          tabActive={tabActive}
-          layoutId="settings"
-        />
+    <div className="w-full">
+      <div className="-mx-[12.8px]">
+        <div className="w-full px-4 pb-[0.8px] border-b border-gray-200 flex dark:border-slate-700 overflow-x-scroll">
+          <Tab
+            label="Appearance"
+            className="px-5"
+            handleTab={handleTab}
+            tabActive={tabActive}
+            layoutId="settings"
+          />
+          <Tab
+            label="Account Settings"
+            className="px-5"
+            handleTab={handleTab}
+            tabActive={tabActive}
+            layoutId="settings"
+          />
+          <Tab
+            label="Integrations"
+            className="px-5"
+            handleTab={handleTab}
+            tabActive={tabActive}
+            layoutId="settings"
+          />
+        </div>
       </div>
 
       <div>{tabSection[tabActive]}</div>

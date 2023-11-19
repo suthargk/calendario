@@ -1,9 +1,10 @@
 import React from "react";
-import MeetingIcon from "../../../assets/icons/MeetingIcon";
+
 import HolidayIcon from "../../../assets/icons/HolidayIcon";
+import MeetingIcon from "../../../assets/icons/MeetingIcon";
 import Tab from "./Tab";
 
-const CalendarTabSeactionTop = ({ tabActive, handleTab }) => {
+const CalendarTabSectionTop = ({ tabActive, handleTab }) => {
   return (
     <div
       style={{
@@ -12,7 +13,7 @@ const CalendarTabSeactionTop = ({ tabActive, handleTab }) => {
     >
       <div
         style={{ borderTopWidth: 1, borderBottomWidth: 1 }}
-        className="w-full border-gray-200 flex dark:border-slate-700"
+        className="w-full px-3 border-gray-200 flex dark:border-slate-700"
       >
         <Tab
           icon={<MeetingIcon width={18} height={18} />}
@@ -31,4 +32,4 @@ const CalendarTabSeactionTop = ({ tabActive, handleTab }) => {
   );
 };
 
-export default CalendarTabSeactionTop;
+export default CalendarTabSectionTop;

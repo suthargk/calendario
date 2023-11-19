@@ -1,8 +1,8 @@
 import React from "react";
 
-const Theme = ({ id, value, children, onChange }) => {
+const Theme = ({ id, value, children, onChange, className }) => {
   return (
-    <label htmlFor={id}>
+    <label htmlFor={id} className={className}>
       <input
         id={id}
         type="radio"

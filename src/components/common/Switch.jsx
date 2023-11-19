@@ -1,8 +1,11 @@
 import React from "react";
 
-const Switch = ({ id, checked, onChange }) => {
+const Switch = ({ id, checked, onChange, disabled }) => {
   return (
-    <label htmlFor={id} className="cursor-pointer">
+    <label
+      htmlFor={id}
+      className={`${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+    >
       <input
         id={id}
         onChange={() => onChange(!checked)}
@@ -10,6 +13,7 @@ const Switch = ({ id, checked, onChange }) => {
         type="checkbox"
         name={id}
         checked={checked}
+        disabled={disabled}
       />
       <div
         className={`flex items-center relative duration-300 w-[34px] border  rounded-full ${
