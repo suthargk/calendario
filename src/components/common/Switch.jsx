@@ -3,9 +3,15 @@ import React from "react";
 const Switch = ({ id, checked, onChange }) => {
   return (
     <label htmlFor={id} className="cursor-pointer">
-      <input id={id} className="hidden" type="checkbox" checked={checked} />
+      <input
+        id={id}
+        onChange={() => onChange(!checked)}
+        className="hidden"
+        type="checkbox"
+        name={id}
+        checked={checked}
+      />
       <div
-        onClick={() => onChange(!checked)}
         className={`flex items-center relative duration-300 w-[34px] border  rounded-full ${
           checked
             ? "bg-blue-500 border-blue-500 dark:bg-blue-400 dark:border-blue-400"

@@ -5,7 +5,7 @@ import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
 import { connect } from "react-redux";
 import { RESET_CURRENT_TIME } from "../../store/actions";
 import dayjs from "dayjs";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Calendar from "../Calendar";
 import { createPortal } from "react-dom";
 import ToolTip from "../common/ToolTip";
@@ -39,7 +39,7 @@ const CalendarHeader = ({
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex items-center gap-1 ">
+      <div className="flex items-center gap-1 text-gray-700 dark:text-slate-50">
         <LogoIcon className="-rotate-12" width={24} height={24} />
 
         <h4 className="font-medium">Calendario</h4>
@@ -69,47 +69,53 @@ const CalendarHeader = ({
           <FullCalendarIcon width={24} height={24} />
           {onFullCalendarMoveOver && <ToolTip text="Full calendar" />}
 
-          {createPortal(
-            <motion.div
-              className="absolute z-40 top-0 bottom-0 right-0 left-0 cursor-default text-black opacity-1 "
-              initial={{
-                opacity: 0,
-                scale: 0,
-                display: "none",
-              }}
-              animate={
-                isFullCalendar
-                  ? {
-                      opacity: 1,
-                      scale: 1,
-                      display: "block",
-                      transformOrigin: "80% 14px",
-                    }
-                  : {
-                      opacity: 0,
-                      scale: 0,
-                      transformOrigin: "80% 14px",
-                      transitionEnd: {
-                        display: "none",
-                      },
-                    }
-              }
-              transition={{
-                type: "spring",
-                velocity: 5,
-                mass: 0.5,
-              }}
-              onMouseOver={() => setOnFullCalendarMoveOver(false)}
-            >
-              <Calendar
-                setReset={setReset}
-                reset={reset}
-                setIsEventSectionLoading={setIsEventSectionLoading}
-                setIsHolidaySectionLoading={setIsHolidaySectionLoading}
-              />
-            </motion.div>,
-            document.querySelector(".app")
-          )}
+          {isFullCalendar &&
+            createPortal(
+              <div
+                className="absolute top-0 bottom-0 right-0 left-0"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsFullCalendar(false);
+                }}
+              ></div>,
+              document.querySelector(".app")
+            )}
+
+          <AnimatePresence>
+            {isFullCalendar && (
+              <motion.div
+                onMouseOver={() => setOnFullCalendarMoveOver(false)}
+                className="absolute top-0 -right-[31px] z-40 text-black cursor-default"
+                initial={{
+                  opacity: 0,
+                  scale: 0,
+                  transformOrigin: "90% 0",
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  // transformOrigin: "0 0",
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0,
+                  transformOrigin: "90% 0%",
+                }}
+                transition={{
+                  type: "spring",
+                  velocity: 5,
+                  mass: 0.5,
+                }}
+              >
+                <Calendar
+                  setReset={setReset}
+                  reset={reset}
+                  setIsEventSectionLoading={setIsEventSectionLoading}
+                  setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </button>
         <button
           onMouseEnter={() => {

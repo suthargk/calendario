@@ -14,8 +14,10 @@ const Tab = ({
     <button
       onClick={() => handleTab(label)}
       style={{ padding: "6px" }}
-      className={`relative flex items-center gap-1.5 w-full justify-center text-gray-400 focus:outline-2 focus:outline-blue-500 ${
-        tabActive === label && "text-gray-900 dark:text-slate-50"
+      className={`relative flex items-center gap-1.5 w-full justify-center focus:outline-2 focus:outline-blue-500 ${
+        tabActive === label
+          ? "text-gray-900 dark:text-slate-50"
+          : "text-gray-400 dark:text-slate-400"
       }`}
     >
       {icon && (

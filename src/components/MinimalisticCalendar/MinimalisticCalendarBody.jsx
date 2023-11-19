@@ -141,12 +141,12 @@ const MinimalisticCalendarBody = ({
                   className={`${
                     currentDate === dateObj.date
                       ? "text-white"
-                      : "text-gray-400"
+                      : "text-gray-400 dark:text-slate-400"
                   } leading-none`}
                 >
                   {WEEKDAYVALUES[dateObj.day]}
                 </div>
-                <div className="text-lg leading-none	">
+                <div className="text-lg leading-none">
                   {String(dateObj.date).padStart(2, "0")}
                 </div>
               </div>

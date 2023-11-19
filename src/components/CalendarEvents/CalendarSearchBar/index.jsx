@@ -51,7 +51,7 @@ const CalendarSearchBar = ({ searchValue, handleChange }) => {
             animate={
               inputSelect && !searchValue
                 ? { scale: 1, opacity: 1, display: "flex" }
-                : { scale: 0.8, opacity: 0, transitionEnd: { display: "none" } }
+                : { scale: 0, opacity: 0, transitionEnd: { display: "none" } }
             }
             className="flex gap-0.5 items-center justify-center absolute right-11 text-gray-400 cursor-text"
           >

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+
 import Theme from "./Theme";
 
 const getChildren = ({ imgSrc, label, value }) => {
   return (
     <>
       <div
-        className={`border-[2.5px] overflow-hidden cursor-pointer rounded-xl h-[72px] ${
+        className={` border-[2.5px] overflow-hidden cursor-pointer rounded-xl h-[64px] ${
           value
             ? "border-blue-500 dark:border-blue-400"
             : "border-gray-100 dark:border-slate-800"
@@ -13,7 +14,15 @@ const getChildren = ({ imgSrc, label, value }) => {
       >
         <img src={imgSrc} draggable={false} />
       </div>
-      <span className="text-xs">{label}</span>
+      <h6
+        className={`text-xs text-center mt-1 capitalize ${
+          value
+            ? "font-medium text-gray-900 dark:text-white"
+            : "text-gray-600 dark:text-slate-400"
+        }`}
+      >
+        {label}
+      </h6>
     </>
   );
 };

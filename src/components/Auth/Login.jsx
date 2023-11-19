@@ -1,7 +1,9 @@
 import React from "react";
-import LogoIcon from "../../assets/logo/LogoIcon";
-import GoogleIcon from "../../assets/logo/GoogleIcon";
+
 import { gapi } from "gapi-script";
+
+import GoogleIcon from "../../assets/logo/GoogleIcon";
+import LogoIcon from "../../assets/logo/LogoIcon";
 
 const Login = ({ isUserSignedIn }) => {
   return (

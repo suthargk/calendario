@@ -6,7 +6,7 @@ import Integrations from "./Integrations";
 
 const tabSection = {
   Appearance: <Appearance />,
-  Integratons: <Integrations />,
+  Integrations: <Integrations />,
 };
 
 const Setting = ({ setIsSettingPageOpen }) => {
@@ -19,13 +19,12 @@ const Setting = ({ setIsSettingPageOpen }) => {
   return (
     <div className="">
       {/* <PageHeader setIsEventDetailOverlayOpen={setIsSettingPageOpen} /> */}
-      <div className="border-b border-gray-200 flex mx-[-12.8px]">
+      <div className="border-b border-gray-200 flex mx-[-12.8px] dark:border-slate-700">
         <Tab
           label="Appearance"
           handleTab={handleTab}
           tabActive={tabActive}
           layoutId="settings"
-          underLineColor="bg-pink-500"
         />
         <Tab
           label="Integrations"

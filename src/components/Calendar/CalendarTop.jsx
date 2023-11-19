@@ -1,15 +1,17 @@
+import { useRef } from "react";
+
+import dayjs from "dayjs";
 import { connect } from "react-redux";
-import PrevChevron from "../../assets/icons/PrevChevron";
+
 import NextChevron from "../../assets/icons/NextChevron";
+import PrevChevron from "../../assets/icons/PrevChevron";
 import {
   NEXT_MONTH,
   PREV_MONTH,
   RESET_CURRENT_TIME,
 } from "../../store/actions";
-import dayjs from "dayjs";
-import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
-import { useRef } from "react";
+import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 
 const CalendarTop = ({
   currentFullDate,

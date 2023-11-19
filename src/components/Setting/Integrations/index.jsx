@@ -15,8 +15,8 @@ const Integrations = ({ tabActive }) => {
       className="p-2 pt-4 space-y-3"
     >
       <div>
-        <h2 className="text-sm">Integrations</h2>
-        <p className="text-xs text-gray-600">
+        <h2 className="text-sm dark:text-slate-50">Integrations</h2>
+        <p className="text-xs text-gray-600 dark:text-slate-400">
           The various integrations available to your calendar
         </p>
       </div>

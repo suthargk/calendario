@@ -18,7 +18,7 @@ import {
   fetchEvents,
 } from "../../../../../store/services";
 import EventDetailOverlay from "../../../../common/EventDetailOverlay";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Reminder from "../../../../common/Reminder";
 import RadioButton from "../../../../common/RadioButton";
 import dayjs from "dayjs";
@@ -154,55 +154,51 @@ const EventCardDetail = ({
       >
         <MoreIcon width={18} height={18} />
       </button>
-
-      <motion.div
-        initial={{
-          scale: 0,
-          opacity: 0,
-          display: "none",
-          transformOrigin: "right top",
-        }}
-        animate={
-          isMoreOptionOpen
-            ? {
-                scale: 1,
-                opacity: 1,
-                display: "flex",
-                transformOrigin: "right top",
-              }
-            : {
-                scale: 0,
-                opacity: 0,
-                transformOrigin: "right top",
-                transitionEnd: {
-                  display: "none",
-                },
-              }
-        }
-        // transition={{ type: "spring", velocity: 100 }}
-        className="absolute overflow-hidden flex flex-col divide-y dark:divide-slate-600 bg-white z-10 shadow-xl top-10 right-4 text-sm py-0.5 border border-gray-200 rounded-lg dark:bg-slate-800 dark:border-slate-600"
-      >
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsEventDetailOverlayOpen(true);
-            setIsMoreOptionOpen(false);
-          }}
-          className="px-3 py-1.5 text-start hover:bg-slate-100 dark:hover:bg-slate-700"
-        >
-          Show Event Detail
-        </button>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsAlertOverlayOpen(true);
-            setIsMoreOptionOpen(false);
-          }}
-          className="px-3 py-1.5 text-start hover:bg-slate-100 dark:hover:bg-slate-700"
-        >
-          Delete Event
-        </button>
-      </motion.div>
+      <AnimatePresence>
+        {isMoreOptionOpen && (
+          <motion.div
+            initial={{
+              scale: 0,
+              opacity: 0,
+              display: "none",
+              transformOrigin: "right top",
+            }}
+            animate={{
+              scale: 1,
+              opacity: 1,
+              display: "flex",
+              transformOrigin: "right top",
+            }}
+            exit={{
+              scale: 0,
+              opacity: 0,
+              transformOrigin: "right top",
+            }}
+            className="absolute overflow-hidden flex flex-col divide-y dark:divide-slate-600 bg-white z-10 shadow-xl top-10 right-4 text-sm py-0.5 border border-gray-200 rounded-lg dark:bg-slate-800 dark:border-slate-600"
+          >
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsEventDetailOverlayOpen(true);
+                setIsMoreOptionOpen(false);
+              }}
+              className="px-3 py-1.5 text-start hover:bg-slate-100 dark:hover:bg-slate-700"
+            >
+              Show Event Detail
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsAlertOverlayOpen(true);
+                setIsMoreOptionOpen(false);
+              }}
+              className="px-3 py-1.5 text-start hover:bg-slate-100 dark:hover:bg-slate-700"
+            >
+              Delete Event
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div
         className={`space-y-3  ${
@@ -334,111 +330,107 @@ const EventCardDetail = ({
         )}
 
       {createPortal(
-        <motion.div
-          initial={{ left: "100%", display: "none" }}
-          animate={
-            isEventDetailOverlayOpen
-              ? { left: "0%", border: "0", display: "block" }
-              : {
-                  left: "100%",
-                  border: "0",
-                  transitionEnd: { display: "none" },
-                }
-          }
-          transition={{ velocity: 2, mass: 0.5 }}
-          className="absolute z-40 top-0 bottom-0 right-0 left-0 bg-white w-full border-l"
-        >
-          <EventDetailOverlay
-            event={event}
-            startTimeFormat={startTimeFormat}
-            endTimeFormat={endTimeFormat}
-            attendees={attendees}
-            organizer={organizer}
-            conferenceData={conferenceData}
-            reminders={reminders}
-            hangoutLink={hangoutLink}
-            summary={summary}
-            description={description}
-            location={location}
-            attachments={attachments}
-            setIsEventDetailOverlayOpen={setIsEventDetailOverlayOpen}
-            meetingStatus={meetingStatus}
-            totalAttendeesResponse={totalAttendeesResponse}
-          />
-        </motion.div>,
+        <AnimatePresence>
+          {isEventDetailOverlayOpen && (
+            <motion.div
+              initial={{ left: "100%" }}
+              animate={{ left: "0%", border: 0 }}
+              exit={{ left: "100%" }}
+              transition={{ velocity: 2, mass: 0.5 }}
+              className="absolute z-40 top-0 bottom-0 right-0 left-0 bg-white w-full border-l"
+            >
+              <EventDetailOverlay
+                event={event}
+                startTimeFormat={startTimeFormat}
+                endTimeFormat={endTimeFormat}
+                attendees={attendees}
+                organizer={organizer}
+                conferenceData={conferenceData}
+                reminders={reminders}
+                hangoutLink={hangoutLink}
+                summary={summary}
+                description={description}
+                location={location}
+                attachments={attachments}
+                setIsEventDetailOverlayOpen={setIsEventDetailOverlayOpen}
+                meetingStatus={meetingStatus}
+                totalAttendeesResponse={totalAttendeesResponse}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>,
         document.querySelector(".app")
       )}
 
       {createPortal(
-        <motion.div
-          initial={{ opacity: 0, scale: 0, display: "none" }}
-          animate={
-            isAlertOverlayOpen
-              ? { opacity: 1, scale: 1, display: "flex" }
-              : { opacity: 0, scale: 0, transitionEnd: { display: "none" } }
-          }
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsAlertOverlayOpen(false);
-            setIsLoading(false);
-          }}
-          // style={{ background: "rgba(0,0,0,.1)" }}
-          className="absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center"
-        >
-          <AlertOverlay
-            title={{
-              title: `Delete recurring event`,
-              className: `${
-                event.recurrence ? "font-normal self-start pl-4 mb-2" : ""
-              } `,
-            }}
-            description={
-              !event.recurrence
-                ? `Are you certain you want to delete event? This action is irreversible.`
-                : ""
-            }
-            body={
-              event.recurrence ? (
-                <AlertBody
-                  event={event}
-                  handleChange={handleChange}
-                  radioButtonValue={radioButtonValue}
-                  userSelectedFullDate={userSelectedFullDate}
-                />
-              ) : null
-            }
-            icon={
-              <DangerIcon width={22} height={22} className="text-red-500" />
-            }
-            footerAction={
-              <div className="flex space-x-2 p-3">
-                <button
-                  onClick={() => {
-                    setIsAlertOverlayOpen(false);
-                    setIsButtonLoading(false);
-                    setIsMoreOptionOpen(false);
-                  }}
-                  className="w-full dark:border-slate-700 dark:hover:border-slate-600 dark:bg-slate-700 dark:text-slate-50 dark:hover:bg-slate-600 text-sm border border-gray-100 p-1 text-gray-700 rounded-md duration-300 hover:bg-gray-100"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => handleDeleteEvent(event)}
-                  className="relative flex justify-center items-center space-x-1 w-full text-sm border border-red-500 bg-red-500 dark:border-red-600 dark:bg-red-600 dark:hover:bg-red-500 dark:hover:border-red-500 00 p-1 text-white rounded-md duration-300 hover:bg-red-400 hover:border-red-400"
-                >
-                  {isButtonLoading && (
-                    <SpinnerIcon
-                      width={14}
-                      height={14}
-                      className="fill-red-500"
+        <AnimatePresence>
+          {isAlertOverlayOpen && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsAlertOverlayOpen(false);
+              }}
+              className="absolute top-0 left-0 right-0 bottom-0 z-40 flex justify-center items-center"
+            >
+              <AlertOverlay
+                title={{
+                  title: `Delete recurring event`,
+                  className: `${
+                    event.recurrence ? "font-normal self-start pl-4 mb-2" : ""
+                  } `,
+                }}
+                description={
+                  !event.recurrence
+                    ? `Are you certain you want to delete event? This action is irreversible.`
+                    : ""
+                }
+                body={
+                  event.recurrence ? (
+                    <AlertBody
+                      event={event}
+                      handleChange={handleChange}
+                      radioButtonValue={radioButtonValue}
+                      userSelectedFullDate={userSelectedFullDate}
                     />
-                  )}
-                  <span>Delete Event</span>
-                </button>
-              </div>
-            }
-          />
-        </motion.div>,
+                  ) : null
+                }
+                icon={
+                  <DangerIcon width={22} height={22} className="text-red-500" />
+                }
+                footerAction={
+                  <div className="flex space-x-2 p-3">
+                    <button
+                      onClick={() => {
+                        setIsAlertOverlayOpen(false);
+                        setIsButtonLoading(false);
+                        setIsMoreOptionOpen(false);
+                      }}
+                      className="w-full dark:border-slate-700 dark:hover:border-slate-600 dark:bg-slate-700 dark:text-slate-50 dark:hover:bg-slate-600 text-sm border border-gray-100 p-1 text-gray-700 rounded-md duration-300 hover:bg-gray-100"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => handleDeleteEvent(event)}
+                      className="relative flex justify-center items-center space-x-1 w-full text-sm border border-red-500 bg-red-500 dark:border-red-600 dark:bg-red-600 dark:hover:bg-red-500 dark:hover:border-red-500 00 p-1 text-white rounded-md duration-300 hover:bg-red-400 hover:border-red-400"
+                    >
+                      {isButtonLoading && (
+                        <SpinnerIcon
+                          width={14}
+                          height={14}
+                          className="fill-red-500"
+                        />
+                      )}
+                      <span>Delete Event</span>
+                    </button>
+                  </div>
+                }
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>,
         document.querySelector(".app")
       )}
     </div>

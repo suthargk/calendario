@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
 
 const AlertOverlay = ({ icon, title, description, footerAction, body }) => {
   const iconBgColor = icon ? icon.props.className.split("-")[1] : "";

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+
 import { motion } from "framer-motion";
 
 const RadioButton = ({ value, label, id, onChange, className }) => {
@@ -25,6 +26,7 @@ const RadioButton = ({ value, label, id, onChange, className }) => {
         id={id}
         type="radio"
         checked={value}
+        name={id}
         onChange={onChange}
       />
       <span>{label}</span>

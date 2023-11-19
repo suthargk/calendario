@@ -1,14 +1,16 @@
+import { useEffect, useRef, useState } from "react";
+
+import dayjs from "dayjs";
 import { connect } from "react-redux";
-import DayRow from "./Day/DayRow";
-import { useEffect, useState } from "react";
+
 import {
   NEXT_MONTH,
   PREV_MONTH,
   USER_SELECTED_DATE,
 } from "../../store/actions";
-import { getNextMonthDate, getPrevMonthDate } from "../../utils";
-import dayjs from "dayjs";
 import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
+import { getNextMonthDate, getPrevMonthDate } from "../../utils";
+import DayRow from "./Day/DayRow";
 
 const CalendarDays = ({
   currentFullDate,
@@ -21,6 +23,9 @@ const CalendarDays = ({
     month: currentFullDate.month,
     year: currentFullDate.year,
   });
+
+  const fetchNextMonthRef = useRef(null);
+  const fetchPrevMonthRef = useRef(null);
 
   useEffect(() => {
     setSelect({
@@ -54,8 +59,14 @@ const CalendarDays = ({
         },
       });
 
-      fetchEventsAPI(nextYear, nextMonth, setIsEventSectionLoading);
-      fetchHolidayAPI(nextYear, nextMonth, setIsHolidaySectionLoading);
+      if (fetchNextMonthRef.current) {
+        clearTimeout(fetchNextMonthRef.current);
+      }
+
+      fetchNextMonthRef.current = setTimeout(() => {
+        fetchEventsAPI(nextYear, nextMonth, setIsEventSectionLoading);
+        fetchHolidayAPI(nextYear, nextMonth, setIsHolidaySectionLoading);
+      }, 200);
     }
 
     if (dateValue.isPrevMonthDate) {
@@ -77,8 +88,14 @@ const CalendarDays = ({
         },
       });
 
-      fetchEventsAPI(prevYear, prevMonth, setIsEventSectionLoading);
-      fetchHolidayAPI(prevYear, prevMonth, setIsHolidaySectionLoading);
+      if (fetchPrevMonthRef.current) {
+        clearTimeout(fetchPrevMonthRef.current);
+      }
+
+      fetchPrevMonthRef.current = setTimeout(() => {
+        fetchEventsAPI(prevYear, prevMonth, setIsEventSectionLoading);
+        fetchHolidayAPI(prevYear, prevMonth, setIsHolidaySectionLoading);
+      }, 200);
     }
 
     setSelect({

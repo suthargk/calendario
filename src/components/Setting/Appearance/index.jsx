@@ -1,9 +1,12 @@
 import React from "react";
-import Themes from "./Themes";
-import AccentColor from "./AccentColor";
-import Languages from "./Languages";
-import Animation from "./Animation";
+
 import { motion } from "framer-motion";
+
+import AccentColor from "./AccentColor";
+import Animation from "./Animation";
+import Languages from "./Languages";
+import ScrollWithTime from "./ScrollWithTime";
+import Themes from "./Themes";
 
 const Appearance = ({ tabActive }) => {
   return (
@@ -18,7 +21,12 @@ const Appearance = ({ tabActive }) => {
       <Themes />
       <AccentColor />
       <Animation />
+      <ScrollWithTime />
       <Languages />
+      <div>
+        <button></button>
+        <button></button>
+      </div>
     </motion.div>
   );
 };

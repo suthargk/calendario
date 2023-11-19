@@ -9,6 +9,7 @@ const Theme = ({ id, value, children, onChange }) => {
         className="hidden"
         checked={value}
         onChange={onChange}
+        name={id}
       />
       {children}
     </label>
