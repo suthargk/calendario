@@ -1,4 +1,5 @@
 import { gapi } from "gapi-script";
+
 import { SET_USER_AUTH } from "../actions";
 
 const INITIAL_USER_DATA = {
@@ -7,15 +8,15 @@ const INITIAL_USER_DATA = {
 };
 
 const applyUserAuth = (state, action) => {
-  const { auth2 } = action.payload;
+  const { isSignedIn } = action.payload;
 
   return {
     ...state,
-    isSignedIn: auth2.isSignedIn.get(),
     access_token: gapi.auth2
       .getAuthInstance()
       .currentUser.get()
       .getAuthResponse().access_token,
+    isSignedIn,
   };
 };
 

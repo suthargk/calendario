@@ -1,11 +1,15 @@
 import React from "react";
 
-import { gapi } from "gapi-script";
-
 import GoogleIcon from "../../assets/logo/GoogleIcon";
 import LogoIcon from "../../assets/logo/LogoIcon";
+import { SET_USER_AUTH } from "../../store/actions";
+import { fetchEvents, fetchHolidays } from "../../store/services";
 
-const Login = ({ isUserSignedIn }) => {
+const Login = ({
+  dispatch,
+  setIsEventSectionLoading,
+  setIsHolidaySectionLoading,
+}) => {
   return (
     <div className="flex justify-center items-center flex-col h-full w-full ">
       <div className="flex items-center gap-2 text-gray-600 -ml-8 dark:text-slate-50">
@@ -21,9 +25,20 @@ const Login = ({ isUserSignedIn }) => {
       <div className="mt-4">
         <button
           onClick={() => {
-            isUserSignedIn
-              ? gapi.auth2?.getAuthInstance().signOut()
-              : gapi.auth2?.getAuthInstance().signIn();
+            gapi.auth2
+              .getAuthInstance()
+              .signIn()
+              .then((response) => {
+                dispatch({
+                  type: SET_USER_AUTH,
+                  payload: {
+                    isSignedIn: response.isSignedIn(),
+                  },
+                });
+
+                fetchEvents({ setIsEventSectionLoading });
+                fetchHolidays({ setIsHolidaySectionLoading });
+              });
           }}
           className="flex items-center gap-2 border border-gray-200 dark:border-slate-700 dark:hover:bg-slate-800 px-4 py-1.5 rounded-lg duration-300 hover:bg-gray-100"
         >

@@ -3,15 +3,20 @@ import React, { useState } from "react";
 import CalendarEvents from "./CalendarEvents";
 import CalendarHeader from "./CalendarHeader";
 import MinimalisticCalendar from "./MinimalisticCalendar";
+import Setting from "./Setting";
 
 const CalendarApp = ({
-  setIsSettingPageOpen,
   isEventSectionLoading,
   isHolidaySectionLoading,
   setIsHolidaySectionLoading,
   setIsEventSectionLoading,
 }) => {
   const [reset, setReset] = useState(Math.random());
+  const [isSettingPageOpen, setIsSettingPageOpen] = useState(false);
+
+  if (isSettingPageOpen) {
+    return <Setting />;
+  }
 
   return (
     <div className="space-y-3">

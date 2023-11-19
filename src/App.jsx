@@ -7,13 +7,11 @@ import CalendarApp from "./components";
 import Login from "./components/Auth/Login";
 import CalendarNetworkPopup from "./components/common/CalendarNetworkPopup";
 import Loader from "./components/common/Loader";
-import Setting from "./components/Setting";
 import { SET_USER_AUTH } from "./store/actions";
 import { fetchEvents, fetchHolidays } from "./store/services";
 
 function App({ isUserSignedIn, dispatch }) {
   const [isAppLoading, setIsAppLoading] = useState(true);
-  const [isSettingPageOpen, setIsSettingPageOpen] = useState(false);
   const [isEventSectionLoading, setIsEventSectionLoading] = useState(true);
   const [isHolidaySectionLoading, setIsHolidaySectionLoading] = useState(true);
 
@@ -27,7 +25,7 @@ function App({ isUserSignedIn, dispatch }) {
     dispatch({
       type: SET_USER_AUTH,
       payload: {
-        auth2,
+        isSignedIn: auth2.isSignedIn.le,
       },
     });
 
@@ -38,7 +36,7 @@ function App({ isUserSignedIn, dispatch }) {
 
   useEffect(() => {
     getAuth();
-  }, [isUserSignedIn]);
+  }, []);
 
   return (
     <div className="app bg-white relative rounded-2xl shadow overflow-hidden h-[600px] p-[13px] w-[350px] dark:bg-slate-900 dark:text-slate-50">
@@ -46,20 +44,19 @@ function App({ isUserSignedIn, dispatch }) {
 
       {isAppLoading ? (
         <Loader />
-      ) : isUserSignedIn ? (
-        isSettingPageOpen ? (
-          <Setting setIsSettingPageOpen={setIsSettingPageOpen} />
-        ) : (
-          <CalendarApp
-            setIsSettingPageOpen={setIsSettingPageOpen}
-            isEventSectionLoading={isEventSectionLoading}
-            isHolidaySectionLoading={isHolidaySectionLoading}
-            setIsHolidaySectionLoading={setIsHolidaySectionLoading}
-            setIsEventSectionLoading={setIsEventSectionLoading}
-          />
-        )
+      ) : !isUserSignedIn ? (
+        <Login
+          dispatch={dispatch}
+          setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+          setIsEventSectionLoading={setIsEventSectionLoading}
+        />
       ) : (
-        <Login isUserSignedIn={isUserSignedIn} />
+        <CalendarApp
+          isEventSectionLoading={isEventSectionLoading}
+          isHolidaySectionLoading={isHolidaySectionLoading}
+          setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+          setIsEventSectionLoading={setIsEventSectionLoading}
+        />
       )}
     </div>
   );
