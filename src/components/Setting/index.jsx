@@ -9,7 +9,7 @@ const tabSection = {
   Integrations: <Integrations />,
 };
 
-const Setting = ({ setIsSettingPageOpen }) => {
+const Setting = () => {
   const [tabActive, setTabActive] = useState("Appearance");
 
   const handleTab = (tabName) => {

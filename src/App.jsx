@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import { gapi, loadAuth2 } from "gapi-script";
 import { connect } from "react-redux";
@@ -10,10 +10,15 @@ import Loader from "./components/common/Loader";
 import { SET_USER_AUTH } from "./store/actions";
 import { fetchEvents, fetchHolidays } from "./store/services";
 
+export const AccentColorContext = createContext({});
+
 function App({ isUserSignedIn, dispatch }) {
   const [isAppLoading, setIsAppLoading] = useState(true);
   const [isEventSectionLoading, setIsEventSectionLoading] = useState(true);
   const [isHolidaySectionLoading, setIsHolidaySectionLoading] = useState(true);
+  const [accentColor, setAccentColor] = useState(() =>
+    localStorage.getItem("accent_color")
+  );
 
   const getAuth = async () => {
     let auth2 = await loadAuth2(
@@ -51,12 +56,14 @@ function App({ isUserSignedIn, dispatch }) {
           setIsEventSectionLoading={setIsEventSectionLoading}
         />
       ) : (
-        <CalendarApp
-          isEventSectionLoading={isEventSectionLoading}
-          isHolidaySectionLoading={isHolidaySectionLoading}
-          setIsHolidaySectionLoading={setIsHolidaySectionLoading}
-          setIsEventSectionLoading={setIsEventSectionLoading}
-        />
+        <AccentColorContext.Provider value={{ accentColor, setAccentColor }}>
+          <CalendarApp
+            isEventSectionLoading={isEventSectionLoading}
+            isHolidaySectionLoading={isHolidaySectionLoading}
+            setIsHolidaySectionLoading={setIsHolidaySectionLoading}
+            setIsEventSectionLoading={setIsEventSectionLoading}
+          />
+        </AccentColorContext.Provider>
       )}
     </div>
   );

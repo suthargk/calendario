@@ -1,12 +1,16 @@
-import React, { useState } from "react";
-import Theme from "./Theme";
-import { bgColor } from "../../../store/reducers/utils";
+import React, { useContext, useState } from "react";
 
-const getChildren = ({ value, label }) => {
+import { AccentColorContext } from "../../../App";
+import { bgColor, ringColor } from "../../../color";
+import Theme from "./Theme";
+
+const getChildren = ({ value, label, accentColor }) => {
   return (
     <div
       className={`h-4 w-4 rounded-full cursor-pointer p-[1px] ${
-        value ? "ring-[2.5px] ring-blue-500 dark:ring-blue-400" : ""
+        value
+          ? `ring-[2.5px] ${ringColor[accentColor].dark} ${ringColor[accentColor].darkMode.dark} ring-blue-500 dark:ring-blue-400`
+          : ""
       }`}
     >
       <div
@@ -17,9 +21,13 @@ const getChildren = ({ value, label }) => {
 };
 
 const AccentColor = () => {
-  const [radioButtonValue, setRadioButtonValue] = useState("blue");
+  const { accentColor, setAccentColor } = useContext(AccentColorContext);
+  const [radioButtonValue, setRadioButtonValue] = useState(accentColor);
+
   const handleChange = (value) => {
     setRadioButtonValue(value);
+    setAccentColor(value);
+    localStorage.setItem("accent_color", value);
   };
 
   return (
@@ -36,28 +44,44 @@ const AccentColor = () => {
           value={"blue" === radioButtonValue}
           onChange={() => handleChange("blue")}
         >
-          {getChildren({ value: "blue" === radioButtonValue, label: "blue" })}
+          {getChildren({
+            value: "blue" === radioButtonValue,
+            label: "blue",
+            accentColor,
+          })}
         </Theme>
         <Theme
           value={"rose" === radioButtonValue}
           label="rose"
           onChange={() => handleChange("rose")}
         >
-          {getChildren({ value: "rose" === radioButtonValue, label: "rose" })}
+          {getChildren({
+            value: "rose" === radioButtonValue,
+            label: "rose",
+            accentColor,
+          })}
         </Theme>
         <Theme
           value={"green" === radioButtonValue}
           label="green"
           onChange={() => handleChange("green")}
         >
-          {getChildren({ value: "green" === radioButtonValue, label: "green" })}
+          {getChildren({
+            value: "green" === radioButtonValue,
+            label: "green",
+            accentColor,
+          })}
         </Theme>
         <Theme
           value={"teal" === radioButtonValue}
           label="teal"
           onChange={() => handleChange("teal")}
         >
-          {getChildren({ value: "teal" === radioButtonValue, label: "teal" })}
+          {getChildren({
+            value: "teal" === radioButtonValue,
+            label: "teal",
+            accentColor,
+          })}
         </Theme>
         <Theme
           value={"yellow" === radioButtonValue}
@@ -67,6 +91,7 @@ const AccentColor = () => {
           {getChildren({
             value: "yellow" === radioButtonValue,
             label: "yellow",
+            accentColor,
           })}
         </Theme>
         <Theme
@@ -77,6 +102,7 @@ const AccentColor = () => {
           {getChildren({
             value: "violet" === radioButtonValue,
             label: "violet",
+            accentColor,
           })}
         </Theme>
         <Theme
@@ -87,6 +113,7 @@ const AccentColor = () => {
           {getChildren({
             value: "orange" === radioButtonValue,
             label: "orange",
+            accentColor,
           })}
         </Theme>
       </div>

@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
+import { AccentColorContext } from "../../../App";
+import DarkMode from "../../../assets/icons/DarkMode";
+import LightDarkMode from "../../../assets/icons/LightDarkMode";
+import LightMode from "../../../assets/icons/LightMode";
+import { borderColor, textColor } from "../../../color";
 import Theme from "./Theme";
 
-const getChildren = ({ imgSrc, label, value }) => {
+const getChildren = ({ icon, label, value }) => {
+  const { accentColor } = useContext(AccentColorContext);
   return (
     <>
       <div
         className={` border-[2.5px] overflow-hidden cursor-pointer rounded-xl h-[70px] ${
           value
-            ? "border-blue-500 dark:border-blue-400"
+            ? `${borderColor[accentColor].dark} ${borderColor[accentColor].darkMode.dark}`
             : "border-gray-100 dark:border-slate-800"
         }`}
       >
-        <img src={imgSrc} draggable={false} />
+        {icon}
       </div>
       <h6
         className={`text-xs text-center mt-1 capitalize ${
@@ -31,6 +37,7 @@ const Themes = () => {
   const [radioButtonValue, setRadioButtonValue] = useState(() => {
     return localStorage.getItem("theme") || "system";
   });
+  const { accentColor } = useContext(AccentColorContext);
   const handleChange = (value) => {
     setRadioButtonValue(value);
   };
@@ -57,7 +64,7 @@ const Themes = () => {
       </div>
       <div className="flex gap-1 h-full">
         <Theme
-          className="w-1/3"
+          className={`w-1/3 ${textColor[accentColor].dark}`}
           value={"system" === radioButtonValue}
           onChange={() => {
             localStorage.removeItem("theme");
@@ -66,12 +73,12 @@ const Themes = () => {
         >
           {getChildren({
             value: "system" === radioButtonValue,
-            imgSrc: "./images/light_dark.png",
+            icon: <LightDarkMode />,
             label: "system",
           })}
         </Theme>
         <Theme
-          className="w-1/3"
+          className={`w-1/3 ${textColor[accentColor].dark}`}
           value={"light" === radioButtonValue}
           onChange={() => {
             localStorage.theme = "light";
@@ -80,12 +87,12 @@ const Themes = () => {
         >
           {getChildren({
             value: "light" === radioButtonValue,
-            imgSrc: "./images/light.png",
+            icon: <LightMode />,
             label: "light",
           })}
         </Theme>
         <Theme
-          className="w-1/3"
+          className={`w-1/3 ${textColor[accentColor].dark}`}
           value={"dark" === radioButtonValue}
           onChange={() => {
             localStorage.theme = "dark";
@@ -94,7 +101,7 @@ const Themes = () => {
         >
           {getChildren({
             value: "dark" === radioButtonValue,
-            imgSrc: "./images/dark.png",
+            icon: <DarkMode />,
             label: "dark",
           })}
         </Theme>

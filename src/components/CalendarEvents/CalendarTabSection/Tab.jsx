@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { motion } from "framer-motion";
+
+import { AccentColorContext } from "../../../App";
+import { bgColor, textColor } from "../../../color";
 
 const Tab = ({
   icon,
@@ -12,6 +15,8 @@ const Tab = ({
   layoutId = "event_tabs",
   className,
 }) => {
+  const { accentColor } = useContext(AccentColorContext);
+
   return (
     <button
       onClick={() => handleTab(label)}
@@ -23,7 +28,9 @@ const Tab = ({
     >
       {icon && (
         <div
-          className={`${tabActive === label ? "text-blue-500 " : ""} mr-1.5`}
+          className={`${
+            tabActive === label ? textColor[accentColor].dark : ""
+          } mr-1.5`}
         >
           {icon}
         </div>
@@ -33,7 +40,7 @@ const Tab = ({
         <motion.div
           layoutId={layoutId}
           style={{ height: 2.5, bottom: -1.5 }}
-          className={`absolute bg-blue-500 w-full ${underLineColor}`}
+          className={`absolute ${bgColor[accentColor].light} ${bgColor[accentColor].darkMode} w-full ${underLineColor}`}
         ></motion.div>
       )}
     </button>

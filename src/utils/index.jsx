@@ -1,4 +1,8 @@
 import dayjs from "dayjs";
+
+import CheckedIcon from "../assets/icons/CheckedIcon";
+import CloseIcon from "../assets/icons/CloseIcon";
+import QuestionMark from "../assets/icons/QuestionMark";
 import {
   getDailyRruleEvents,
   getMonthDifference,
@@ -7,10 +11,6 @@ import {
   getYearlyRruleEvents,
   weeksBetween,
 } from "../store/reducers/utils";
-
-import CheckedIcon from "../assets/icons/CheckedIcon";
-import CloseIcon from "../assets/icons/CloseIcon";
-import QuestionMark from "../assets/icons/QuestionMark";
 
 export const getRowDates = (
   rowIndex,
@@ -250,21 +250,21 @@ export const getMeetingStatus = (status) => {
   switch (status) {
     case "confirmed":
       return (
-        <span className="inline-block  rounded-full text-[10px] px-2 self-start text-green-800 bg-green-100">
+        <span className="inline-block rounded-full text-[10px] px-2 self-start text-green-800 bg-green-100">
           Confirmed
         </span>
       );
 
     case "cancelled":
       return (
-        <span className="inline-block  rounded-full text-[10px] px-2 self-start text-red-800 bg-red-100">
+        <span className="inline-block rounded-full text-[10px] px-2 self-start text-red-800 bg-red-100">
           Cancelled
         </span>
       );
 
     case "tentative":
       return (
-        <span className="inline-block  rounded-full text-[10px] px-2 self-start text-orange-800 bg-orange-100">
+        <span className="inline-block rounded-full text-[10px] px-2 self-start text-orange-800 bg-orange-100">
           Cancelled
         </span>
       );
