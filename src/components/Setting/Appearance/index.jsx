@@ -3,7 +3,6 @@ import React from "react";
 import { motion } from "framer-motion";
 
 import AccentColor from "./AccentColor";
-import Animation from "./Animation";
 import Languages from "./Languages";
 import ScrollWithTime from "./ScrollWithTime";
 import Themes from "./Themes";
@@ -20,7 +19,7 @@ const Appearance = ({ tabActive }) => {
     >
       <Themes />
       <AccentColor />
-      <Animation />
+      {/* <Animation /> */}
       <ScrollWithTime />
       <Languages />
       <div>

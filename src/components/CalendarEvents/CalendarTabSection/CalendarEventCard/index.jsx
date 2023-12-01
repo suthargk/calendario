@@ -1,16 +1,18 @@
-import dayjs from "dayjs";
 import React from "react";
+
+import dayjs from "dayjs";
+import { motion } from "framer-motion";
+
+import DownChevronIcon from "../../../../assets/icons/DownChevronIcon";
 import {
-  HeadingTextColor,
   bgColor,
   bgLinearGradientColor,
   borderColor,
+  HeadingTextColor,
   textColor,
-} from "../../../../store/reducers/utils";
+} from "../../../../color";
 import Attendees from "./Attendees";
-import DownChevronIcon from "../../../../assets/icons/DownChevronIcon";
 import EventCardDetail from "./EventCardDetail";
-import { motion } from "framer-motion";
 
 const CalendarEventCard = ({ event, handleEventOpen, isEventOpenId }) => {
   const {

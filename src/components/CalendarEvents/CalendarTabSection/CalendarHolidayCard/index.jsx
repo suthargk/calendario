@@ -1,11 +1,13 @@
 import React from "react";
+
+import dayjs from "dayjs";
+
 import {
-  HeadingTextColor,
   bgLinearGradientColor,
   borderColor,
+  HeadingTextColor,
   textColor,
-} from "../../../../store/reducers/utils";
-import dayjs from "dayjs";
+} from "../../../../color";
 
 const CalendarHolidayCard = ({ holiday }) => {
   const { summary, start, end, color = "", description } = holiday;

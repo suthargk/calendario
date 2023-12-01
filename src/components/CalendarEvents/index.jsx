@@ -1,11 +1,13 @@
 import { useMemo, useState } from "react";
-import CalendarTabSection from "./CalendarTabSection";
-import CalendarListSection from "./CalendarTabSection/CalendarListSection";
-import CalendarSearchBar from "./CalendarSearchBar";
-import { getSelectedDateEvents } from "../../utils";
+
 import dayjs from "dayjs";
 import { connect } from "react-redux";
+
 import { SEARCH_VALUE } from "../../store/actions";
+import { getSelectedDateEvents } from "../../utils";
+import CalendarSearchBar from "./CalendarSearchBar";
+import CalendarTabSection from "./CalendarTabSection";
+import CalendarListSection from "./CalendarTabSection/CalendarListSection";
 
 const CalendarEvents = ({
   isEventSectionLoading,

@@ -1,10 +1,11 @@
 import React from "react";
-import CalendarTabSeactionTop from "./CalendarTabSeactionTop";
+
+import CalendarTabSectionTop from "./CalendarTabSectionTop";
 
 const CalendarTabSection = ({ tabActive, handleTab }) => {
   return (
     <div className="w-full">
-      <CalendarTabSeactionTop tabActive={tabActive} handleTab={handleTab} />
+      <CalendarTabSectionTop tabActive={tabActive} handleTab={handleTab} />
     </div>
   );
 };

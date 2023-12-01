@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+
+import dayjs from "dayjs";
 import { connect } from "react-redux";
-import PrevChevron from "../../assets/icons/PrevChevron";
+
+import { AccentColorContext } from "../../App";
 import NextChevron from "../../assets/icons/NextChevron";
-import { WEEKDAYVALUES } from "../../store/reducers/utils";
-import { getPrevNextFiveDates } from "./utils";
+import PrevChevron from "../../assets/icons/PrevChevron";
+import { bgColor } from "../../color";
 import {
   NEXT_MONTH,
   PREV_MONTH,
   USER_SELECTED_DATE,
 } from "../../store/actions";
-import dayjs from "dayjs";
-import { getNextMonthDate, getPrevMonthDate } from "../../utils";
+import { WEEKDAYVALUES } from "../../store/reducers/utils";
 import { fetchEventsAPI, fetchHolidayAPI } from "../../store/services/utils";
+import { getNextMonthDate, getPrevMonthDate } from "../../utils";
 import ToolTip from "../common/ToolTip";
+import { getPrevNextFiveDates } from "./utils";
 
 const MinimalisticCalendarBody = ({
   currentDate,
@@ -27,6 +31,7 @@ const MinimalisticCalendarBody = ({
 }) => {
   const [onPrevDateMouseOver, setOnPrevDateMouseOver] = useState(false);
   const [onNextDateMouseOver, setOnNextDateMouseOver] = useState(false);
+  const { accentColor } = useContext(AccentColorContext);
 
   const prevNextFiveDates = getPrevNextFiveDates({
     currentDate,
@@ -132,7 +137,7 @@ const MinimalisticCalendarBody = ({
                 style={{ minWidth: "52px", height: "60px" }}
                 className={`py-2.5 flex flex-col justify-between items-center cursor-pointer text-center rounded-lg text-sm ${
                   currentDate === dateObj.date
-                    ? "bg-blue-500 dark:bg-blue-600 text-white"
+                    ? `${bgColor[accentColor].light}  ${bgColor[accentColor].darkMode} text-white`
                     : ""
                 }`}
                 onClick={() => handleUserSelectDate(dateObj)}
